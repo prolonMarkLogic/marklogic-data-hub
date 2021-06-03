@@ -115,6 +115,25 @@ describe("Mapping", () => {
     mappingStepDetail.getURIValue("Relation (relatedTo Person)").trigger("mouseover");
     cy.contains("/Relation/444-44-4440.json");
   });
+  it("Switch views and return to mapping details, verify expressions", () => {
+    mappingStepDetail.goBackToCurateHomePage();
+    cy.waitUntil(() => curatePage.getEntityTypePanel("Person").should("be.visible"));
+    cy.waitUntil(() => toolbar.getModelToolbarIcon()).click();
+    entityTypeTable.waitForTableToLoad();
+    cy.waitUntil(() => toolbar.getCurateToolbarIcon()).click();
+    cy.waitUntil(() => curatePage.getEntityTypePanel("Person").should("be.visible"));
+    curatePage.toggleEntityTypeId("Person");
+    curatePage.openMappingStepDetail("Person", "mapRelation");
+    curatePage.verifyStepDetailsOpen("mapRelation");
+
+    mappingStepDetail.validateURIInput("Person", "$URI");
+    mappingStepDetail.validateMapInput("id", "SSN");
+    mappingStepDetail.validateContextInput("Relation (relatedTo Person)", "/");
+    mappingStepDetail.validateURIInput("Relation (relatedTo Person)", "concat('/Relation/', SSN)");
+    mappingStepDetail.validateMapInput("relatedTo", "SSN");
+    mappingStepDetail.getForeignIcon("relatedTo").should("exist");
+    mappingStepDetail.goBackToCurateHomePage();
+  });
   it("Create new flow, add mapping to flow, run mapping, verify results", () => {
     cy.waitUntil(() => toolbar.getRunToolbarIcon()).click();
     runPage.createFlowButton().click();
@@ -140,5 +159,26 @@ describe("Mapping", () => {
     browsePage.getTotalDocuments().should("be.greaterThan", 21);
     browsePage.selectEntity("Relation");
     browsePage.getTotalDocuments().should("be.greaterThan", 7);
+  });
+  it("Remove related entity from mapping via filter, rerun mapping, verify results", () => {
+    cy.waitUntil(() => toolbar.getCurateToolbarIcon()).click();
+    cy.waitUntil(() => curatePage.getEntityTypePanel("Person").should("be.visible"));
+    curatePage.toggleEntityTypeId("Person");
+    curatePage.openMappingStepDetail("Person", "mapRelation");
+    curatePage.verifyStepDetailsOpen("mapRelation");
+    // TODO Remove related entity from mapping via filter
+    // TODO Rerun mapping
+    // TODO Verify results
+    mappingStepDetail.goBackToCurateHomePage();
+  });
+  it("Remove related entity from mapping via close icon, verify removal", () => {
+    cy.waitUntil(() => toolbar.getCurateToolbarIcon()).click();
+    cy.waitUntil(() => curatePage.getEntityTypePanel("Person").should("be.visible"));
+    curatePage.toggleEntityTypeId("Person");
+    curatePage.openMappingStepDetail("Person", "mapRelation");
+    curatePage.verifyStepDetailsOpen("mapRelation");
+    // TODO Add related entity back mapping
+    // TODO Remove related entity from mapping via close icon
+    // TODO Verify removal
   });
 });

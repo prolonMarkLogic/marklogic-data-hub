@@ -160,12 +160,20 @@ class MappingStepDetail {
     cy.findByTestId(`${entityName}-${propertyName}-value`).find(".ml-tooltip-container").should("have.text", value);
   }
 
+  validateMapInput(propertyName: string, value:string) {
+    cy.findByTestId(`${propertyName}-mapexpression`).should("have.text", value);
+  }
+
   getURIInput(entityTitle: string) {
     return cy.findByTestId(`${entityTitle}-URI-mapexpression`);
   }
 
   getURIValue(entityTitle: string) {
     return cy.findByTestId(`${entityTitle}-URI-value`).find(".ml-tooltip-container");
+  }
+
+  getForeignIcon(propertyName: string) {
+    return cy.findByTestId(`foreign-${propertyName}`);
   }
 
   goBackToCurateHomePage() {
