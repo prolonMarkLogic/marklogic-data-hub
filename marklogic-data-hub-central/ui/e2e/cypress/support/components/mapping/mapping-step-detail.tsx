@@ -79,8 +79,29 @@ class MappingStepDetail {
     return cy.get(`#${entityName}-entities-filter`);
   }
 
+  deleteConfirmationButtonYes() {
+    return cy.get(".ant-modal-content button.ant-btn").contains("Yes");
+  }
+
+  deleteConfirmationButtonNo() {
+    return cy.get(".ant-modal-content button.ant-btn").contains("No");
+  }
+
+  relatedFilterSelection(entityName: string, relatedName: string) {
+    return cy.get(`#${entityName}-entities-filter li[title="${relatedName}"]`);
+  }
+
+  relatedFilterSelectionDeleteIcon(entityName: string, relatedName: string) {
+    return cy.get(`#${entityName}-entities-filter li[title="${relatedName}"]`).find("span.ant-select-selection__choice__remove");
+  }
+
   entityTitle (title: string) {
     return cy.findByLabelText(`${title}-title`);
+  }
+
+  relatedDeleteIcon(entityName: string) {
+    // data-testid="Relation (relatedTo Person)-delete"
+    return cy.findByTestId(`${entityName}-delete`);
   }
 
   /**

@@ -43,6 +43,7 @@ describe("Mapping", () => {
     cy.deleteSteps("mapping", "mapRelation");
     cy.deleteEntities("Relation");
     cy.deleteFlows("relationFlow");
+    cy.deleteRecordsInFinal("mapRelation");
     cy.resetTestUser();
     cy.waitForAsyncRequest();
   });
@@ -91,7 +92,7 @@ describe("Mapping", () => {
     mappingStepDetail.validateURIInput("Person", "$URI");
     mappingStepDetail.validateURIInput("Relation (relatedTo Person)", "hubURI('Relation')");
   });
-  it("Add and test mapping expressions to related entities", () => {
+  it("Add and test mapping expressions with related entities", () => {
     mappingStepDetail.setXpathExpressionInput("id", "SSN");
     mappingStepDetail.entityTitle("Person").click(); // click outside field to auto-save
     mappingStepDetail.successMessage().should("exist");
@@ -100,13 +101,11 @@ describe("Mapping", () => {
     mappingStepDetail.entityTitle("Person").click();
     mappingStepDetail.successMessage().should("exist");
     mappingStepDetail.successMessage().should("not.exist");
-
     // URI field
     mappingStepDetail.getURIInput("Relation (relatedTo Person)").clear().type("concat('/Relation/', SSN)");
     mappingStepDetail.entityTitle("Person").click();
     mappingStepDetail.successMessage().should("exist");
     mappingStepDetail.successMessage().should("not.exist");
-
     // Test expresssions
     cy.waitUntil(() => mappingStepDetail.testMap().should("be.enabled"));
     mappingStepDetail.testMap().click();
@@ -115,7 +114,7 @@ describe("Mapping", () => {
     mappingStepDetail.getURIValue("Relation (relatedTo Person)").trigger("mouseover");
     cy.contains("/Relation/444-44-4440.json");
   });
-  it("Switch views and return to mapping details, verify expressions", () => {
+  it("Switch views and return to mapping details, verify persistence of expressions", () => {
     mappingStepDetail.goBackToCurateHomePage();
     cy.waitUntil(() => curatePage.getEntityTypePanel("Person").should("be.visible"));
     cy.waitUntil(() => toolbar.getModelToolbarIcon()).click();
@@ -160,25 +159,30 @@ describe("Mapping", () => {
     browsePage.selectEntity("Relation");
     browsePage.getTotalDocuments().should("be.greaterThan", 7);
   });
-  it("Remove related entity from mapping via filter, rerun mapping, verify results", () => {
+  it("Delete related entity from mapping via filter", () => {
     cy.waitUntil(() => toolbar.getCurateToolbarIcon()).click();
     cy.waitUntil(() => curatePage.getEntityTypePanel("Person").should("be.visible"));
     curatePage.toggleEntityTypeId("Person");
     curatePage.openMappingStepDetail("Person", "mapRelation");
     curatePage.verifyStepDetailsOpen("mapRelation");
-    // TODO Remove related entity from mapping via filter
-    // TODO Rerun mapping
-    // TODO Verify results
-    mappingStepDetail.goBackToCurateHomePage();
+    cy.waitUntil(() => mappingStepDetail.relatedFilterSelection("Person", "Relation (relatedTo Person)").should("exist"));
+    // Related entity exists before deletion
+    mappingStepDetail.entityTitle("Relation (relatedTo Person)").should("exist");
+    mappingStepDetail.relatedFilterSelectionDeleteIcon("Person", "Relation (relatedTo Person)").click();
+    mappingStepDetail.deleteConfirmationButtonYes().click({force: true});
+    // Related entity does not exist after deletion
+    mappingStepDetail.entityTitle("Relation (relatedTo Person)").should("not.exist");
   });
-  it("Remove related entity from mapping via close icon, verify removal", () => {
-    cy.waitUntil(() => toolbar.getCurateToolbarIcon()).click();
-    cy.waitUntil(() => curatePage.getEntityTypePanel("Person").should("be.visible"));
-    curatePage.toggleEntityTypeId("Person");
-    curatePage.openMappingStepDetail("Person", "mapRelation");
-    curatePage.verifyStepDetailsOpen("mapRelation");
-    // TODO Add related entity back mapping
-    // TODO Remove related entity from mapping via close icon
-    // TODO Verify removal
+  it("Delete related entity from mapping via close icon", () => {
+    // Reselect deleted related entity
+    cy.waitUntil(() => mappingStepDetail.relatedFilterMenu("Person")).click();
+    cy.waitUntil(() => mappingStepDetail.getRelatedEntityFromList("Relation (relatedTo Person)")).click();
+    mappingStepDetail.entityTitle("Person").click(); // click outside menu to close it
+    // Related entity exists before deletion
+    mappingStepDetail.entityTitle("Relation (relatedTo Person)").should("exist");
+    mappingStepDetail.relatedDeleteIcon("Relation (relatedTo Person)").click();
+    mappingStepDetail.deleteConfirmationButtonYes().click({force: true});
+    // Related entity does not exist after deletion
+    mappingStepDetail.entityTitle("Relation (relatedTo Person)").should("not.exist");
   });
 });
