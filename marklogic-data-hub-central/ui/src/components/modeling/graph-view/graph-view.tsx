@@ -1,5 +1,5 @@
 import React, { CSSProperties, useContext, useEffect, useState } from "react";
-import { AutoComplete, Dropdown, Icon, Menu } from "antd";
+import { AutoComplete, Dropdown, Icon, Menu, Radio } from "antd";
 import styles from "./graph-view.module.scss";
 import { ModelingTooltips } from "../../../config/tooltips.config";
 import { MLTooltip, MLInput, MLButton } from "@marklogic/design-system";
@@ -11,7 +11,7 @@ import SplitPane from "react-split-pane";
 import GraphViewSidePanel from "./side-panel/side-panel";
 import { ModelingContext } from "../../../util/modeling-context";
 import { defaultModelingView } from "../../../config/modeling.config";
-import Graph from "react-graph-vis";
+import GraphVis from "./graph-vis/graph-vis";
 
 type Props = {
   entityTypes: any;
@@ -23,188 +23,7 @@ const GraphView: React.FC<Props> = (props) => {
   const { modelingOptions, setSelectedEntity } = useContext(ModelingContext);
   const [nodePositions, setNodePositions] = useState({});
   const [physicsEnabled, setPhysicsEnabled] = useState(true);
-  
-  //Initializing network instance
-  const [network, setNetwork] = useState<any>(null);
-  const initNetworkInstance = (networkInstance) => {
-    setNetwork(networkInstance)
-  }
-
-  //Use these to set specific positions for entity nodes temporarily
-  let nodeP = {
-    BabyRegistry: {
-      x: 134.5, y: -165
-    },
-    Customer: {
-      x: -1.8683534551792256, y: -13.817459136071609
-    },
-    Product: {
-      x: -290.5, y: -57
-    },
-    Order: {
-      x: 311.5, y: 1
-    },
-    NamespacedCustomer: {
-      x: -193.56170318899566, y: 27.318452823974837
-    },
-    Person: {
-      x: -143.5, y: -143
-    }
-  }
-
-  let entityMetadata = {
-    BabyRegistry: {
-      color: "#e3ebbc",
-      instances: 5
-    },
-    Customer: {
-      color: "#ecf7fd",
-      instances: 63
-    },
-    Product: {
-      color: "#ded2da",
-      instances: 252
-    },
-    Order: {
-      color: "#cfe3e8",
-      instances: 50123
-    },
-    NamespacedCustomer: {
-      color: "#dfe2ec",
-      instances: 75
-    },
-    Person: {
-      color: "#dfe2ec",
-      instances: 75
-    }
-  };
-
-  //const labelIcon = <FontAwesomeIcon className={styles.graphExportIcon} icon={faFileExport} size="2x" aria-label="graph-export" />
-
-  const getNodes = () => {
-    let nodes = props.entityTypes && props.entityTypes?.map((e) => {
-      return {
-        shape: "box",
-        shapeProperties: {
-          borderRadius: 2
-        },
-        id: e.entityName,
-        label: e.entityName.concat("\n<b>", entityMetadata[e.entityName].instances, "</b>"),
-        color: {
-          background: entityMetadata[e.entityName].color,
-          border: entityMetadata[e.entityName].color,
-          hover: {
-            //border: '#2B7CE9',
-            //background: 'red'
-          }
-        },
-        icon: {
-          face: '"Font Awesome 5 Free"',
-          code: "\f82f",
-          size: 50,
-          color: "#f0a30a",
-        },
-        font: {
-          multi: true,
-          align: "left",
-          bold: {
-            color: "#6773af",
-            vadjust: 3,
-            size: 12
-          },
-        },
-        margin: 10,
-        widthConstraint: {
-          minimum: 80
-        },
-        x: nodeP[e.entityName]?.x,
-        y: nodeP[e.entityName]?.y,
-        hidden: false
-      }
-    });
-    return nodes;
-  }
-
-  const getEdges = () => {
-    let edges: any = [];
-    props.entityTypes.forEach((e, i) => {
-      let properties: any = Object.keys(e.model.definitions[e.entityName].properties);
-      properties.forEach((p, i) => {
-        if (e.model.definitions[e.entityName].properties[p].relatedEntityType) {
-          let parts = e.model.definitions[e.entityName].properties[p].relatedEntityType.split("/");
-          edges.push({
-            from: e.entityName,
-            to: parts[parts.length - 1],
-            label: e.model.definitions[e.entityName].properties[p].joinPropertyName,
-            arrows: "to",
-            color: "#666",
-            font: { align: "top" }
-          });
-        }
-      });
-    });
-    return edges;
-  }
-
-  //Graph view options
-  const graph = {
-    nodes: getNodes(),
-    edges: getEdges()
-  }
-
-  const options = {
-    layout: {
-      //hierarchical: true
-      //randomSeed: "0.7696:1625099255200",
-    },
-    edges: {
-      color: "#000000"
-    },
-    height: "500px",
-    physics: {
-      enabled: physicsEnabled,
-      barnesHut: {
-        springLength: 160,
-        avoidOverlap: 0.4
-      }
-    },
-    interaction:{
-      hover:true
-    }
-  };
-
-  const events = {
-    select: (event) => {
-      var { nodes, edges } = event;
-      console.log('select', event)
-    },
-    dragStart: (event) => {
-      if (physicsEnabled) {
-        setPhysicsEnabled(false);
-      }
-    },
-    dragEnd: (event) => {
-      console.log('dragEnd', event, event.pointer.canvas);
-      console.log('Testing network functions', network.getPositions(),network.getSelectedNodes())
-      setNodePositions({ [event.nodes[0]]: event.pointer.canvas })
-    },
-    hoverNode: (event) => {
-      console.log('on hover node', event.event.target.style.cursor);
-      event.event.target.style.cursor = "pointer"
-    },
-    blurNode: (event) => {
-      console.log('on blur node', event);
-      event.event.target.style.cursor = ""
-    },
-    hoverEdge: (event) => {
-      console.log('on hover edge', event.event.target.style.cursor);
-      event.event.target.style.cursor = "pointer"
-    },
-    blurEdge: (event) => {
-      console.log('on blur edge', event);
-      event.event.target.style.cursor = ""
-    }
-  };
+  const [mode, setMode] = useState("Off");
 
   useEffect(() => {
     if (modelingOptions.view === defaultModelingView && modelingOptions.selectedEntity) {
@@ -293,6 +112,10 @@ const GraphView: React.FC<Props> = (props) => {
     //Logic will be added here for deletion of entity.
   };
 
+  const changeMode = (ev) => {
+    console.log("changeMode", ev);
+    setMode(ev.target.value);
+  };
 
   const graphViewMainPanel =
     <div className={styles.graphViewContainer}>
@@ -308,13 +131,9 @@ const GraphView: React.FC<Props> = (props) => {
         }
       </div>
       <div>
-        <Graph
-          graph={graph}
-          options={options}
-          events={events}
-          getNetwork={initNetworkInstance}
-        />
+        <Radio.Group options={["Off", "AddNode", "AddEdge"]} onChange={changeMode} value={mode} />
       </div>
+      <GraphVis entityTypes={props.entityTypes} mode={mode} />
     </div>;
 
   return (
