@@ -12,6 +12,7 @@ import GraphViewSidePanel from "./side-panel/side-panel";
 import { ModelingContext } from "../../../util/modeling-context";
 import { defaultModelingView } from "../../../config/modeling.config";
 import GraphVis from "./graph-vis/graph-vis";
+import mockEntities from './mockEntities.json';
 
 type Props = {
   entityTypes: any;
@@ -133,7 +134,8 @@ const GraphView: React.FC<Props> = (props) => {
       <div>
         <Radio.Group options={["Off", "AddNode", "AddEdge"]} onChange={changeMode} value={mode} />
       </div>
-      <GraphVis entityTypes={props.entityTypes} mode={mode} />
+      {/* <GraphVis entityTypes={props.entityTypes} mode={mode} /> */}
+      <GraphVis entityTypes={mockEntities} mode={mode} />
     </div>;
 
   return (

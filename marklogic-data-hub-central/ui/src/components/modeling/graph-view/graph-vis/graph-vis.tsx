@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Graph from "react-graph-vis";
 import cloneDeep from "lodash/cloneDeep";
+import "./graph-vis.scss";
 
 type Props = {
     entityTypes: any;
@@ -102,24 +103,35 @@ const GraphVis: React.FC<Props> = (props) => {
     }
   };
 
+  const colors = ["#e3ebbc", "#ecf7fd", "#ded2da", "#cfe3e8", "#dfe2ec", "#dfe2ec"];
+  const getRandomColor = () => {
+    return colors[Math.round(Math.random() * colors.length)];
+  }
+
   //const labelIcon = <FontAwesomeIcon className={styles.graphExportIcon} icon={faFileExport} size="2x" aria-label="graph-export" />
 
   const getNodes = () => {
     let nodes = props.entityTypes && props.entityTypes?.map((e) => {
+      //const color = getRandomColor();
+      const parts = e.entityName.split("-");
+      const color = colors[parts.length];
       return {
         ...defaultNodeProps,
         id: e.entityName,
-        label: e.entityName.concat("\n<b>", entityMetadata[e.entityName].instances, "</b>"),
+        label: e.entityName.concat("\n<b>", Math.round(Math.random()*10000), "</b>"),
+        title: e.entityName + " tooltip text",
         color: {
-          background: entityMetadata[e.entityName].color,
-          border: entityMetadata[e.entityName].color,
+          // background: entityMetadata[e.entityName].color,
+          // border: entityMetadata[e.entityName].color,
+          background: color,
+          border: color,
           hover: {
             //border: '#2B7CE9',
             //background: 'red'
           }
         },
-        x: nodeP[e.entityName]?.x,
-        y: nodeP[e.entityName]?.y,
+        // x: nodeP[e.entityName]?.x,
+        // y: nodeP[e.entityName]?.y,
         hidden: false
       }
     });
@@ -129,6 +141,7 @@ const GraphVis: React.FC<Props> = (props) => {
   const getEdges = () => {
     let edges: any = [];
     props.entityTypes.forEach((e, i) => {
+      console.log("e.model.definitions", e.model.definitions);
       let properties: any = Object.keys(e.model.definitions[e.entityName].properties);
       properties.forEach((p, i) => {
         if (e.model.definitions[e.entityName].properties[p].relatedEntityType) {
@@ -237,8 +250,8 @@ const GraphVis: React.FC<Props> = (props) => {
           // x: event.event.center.x,
           // y: event.event.center.y
           color: {
-            background: "#e3ebbc",
-            border: "#e3ebbc",
+            background: getRandomColor(),
+            border: getRandomColor(),
             hover: {
               //border: '#2B7CE9',
               //background: 'red'
