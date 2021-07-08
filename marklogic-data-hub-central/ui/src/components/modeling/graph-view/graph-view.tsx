@@ -34,6 +34,23 @@ const GraphView: React.FC<Props> = (props) => {
     }
   }, [modelingOptions.selectedEntity]);
 
+  const escFunction = (event) => {
+    if (event.keyCode === 27) {
+      if (mode === "Off") {
+        setMode("AddEdge");
+       } else {
+        setMode("Off");
+       }
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener("keydown", escFunction, false);
+    return () => {
+      document.removeEventListener("keydown", escFunction, false);
+    };
+  }, [mode]);
+
   const publishIconStyle: CSSProperties = {
     width: "20px",
     height: "20px",
@@ -113,9 +130,9 @@ const GraphView: React.FC<Props> = (props) => {
     //Logic will be added here for deletion of entity.
   };
 
-  const changeMode = (ev) => {
-    console.log("changeMode", ev);
-    setMode(ev.target.value);
+  const changeMode = (event) => {
+    console.log("changeMode", event);
+    setMode(event.target.value);
   };
 
   const graphViewMainPanel =
