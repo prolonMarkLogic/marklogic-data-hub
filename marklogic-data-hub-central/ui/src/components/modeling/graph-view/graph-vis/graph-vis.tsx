@@ -6,6 +6,7 @@ import "./graph-vis.scss";
 type Props = {
     entityTypes: any;
     mode: string;
+    handleEntitySelection: any;
 };
 
 const defaultNodeProps: any = {
@@ -103,7 +104,8 @@ const GraphVis: React.FC<Props> = (props) => {
     }
   };
 
-  const colors = ["#e3ebbc", "#ecf7fd", "#ded2da", "#cfe3e8", "#dfe2ec", "#dfe2ec"];
+  const colors = Object.keys(entityMetadata).map(k => entityMetadata[k].color);
+  //const colors = ["#e3ebbc", "#ecf7fd", "#ded2da", "#cfe3e8", "#dfe2ec", "#dfe2ec"];
   const getRandomColor = () => {
     return colors[Math.round(Math.random() * colors.length)];
   }
@@ -112,17 +114,17 @@ const GraphVis: React.FC<Props> = (props) => {
 
   const getNodes = () => {
     let nodes = props.entityTypes && props.entityTypes?.map((e) => {
-      //const color = getRandomColor();
       const parts = e.entityName.split("-");
-      const color = colors[parts.length];
+      const colorByLevel = colors[parts.length];
+      const colorRandom = getRandomColor();
+      const color = props.entityTypes.length > 20 ? colorByLevel : 
+        entityMetadata[e.entityName] ? entityMetadata[e.entityName].color : colorRandom;
       return {
         ...defaultNodeProps,
         id: e.entityName,
         label: e.entityName.concat("\n<b>", Math.round(Math.random()*10000), "</b>"),
         title: e.entityName + " tooltip text",
         color: {
-          // background: entityMetadata[e.entityName].color,
-          // border: entityMetadata[e.entityName].color,
           background: color,
           border: color,
           hover: {
@@ -206,6 +208,9 @@ const GraphVis: React.FC<Props> = (props) => {
     select: (event) => {
       var { nodes, edges } = event;
       console.log('select', event);
+      if (nodes.length > 0) {
+        props.handleEntitySelection(nodes[0]);
+      }
     },
     dragStart: (event) => {
       if (physicsEnabled) {
@@ -272,14 +277,14 @@ const GraphVis: React.FC<Props> = (props) => {
   }, [props.mode]);
 
   return (
-    <div>
-        <Graph
-          graph={graphData}
-          options={options}
-          events={events}
-          getNetwork={initNetworkInstance}
-        />
-      </div>
+    <div id="graphVis">
+      <Graph
+        graph={graphData}
+        options={options}
+        events={events}
+        getNetwork={initNetworkInstance}
+      />
+    </div>
   );
 };
 

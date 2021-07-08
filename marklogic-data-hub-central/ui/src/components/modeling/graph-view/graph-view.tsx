@@ -126,8 +126,8 @@ const GraphView: React.FC<Props> = (props) => {
       </div>
       <div>
         {//Just a placeholder for actual graph view. Below code should be removed.
-          <ul>{props.entityTypes && props.entityTypes?.map((el) => <li data-testid={`${el.entityName}-entityNode`} key={el.entityName} style={{ color: "blue", cursor: "pointer" }} onClick={(e) => handleEntitySelection(el.entityName)}>{el.entityName}</li>)}
-          </ul>
+          // <ul>{props.entityTypes && props.entityTypes?.map((el) => <li data-testid={`${el.entityName}-entityNode`} key={el.entityName} style={{ color: "blue", cursor: "pointer" }} onClick={(e) => handleEntitySelection(el.entityName)}>{el.entityName}</li>)}
+          // </ul>
           //--------------//
         }
       </div>
@@ -135,7 +135,12 @@ const GraphView: React.FC<Props> = (props) => {
         <Radio.Group options={["Off", "AddNode", "AddEdge"]} onChange={changeMode} value={mode} />
       </div>
       {/* <GraphVis entityTypes={props.entityTypes} mode={mode} /> */}
-      <GraphVis entityTypes={mockEntities} mode={mode} />
+      <GraphVis 
+        entityTypes={props.entityTypes}
+        //entityTypes={mockEntities} 
+        mode={mode} 
+        handleEntitySelection={handleEntitySelection}
+      />
     </div>;
 
   return (
