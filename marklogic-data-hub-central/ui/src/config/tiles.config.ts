@@ -1,6 +1,6 @@
 import { faLongArrowAltRight, faCube, faCubes, faObjectUngroup, faProjectDiagram } from "@fortawesome/free-solid-svg-icons";
 
-export type TileId =  'load' | 'model' | 'curate' | 'run' | 'explore' | 'monitor';;
+export type TileId =  'load' | 'model' | 'curate' | 'run' | 'explore' | 'monitor' | 'bootstrap' | 'material';
 export type IconType = 'fa' | 'custom';
 export type ControlType = 'menu' | 'newTab' | 'maximize' | 'minimize' | 'close';
 
@@ -82,6 +82,28 @@ const tiles: Record<TileId, TileItem>  = {
         controlColor: '#777',
         controls: ['menu', 'close'],
         intro: 'Monitor Flows and Steps',
+    },
+    bootstrap: {
+        title: 'React Bootstrap',
+        iconType: 'custom',
+        icon: 'monitorIcon',
+        color: '#f09022',
+        bgColor: '#F4F6F8',
+        border: '#BFBFBF',
+        controlColor: '#777',
+        controls: ['menu', 'close'],
+        intro: 'Test sandbox for Boostrap UI components',
+    },
+    material: {
+        title: 'Material-UI',
+        iconType: 'custom',
+        icon: 'monitorIcon',
+        color: '#f09022',
+        bgColor: '#F4F6F8',
+        border: '#BFBFBF',
+        controlColor: '#777',
+        controls: ['menu', 'close'],
+        intro: 'Test sandbox for Boostrap UI components',
     }
 };
 
