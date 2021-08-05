@@ -109,6 +109,8 @@ const MatchingStepDetail: React.FC = () => {
   const [previewMatchedData, setPreviewMatchedData] = useState(-1);
   const [expandRuleset, setExpandRuleset] = useState(false);
 
+  const [contextMenuVisible, setContextMenuVisible] = useState(false);
+
   const menu = (
     <Menu>
       <Menu.Item key="singlePropertyRuleset">
@@ -672,6 +674,7 @@ const MatchingStepDetail: React.FC = () => {
   };
 
   const onRuleSetTimelineItemClicked = (event) => {
+    setContextMenuVisible(false);
     if (event.item === null) return;
     let editElementId:null|HTMLElement = document.getElementById("editTimeline_"+event.item);
     if (editElementId) {
@@ -690,6 +693,31 @@ const MatchingStepDetail: React.FC = () => {
       };
     }
   };
+
+  const contextmenuHandler = (event) => {
+    console.log("contextmenuHandler", event);
+    event.event.preventDefault();
+    // TODO do something useful
+    if (event.what === "item") {
+      setContextMenuVisible(true);
+    } else {
+      setContextMenuVisible(false);
+    }
+  }
+
+  const menuClick = (event) => {
+    console.log("menuClick", event);
+    // TODO do something useful
+    setContextMenuVisible(false);
+  };  
+
+  const contextMenu = () => {
+    return (
+    <Menu onClick={menuClick}>
+      <Menu.Item key="2">1st menu item</Menu.Item>
+      <Menu.Item key="3">2nd menu item</Menu.Item>
+    </Menu>
+  )}; 
 
   return (
     <>
@@ -803,7 +831,15 @@ const MatchingStepDetail: React.FC = () => {
                 </div></Dropdown></div>
           </div>
           <div className="highlightText"><span style={{color: "#B32424", marginRight: "2px"}}>*</span><span>Click anywhere on a ruleset to select it. Once the ruleset is selected, you can choose to edit or delete.</span></div>
-          <div><Timeline items={rulesetItems} options={rulesetOptions} clickHandler={onRuleSetTimelineItemClicked}></Timeline></div>
+          <Dropdown
+            overlay={contextMenu} 
+            trigger={['contextMenu']}
+            visible={contextMenuVisible}
+          >
+            <div>
+                <Timeline items={rulesetItems} options={rulesetOptions} clickHandler={onRuleSetTimelineItemClicked} contextmenuHandler={contextmenuHandler}></Timeline>
+            </div>
+          </Dropdown>
         </div>
 
 
