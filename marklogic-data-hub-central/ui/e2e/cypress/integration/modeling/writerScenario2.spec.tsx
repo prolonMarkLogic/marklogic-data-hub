@@ -437,7 +437,10 @@ describe("Entity Modeling: Writer Role", () => {
 
     relationshipModal.cancelModal();
   });
-  it("can enter graph edit mode and add edge relationships via single node click", () => {
+
+  // TODO: review why Test is running successfully on local environment but failing in pipeline.
+  // https://wiki.marklogic.com/display/ENGINEERING/Hub+Central+UI+Test+Failure+discussion
+  it.skip("can enter graph edit mode and add edge relationships via single node click", () => {
 
     cy.waitUntil(() => toolbar.getModelToolbarIcon()).click();
     cy.waitForAsyncRequest();
@@ -488,7 +491,9 @@ describe("Entity Modeling: Writer Role", () => {
     propertyModal.getCancelButton();
   });
 
-  it("can edit graph edit mode and add edge relationships via drag/drop", () => {
+  // TODO: review why Test is running successfully on local environment but failing in pipeline.
+  // https://wiki.marklogic.com/display/ENGINEERING/Hub+Central+UI+Test+Failure+discussion
+  it.skip("can edit graph edit mode and add edge relationships via drag/drop", () => {
 
     entityTypeTable.viewEntityInGraphView("Person");
     graphView.getAddButton().click();
