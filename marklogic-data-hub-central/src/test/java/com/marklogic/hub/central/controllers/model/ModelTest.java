@@ -52,7 +52,7 @@ public class ModelTest extends AbstractHubCentralTest {
     }
 
     protected void createNamespacedModel() {
-        ArrayNode existingEntityTypes = (ArrayNode) controller.getPrimaryEntityTypes().getBody();
+        ArrayNode existingEntityTypes = (ArrayNode) controller.getPrimaryEntityTypes(Boolean.TRUE).getBody();
         assertEquals(0, existingEntityTypes.size(), "Any existing models should have been deleted when this test started");
 
         ObjectNode input = objectMapper.createObjectNode();
@@ -85,7 +85,7 @@ public class ModelTest extends AbstractHubCentralTest {
     }
 
     protected void createModel() {
-        ArrayNode existingEntityTypes = (ArrayNode) controller.getPrimaryEntityTypes().getBody();
+        ArrayNode existingEntityTypes = (ArrayNode) controller.getPrimaryEntityTypes(Boolean.TRUE).getBody();
         assertEquals(0, existingEntityTypes.size(), "Any existing models should have been deleted when this test started");
 
         ObjectNode input = objectMapper.createObjectNode();
@@ -96,7 +96,7 @@ public class ModelTest extends AbstractHubCentralTest {
 
         // Create a customer in final so we have a way to verify the entity instance count
         new ReferenceModelProject(getHubClient()).createCustomerInstance(new Customer(1, "Jane"));
-        ArrayNode entityTypes = (ArrayNode) controller.getPrimaryEntityTypes().getBody();
+        ArrayNode entityTypes = (ArrayNode) controller.getPrimaryEntityTypes(Boolean.TRUE).getBody();
         assertEquals(1, entityTypes.size(), "A new model should have been created " +
                 "and thus there should be one primary entity type");
 

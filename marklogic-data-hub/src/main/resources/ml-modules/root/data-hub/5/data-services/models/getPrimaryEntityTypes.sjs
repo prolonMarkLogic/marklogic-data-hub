@@ -20,6 +20,8 @@ xdmp.securityAssert("http://marklogic.com/data-hub/privileges/read-entity-model"
 const entityLib = require("/data-hub/5/impl/entity-lib.sjs");
 const ext = require("/data-hub/extensions/entity/build-entity-query.xqy");
 
+var includeDrafts;
+
 function buildEntityResponse(modelObject) {
   const entityName = modelObject.info.title;
   const jobData = entityLib.getLatestJobData(entityName);
@@ -33,11 +35,14 @@ function buildEntityResponse(modelObject) {
 
 };
 
-// Get draft models
-let modelResponseArr = fn.collection(entityLib.getDraftModelCollection()).toArray().map(model => {
-  model = model.toObject();
-  return buildEntityResponse(model);
-});
+let modelResponseArr = [];
+// Get draft models if requested
+if (includeDrafts) {
+  modelResponseArr = fn.collection(entityLib.getDraftModelCollection()).toArray().map(model => {
+    model = model.toObject();
+    return buildEntityResponse(model);
+  });
+}
 
 // Add in published models that were not added as part of drafts
 fn.collection(entityLib.getModelCollection()).toArray().forEach(model => {

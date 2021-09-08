@@ -70,9 +70,9 @@ public class ModelController extends BaseController {
     @RequestMapping(value = "/primaryEntityTypes", method = RequestMethod.GET)
     @ResponseBody
     @ApiOperation(value = "Get primary entity types; does not include entity definitions that are considered 'structured' types", response = PrimaryEntityTypeList.class)
-    public ResponseEntity<JsonNode> getPrimaryEntityTypes() {
+    public ResponseEntity<JsonNode> getPrimaryEntityTypes(@RequestParam(required = false, name = "includeDrafts", defaultValue = "false") Boolean includeDrafts) {
         // This must use the final client instead of staging so that the entityInstanceCount is derived from final
-        return ResponseEntity.ok(ModelsService.on(getHubClient().getFinalClient()).getPrimaryEntityTypes());
+        return ResponseEntity.ok(ModelsService.on(getHubClient().getFinalClient()).getPrimaryEntityTypes(includeDrafts));
     }
 
     @RequestMapping(method = RequestMethod.POST)
