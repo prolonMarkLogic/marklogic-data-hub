@@ -1,6 +1,6 @@
 
 import React, {useState, useEffect, CSSProperties, useRef, useContext} from "react";
-import {Table, Icon, Input, Alert} from "antd";
+import {Table, Icon, Alert} from "antd";
 import HCCheckbox from "../../../common/hc-checkbox/hc-checkbox";
 import styles from "./mapping-step-detail.module.scss";
 import "./mapping-step-detail.scss";
@@ -34,6 +34,7 @@ import CustomPageHeader from "../../page-header/page-header";
 import HCButton from "../../../common/hc-button/hc-button";
 import {CheckSquareFill, XSquareFill, ChevronDown, ChevronRight, Search} from "react-bootstrap-icons";
 import {Dropdown} from "react-bootstrap";
+import HCInput from "../../../common/hc-input/hc-input";
 
 const DEFAULT_MAPPING_STEP: MappingStep = {
   name: "",
@@ -153,7 +154,7 @@ const MappingStepDetail: React.FC = () => {
   const [sourceFormat, setSourceFormat] = useState("");
   const [docNotFound, setDocNotFound] = useState(false);
   const [mapData, setMapData] = useState<any>(DEFAULT_MAPPING_STEP);
-  const [getRef, setRef] =  useDynamicRefs();
+  const [getRef, setRef] = useDynamicRefs();
   const [interceptorExecuted, setInterceptorExecuted] = useState(false);
   const [interceptorExecutionError, setInterceptorExecutionError] = useState("");
 
@@ -240,7 +241,7 @@ const MappingStepDetail: React.FC = () => {
     try {
       const mappingStep = await getMappingArtifactByMapName(curationOptions.activeStep.stepArtifact.targetEntityType, stepName);
       if (mappingStep.interceptors) {
-        for (let i =0; i<mappingStep.interceptors.length; i++) {
+        for (let i = 0; i < mappingStep.interceptors.length; i++) {
           const interceptor = mappingStep.interceptors[i];
           if (interceptor.path && interceptor.when === "beforeMain") {
             setInterceptorExecuted(true);
@@ -252,7 +253,7 @@ const MappingStepDetail: React.FC = () => {
 
       if (srcDocResp && srcDocResp.data && srcDocResp.status === 200) {
         let parsedDoc: any;
-        if (typeof(srcDocResp.data) === "string") {
+        if (typeof (srcDocResp.data) === "string") {
           parsedDoc = getParsedXMLDoc(srcDocResp);
           setSourceFormat("xml");
         } else {
@@ -282,7 +283,7 @@ const MappingStepDetail: React.FC = () => {
         }
       }
       setIsLoading(false);
-    } catch (error)  {
+    } catch (error) {
       setIsLoading(false);
       setDocNotFound(true);
       if (error.response.data.message.includes("Interceptor execution failed")) {
@@ -690,12 +691,14 @@ const MappingStepDetail: React.FC = () => {
     {!editingURI ? <div onMouseOver={(e) => handleMouseOver(e)} onMouseLeave={(e) => setShowEditURIOption(false)}
       className={styles.uri}>{!showEditURIOption ? <span data-testid={"uri-edit"} className={styles.notShowingEditIcon}>URI: <span className={styles.URItext}>&nbsp;{getLastChars(sourceURI, 32, "...")}</span></span> :
         <span className={styles.showingEditContainer}>URI: <span data-testid={"uri-edit"} className={styles.showingEditIcon}>{getLastChars(sourceURI, 32, "...")} <i><FontAwesomeIcon icon={faPencilAlt} size="lg" onClick={handleEditIconClick} className={styles.editIcon} data-testid={"pencil-icon"}
-        /></i></span></span>}</div> : <div className={styles.inputURIContainer}>URI: <span><Input data-testid={"uri-input"} value={sourceURI} ref={ref => ref && ref.focus()} onChange={handleURIEditing} className={styles.uriEditing} onFocus={(e) => e.currentTarget.setSelectionRange(e.currentTarget.value.length, e.currentTarget.value.length)}></Input>&nbsp;
-      <XSquareFill aria-label="icon: close" className={styles.closeIcon} onClick={() => handleCloseEditOption()} />&nbsp;<CheckSquareFill aria-label="icon: check" className={styles.checkIcon} onClick={() => handleSubmitUri(sourceURI)} /></span></div>}
+        /></i></span></span>}</div> : <div className={styles.inputURIContainer}>URI: <span>
+      <div style={{display: "flex"}}><HCInput dataTestid={"uri-input"} value={sourceURI} ref={ref => ref && ref.focus()} onChange={handleURIEditing} className={styles.uriEditing} onFocus={(e) => e.currentTarget.setSelectionRange(e.currentTarget.value.length, e.currentTarget.value.length)} ></HCInput>&nbsp;
+        <div className={styles.sourceURIButtons}><XSquareFill aria-label="icon: close" className={styles.closeIcon} onClick={() => handleCloseEditOption()} />&nbsp;<CheckSquareFill aria-label="icon: check" className={styles.checkIcon} onClick={() => handleSubmitUri(sourceURI)} /></div></div>
+    </span></div>}
   </div> : "";
 
   const expandTableIcon = (
-    <a onClick={() => toggleSourceTable()}>{tableCollapsed && srcPropertiesXML.length < 1 ? <ChevronRight/> :  <ChevronDown/>}</a>
+    <a onClick={() => toggleSourceTable()}>{tableCollapsed && srcPropertiesXML.length < 1 ? <ChevronRight /> : <ChevronDown />}</a>
   );
 
   // Run when mapping details is opened or returned to
@@ -868,17 +871,17 @@ const MappingStepDetail: React.FC = () => {
   const getColumnFilterProps = dataIndex => ({
     filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}) => (
       <div className={styles.filterContainer}>
-        <Input
+        <HCInput
           ref={node => {
             searchInput = node;
           }}
-          data-testid={`searchInput-${dataIndex}`}
+          dataTestid={`searchInput-${dataIndex}`}
           placeholder={`Search name`}
           value={selectedKeys[0]}
           onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-          onPressEnter={() => handleColSearch(selectedKeys, confirm, dataIndex)}
-          className={styles.searchInput}
+          onPressEnter={(enter) => enter ? handleColSearch(selectedKeys, confirm, dataIndex) : null}
         />
+        <div style={{height: 8}}></div>
         <HCButton data-testid={`ResetSearch-${dataIndex}`} onClick={() => handleSourceSearchReset(clearFilters, dataIndex)} variant="outline-light" size="sm" className={styles.resetButton}>Reset</HCButton>
         <HCButton
           data-testid={`submitSearch-${dataIndex}`}
@@ -887,7 +890,7 @@ const MappingStepDetail: React.FC = () => {
           size="sm"
           className={styles.searchSubmitButton}
         >
-          <Search className={styles.searchIcon}/> Search
+          <Search className={styles.searchIcon} /> Search
         </HCButton>
       </div>
     ),
@@ -975,7 +978,7 @@ const MappingStepDetail: React.FC = () => {
       defaultFilteredValue: searchSourceText ? [searchSourceText] : [],
       render: (text, row) => {
         let textToSearchInto = text?.split(":").length > 1 ? text?.split(":")[0] + ": " + text?.split(":")[1] : text;
-        let valueToDisplay = sourceFormat === "xml" && row.rowKey === 1 ? <div><span className={styles.tableExpandIcon}>{expandTableIcon}</span><span className={styles.sourceName}>{text?.split(":").length > 1 ? <span><HCTooltip text={text?.split(":")[0]+" = \""+namespaces[text?.split(":")[0]]+"\""} id="xml-source-name-tooltip" placement="top"><span className={styles.namespace}>{text?.split(":")[0]+": "}</span></HCTooltip><span>{text?.split(":")[1]}</span></span> : text}</span></div>: <span className={styles.sourceName}>{text?.split(":").length > 1 ? <span><HCTooltip text={text?.split(":")[0]+" = \""+namespaces[text?.split(":")[0]]+"\""} id="source-name-tooltip" placement="top"><span className={styles.namespace}>{text?.split(":")[0]+": "}</span></HCTooltip><span>{text?.split(":")[1]}</span></span> : text}</span>;
+        let valueToDisplay = sourceFormat === "xml" && row.rowKey === 1 ? <div><span className={styles.tableExpandIcon}>{expandTableIcon}</span><span className={styles.sourceName}>{text?.split(":").length > 1 ? <span><HCTooltip text={text?.split(":")[0] + " = \"" + namespaces[text?.split(":")[0]] + "\""} id="xml-source-name-tooltip" placement="top"><span className={styles.namespace}>{text?.split(":")[0] + ": "}</span></HCTooltip><span>{text?.split(":")[1]}</span></span> : text}</span></div> : <span className={styles.sourceName}>{text?.split(":").length > 1 ? <span><HCTooltip text={text?.split(":")[0] + " = \"" + namespaces[text?.split(":")[0]] + "\""} id="source-name-tooltip" placement="top"><span className={styles.namespace}>{text?.split(":")[0] + ": "}</span></HCTooltip><span>{text?.split(":")[1]}</span></span> : text}</span>;
         return getRenderOutput(textToSearchInto, valueToDisplay, "key", searchedSourceColumn, searchSourceText, row.rowKey);
       }
     },
@@ -1024,7 +1027,7 @@ const MappingStepDetail: React.FC = () => {
       requiresToolTip = text.length > stringLenWithoutEllipsis;
       response = <span className={getClassNames(sourceFormat, row.datatype)}>{getInitialChars(text, stringLenWithoutEllipsis, "...")}</span>;
     }
-    return requiresToolTip ?  <HCTooltip text={text} id="source-value-tooltip" placement="bottom">{response}</HCTooltip> : response;
+    return requiresToolTip ? <HCTooltip text={text} id="source-value-tooltip" placement="bottom">{response}</HCTooltip> : response;
   };
 
   const customExpandIcon = (props) => {
@@ -1279,15 +1282,15 @@ const MappingStepDetail: React.FC = () => {
   );
 
   const columnOptionsSelector =
-      <Dropdown autoClose="outside" onToggle={handleColOptMenuVisibleChange} show={colOptMenuVisible} onSelect={handleColOptMenuClick}>
-        <Dropdown.Toggle id="columnOptionsSelectorButton" className={styles.columnOptionsSelector} variant="link">
-          <>
-            <span> Column Options</span>
-            <ChevronDown className="ms-2"/>
-          </>
-        </Dropdown.Toggle>
-        {columnOptionsDropdown}
-      </Dropdown>;
+    <Dropdown autoClose="outside" onToggle={handleColOptMenuVisibleChange} show={colOptMenuVisible} onSelect={handleColOptMenuClick}>
+      <Dropdown.Toggle id="columnOptionsSelectorButton" className={styles.columnOptionsSelector} variant="link">
+        <>
+          <span> Column Options</span>
+          <ChevronDown className="ms-2" />
+        </>
+      </Dropdown.Toggle>
+      {columnOptionsDropdown}
+    </Dropdown>;
 
 
   //Collapse all-Expand All button
@@ -1451,7 +1454,7 @@ const MappingStepDetail: React.FC = () => {
               </div> :
                 emptyData ?
                   <div id="noData">
-                    <br/><br/>
+                    <br /><br />
                     <HCCard className={styles.emptyCard}>
                       <div className={styles.emptyText}>
                         <p>Unable to find source records using the specified collection or query.</p>
@@ -1463,33 +1466,33 @@ const MappingStepDetail: React.FC = () => {
                   :
                   (interceptorExecuted && interceptorExecutionError !== "") ?
                     <div id="failedInterceptor">
-                      <br/><br/><br/>
+                      <br /><br /><br />
 
                       <div className={styles.sourceButtons}>
 
-                        <span className={interceptorExecuted && interceptorExecutionError !== "" ? styles.navigationButtonsError: styles.navigationButtons}>{navigationButtons}</span>
-                        <span className={styles.sourceCollapseButtons}>{interceptorExecuted && interceptorExecutionError !== "" ? "" : <ExpandCollapse handleSelection={(id) => handleSourceExpandCollapse(id)} currentSelection={""}/>}</span>
+                        <span className={interceptorExecuted && interceptorExecutionError !== "" ? styles.navigationButtonsError : styles.navigationButtons}>{navigationButtons}</span>
+                        <span className={styles.sourceCollapseButtons}>{interceptorExecuted && interceptorExecutionError !== "" ? "" : <ExpandCollapse handleSelection={(id) => handleSourceExpandCollapse(id)} currentSelection={""} />}</span>
                       </div>
-                      <br/><br/><br/>
+                      <br /><br /><br />
                       <Alert
                         className={styles.interceptorFailureAlert}
                         closable={false}
-                        message={<span aria-label="interceptorError">{MappingStepMessages.interceptorError}<br/><br/> <b>Error Details:</b> <br/> {interceptorExecutionError}</span>}
+                        message={<span aria-label="interceptorError">{MappingStepMessages.interceptorError}<br /><br /> <b>Error Details:</b> <br /> {interceptorExecutionError}</span>}
                         showIcon={true}
-                        icon={<Icon type="exclamation-circle" className={styles.interceptorFailureIcon} theme="filled"/>}
+                        icon={<Icon type="exclamation-circle" className={styles.interceptorFailureIcon} theme="filled" />}
                         type="info"
                       />
                     </div>
                     :
                     <div id="dataPresent">
-                      <br/><br/><br/>
-                      {!isLoading  && !emptyData  && interceptorExecuted && interceptorExecutionError === "" ?
+                      <br /><br /><br />
+                      {!isLoading && !emptyData && interceptorExecuted && interceptorExecutionError === "" ?
                         <Alert
                           className={styles.interceptorSuccessAlert}
                           closable={true}
                           message={<span aria-label="interceptorMessage">{MappingStepMessages.interceptorMessage}</span>}
                           showIcon={true}
-                          icon={<Icon type="exclamation-circle" className={styles.interceptorSuccessIcon} theme="filled"/>}
+                          icon={<Icon type="exclamation-circle" className={styles.interceptorSuccessIcon} theme="filled" />}
                           type="info"
                         /> : null}
                       <div className={styles.sourceButtons}>
@@ -1536,7 +1539,7 @@ const MappingStepDetail: React.FC = () => {
                                   columns={columns}
                                   dataSource={srcPropertiesXML}
                                   tableLayout="unset"
-                                  rowKey={(record:any) => record.rowKey}
+                                  rowKey={(record: any) => record.rowKey}
                                   getPopupContainer={() => document.getElementById("srcContainer") || document.body}
                                 />
                                 : null
@@ -1565,7 +1568,7 @@ const MappingStepDetail: React.FC = () => {
                           </div>
                       }
 
-                    </div> }
+                    </div>}
             </div>
             <div
               id="entityContainer"

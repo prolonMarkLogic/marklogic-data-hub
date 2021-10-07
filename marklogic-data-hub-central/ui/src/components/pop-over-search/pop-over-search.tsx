@@ -1,11 +1,11 @@
 import React, {useState, useContext, useEffect} from "react";
-import {Popover, Input, Checkbox} from "antd";
+import {Popover, Checkbox} from "antd";
 import styles from "./pop-over-search.module.scss";
 import axios from "axios";
 import {UserContext} from "../../util/user-context";
 import {SearchContext} from "../../util/search-context";
 import {CheckSquare} from "react-bootstrap-icons";
-
+import HCInput from "../common/hc-input/hc-input";
 interface Props {
   referenceType: string;
   entityTypeId: any;
@@ -15,7 +15,6 @@ interface Props {
   facetValues: any[];
   facetName: string;
 }
-
 
 const PopOverSearch: React.FC<Props> = (props) => {
   const {searchOptions} = useContext(SearchContext);
@@ -69,7 +68,7 @@ const PopOverSearch: React.FC<Props> = (props) => {
     if (index === -1) {
       setCheckedValues([...checkedValues, e.target.value]);
     } else {
-      let newChecked = checkedValues.filter(function(el) {
+      let newChecked = checkedValues.filter(function (el) {
         return (el !== e.target.value);
       });
       setCheckedValues(newChecked);
@@ -91,9 +90,8 @@ const PopOverSearch: React.FC<Props> = (props) => {
   }, [props.popOvercheckedValues]);
 
 
-
   const renderCheckBoxGroup = options.map((value, index) =>
-    <div  key={index} >
+    <div key={index} >
       <Checkbox
         value={value}
         onClick={(e) => onSelectCheckboxes(e)}
@@ -104,28 +102,28 @@ const PopOverSearch: React.FC<Props> = (props) => {
     </div>
   );
 
-
   const content = (
     <div className={styles.popover}>
-      <Input placeholder="Search" allowClear={true} onChange={searchOptions.tileId === "explore" ? getFacetValues : getMonitorFacetValues} data-testid={(props.facetName)+"-popover-input-field"}/>
+      <HCInput placeholder="Search" allowClear={true} onChange={searchOptions.tileId === "explore" ? getFacetValues : getMonitorFacetValues} data-testid={(props.facetName) + "-popover-input-field"} />
       <div className={styles.scrollOptions}>
         {renderCheckBoxGroup}
       </div>
-      <hr/>
+      <hr />
       <div className={styles.checkIcon} data-testid="check-icon">
-        <CheckSquare aria-label="icon: check-square-o" className={styles.popoverIcons} onClick={addFacetValues}/>
+        <CheckSquare aria-label="icon: check-square-o" className={styles.popoverIcons} onClick={addFacetValues} />
       </div>
     </div>
   );
 
   return (
     <Popover
+      style={{padding: "40px !important", backgroundColor: "red !important"}}
       placement="leftTop"
       content={content}
       trigger="click"
       onVisibleChange={handleChange}
       visible={popOverVisibility}>
-      <div className={styles.search} data-testid={(props.facetName)+"-search-input"} aria-label={"popover-search-label"}>See all</div>
+      <div className={styles.search} data-testid={(props.facetName) + "-search-input"} aria-label={"popover-search-label"}>See all</div>
     </Popover>
   );
 };

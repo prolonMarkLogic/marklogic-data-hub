@@ -242,7 +242,6 @@
 
 .searchInput {
   min-width: 8vw;
-  margin-bottom: 8px;
   display: block
 }
 .resetButton {
@@ -251,7 +250,13 @@
 }
 
 .searchSubmitButton {
-  width: 90px
+  width: 90px;
+}
+
+.searchIcon {    
+  font-size: 11px;
+  margin-top: -4px;
+  margin-right: 3px;
 }
 
 .searchIcon {    

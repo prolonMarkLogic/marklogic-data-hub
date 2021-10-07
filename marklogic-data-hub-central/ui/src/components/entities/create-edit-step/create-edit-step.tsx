@@ -1,15 +1,15 @@
-import React, {useState, useEffect, useContext} from "react";
-import {Form, Input, Icon, Radio, AutoComplete, Tooltip, Popover} from "antd";
+import React, { useState, useEffect, useContext } from "react";
+import { Form, Input, Icon, Radio, AutoComplete, Tooltip, Popover } from "antd";
 import axios from "axios";
 import styles from "./create-edit-step.module.scss";
 import "./create-edit-step.scss";
-import {UserContext} from "../../../util/user-context";
-import {NewMapTooltips, NewMatchTooltips, NewMergeTooltips, CommonStepTooltips} from "../../../config/tooltips.config";
-import {StepType} from "../../../types/curation-types";
-import {CurationContext} from "../../../util/curation-context";
+import { UserContext } from "../../../util/user-context";
+import { NewMapTooltips, NewMatchTooltips, NewMergeTooltips, CommonStepTooltips } from "../../../config/tooltips.config";
+import { StepType } from "../../../types/curation-types";
+import { CurationContext } from "../../../util/curation-context";
 import HCAlert from "../../common/hc-alert/hc-alert";
 import HCTooltip from "../../common/hc-tooltip/hc-tooltip";
-import {QuestionCircleFill} from "react-bootstrap-icons";
+import { QuestionCircleFill } from "react-bootstrap-icons";
 import HCButton from "../../common/hc-button/hc-button";
 
 type Props = {
@@ -34,26 +34,26 @@ type Props = {
 
 const formItemLayout = {
   labelCol: {
-    xs: {span: 24},
-    sm: {span: 7},
+    xs: { span: 24 },
+    sm: { span: 7 },
   },
   wrapperCol: {
-    xs: {span: 24},
-    sm: {span: 15},
+    xs: { span: 24 },
+    sm: { span: 15 },
   },
 };
 
 const srcTypeOptions = [
-  {label: "Collection", value: "collection"},
-  {label: "Query", value: "query"}
+  { label: "Collection", value: "collection" },
+  { label: "Query", value: "query" }
 ];
 
 const {TextArea} = Input;
 
 const CreateEditStep: React.FC<Props> = (props) => {
   // TODO use steps.config.ts for default values
-  const {handleError} = useContext(UserContext);
-  const {curationOptions, setActiveStepWarning, validateCalled, setValidateMatchCalled, setValidateMergeCalled, validateMerge} = useContext(CurationContext);
+  const { handleError } = useContext(UserContext);
+  const { curationOptions, setActiveStepWarning, validateCalled, setValidateMatchCalled, setValidateMergeCalled, validateMerge } = useContext(CurationContext);
   const [stepName, setStepName] = useState("");
   const [description, setDescription] = useState("");
 
@@ -460,8 +460,8 @@ const CreateEditStep: React.FC<Props> = (props) => {
           Name:&nbsp;<span className={styles.asterisk}>*</span>
           &nbsp;
         </span>} labelAlign="left"
-        validateStatus={(stepName || !isStepNameTouched) ? (invalidChars ? "error" : "") : "error"}
-        help={invalidChars ? "Names must start with a letter and can contain letters, numbers, hyphens, and underscores only." : (stepName || !isStepNameTouched) ? "" : "Name is required"}
+          validateStatus={(stepName || !isStepNameTouched) ? (invalidChars ? "error" : "") : "error"}
+          help={invalidChars ? "Names must start with a letter and can contain letters, numbers, hyphens, and underscores only." : (stepName || !isStepNameTouched) ? "" : "Name is required"}
         >
           {tobeDisabled ? <Tooltip title={NewMatchTooltips.nameField} placement={"bottom"}> <Input
             id="name"
@@ -528,8 +528,8 @@ const CreateEditStep: React.FC<Props> = (props) => {
           Source Query:&nbsp;<span className={styles.asterisk}>*</span>
           &nbsp;
         </span>} labelAlign="left"
-        validateStatus={((collections && selectedSource === "collection") || (srcQuery && selectedSource !== "collection") || (!isSelectedSourceTouched && !isCollectionsTouched && !isSrcQueryTouched)) ? "" : "error"}
-        help={((collections && selectedSource === "collection") || (srcQuery && selectedSource !== "collection") || (!isSelectedSourceTouched && !isCollectionsTouched && !isSrcQueryTouched)) ? "" : "Collection or Query is required"}
+          validateStatus={((collections && selectedSource === "collection") || (srcQuery && selectedSource !== "collection") || (!isSelectedSourceTouched && !isCollectionsTouched && !isSrcQueryTouched)) ? "" : "error"}
+          help={((collections && selectedSource === "collection") || (srcQuery && selectedSource !== "collection") || (!isSelectedSourceTouched && !isCollectionsTouched && !isSrcQueryTouched)) ? "" : "Collection or Query is required"}
         >
 
           <Radio.Group
@@ -584,7 +584,7 @@ const CreateEditStep: React.FC<Props> = (props) => {
             Timestamp Path:
             &nbsp;
           </span>} labelAlign="left"
-          className={styles.timestamp}>
+            className={styles.timestamp}>
             <Input
               id="timestamp"
               placeholder="Enter path to the timestamp"

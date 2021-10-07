@@ -320,6 +320,7 @@ hr {
     font-size: 14px;
     padding-left: 25px;
     margin-bottom: -50px;
+    width: 85%;
 }
 .dataPresent {
     z-index: 1;
@@ -358,14 +359,14 @@ hr {
 
 .inputURIContainer{
     padding-top: 10px;
-    margin-left: -4px;
-    vertical-align: middle;
-    text-align: left;
+    display: flex;
+    align-items: center;
     width: 105%;
 }
 .uriEditing{
-    display: inline-block;
-    width: 265px;
+    width: 265px !important;
+    margin-left: 5px;
+    margin-right: 2px;
 }
 
 .sourceQuery{
@@ -411,13 +412,11 @@ hr {
     border-radius: 3px;
     cursor: pointer;
     font-size: 18px;
-    margin-top: 4px;
 }
 .closeIcon{
     fill: #7F86B5;
     cursor: pointer;
     font-size: 18px;
-    margin-top: 4px;
 }
 
 .docLinksUl{
@@ -467,6 +466,7 @@ hr {
   padding-right: 40px;
   padding-bottom: 16px;
   position: relative;
+  z-index: -1000;
 
   .clearTestIcons{
     bottom: 80%;
@@ -510,5 +510,9 @@ hr {
   .arrayImage {
     margin-bottom: 4px
   }
+}
 
+.sourceURIButtons {
+    display: flex;
+    align-items: center;
 }

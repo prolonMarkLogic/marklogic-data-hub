@@ -20,7 +20,7 @@ import StepsConfig from "../../../../config/steps.config";
 import HCTooltip from "../../../common/hc-tooltip/hc-tooltip";
 import HCButton from "../../../common/hc-button/hc-button";
 import {QuestionCircleFill, XLg, ChevronDown, ChevronRight, Search} from "react-bootstrap-icons";
-
+import HCInput from "../../../common/hc-input/hc-input";
 interface Props {
   setScrollRef: any;
   executeScroll: any;
@@ -408,17 +408,18 @@ const EntityMapTable: React.FC<Props> = (props) => {
   const getColumnFilterProps = dataIndex => ({
     filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}) => (
       <div className={styles.filterContainer}>
-        <Input
+        <HCInput
           ref={node => {
             searchInput = node;
           }}
-          data-testid={`searchInput-${dataIndex}`}
+          dataTestid={`searchInput-${dataIndex}`}
           placeholder={`Search name`}
           value={selectedKeys[0]}
           onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
           onPressEnter={() => handleColSearch(selectedKeys, confirm, dataIndex)}
           className={styles.searchInput}
         />
+        <div style={{height: 8}}></div>
         <HCButton data-testid={`ResetSearch-${dataIndex}`} variant="outline-light" onClick={() => handleSearchReset(clearFilters, dataIndex)} size="sm" className={styles.resetButton}>
           Reset
         </HCButton>
@@ -429,7 +430,7 @@ const EntityMapTable: React.FC<Props> = (props) => {
           size="sm"
           className={styles.searchSubmitButton}
         >
-          <Search className={styles.searchIcon}/> Search
+          <Search className={styles.searchIcon} /> Search
         </HCButton>
       </div>
     ),
@@ -937,7 +938,7 @@ const EntityMapTable: React.FC<Props> = (props) => {
       propName={sourcePropName}
       handleDropdownMenu={handleSourceList}
       indentList={sourceIndentForDropDown}
-      modelling={false}/>
+      modelling={false} />
   );
 
   const sourceDropdown = (row) => {
@@ -1027,7 +1028,7 @@ const EntityMapTable: React.FC<Props> = (props) => {
           size="sm"
           variant="outline-light">
           <Tooltip title={props.canReadWrite && "Function"} placement="bottom">
-         fx
+            fx
           </Tooltip>
         </Dropdown.Toggle>
 
@@ -1111,7 +1112,7 @@ const EntityMapTable: React.FC<Props> = (props) => {
   );
 
   const expandTableIcon = (
-    <a className={styles.tableExpandIcon} onClick={() => toggleEntityTable()}>{tableCollapsed && entityProperties.length < 1 ? <ChevronRight/> : <ChevronDown/>}</a>
+    <a className={styles.tableExpandIcon} onClick={() => toggleEntityTable()}>{tableCollapsed && entityProperties.length < 1 ? <ChevronRight /> : <ChevronDown />}</a>
   );
 
   const topRowDetails = (
@@ -1299,7 +1300,7 @@ const EntityMapTable: React.FC<Props> = (props) => {
                   &nbsp;<Popover
                     content={contextHelp}
                     trigger="click"
-                    placement="right"><QuestionCircleFill aria-label="icon: question-circle" color="#7F86B5" size={13} className={styles.questionCircle}/>
+                    placement="right"><QuestionCircleFill aria-label="icon: question-circle" color="#7F86B5" size={13} className={styles.questionCircle} />
                   </Popover>
                 </span>
               }
@@ -1308,7 +1309,7 @@ const EntityMapTable: React.FC<Props> = (props) => {
                   &nbsp;<Popover
                     content={uriHelp}
                     trigger="click"
-                    placement="right"><QuestionCircleFill aria-label="icon: question-circle" color="#7F86B5" size={13} className={styles.questionCircle}/>
+                    placement="right"><QuestionCircleFill aria-label="icon: question-circle" color="#7F86B5" size={13} className={styles.questionCircle} />
                   </Popover>
                 </span>
               }
@@ -1346,7 +1347,7 @@ const EntityMapTable: React.FC<Props> = (props) => {
             {expanded ? <div className={styles.typeContextContainer}><span className={styles.typeContext}>Context</span>&nbsp;<Popover
               content={contextHelp}
               trigger="click"
-              placement="right"><QuestionCircleFill aria-label="icon: question-circle" color="#7F86B5" size={13} className={styles.questionCircleContext}/></Popover><p className={styles.typeText}>{dType}</p></div> : renderText}
+              placement="right"><QuestionCircleFill aria-label="icon: question-circle" color="#7F86B5" size={13} className={styles.questionCircleContext} /></Popover><p className={styles.typeText}>{dType}</p></div> : renderText}
           </div>, props: (row.key <= 100 && index === 0) ? {colSpan: 0} : {colSpan: 1}
         };
       }

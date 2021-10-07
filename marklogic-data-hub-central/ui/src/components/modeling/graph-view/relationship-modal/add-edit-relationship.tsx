@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from "react";
 import {ModelingContext} from "../../../../util/modeling-context";
-import {Modal, Input, Select, Icon, Card, Dropdown, Tooltip} from "antd";
+import {Modal, Select, Icon, Card, Dropdown, Tooltip} from "antd";
 import {DownOutlined} from "@ant-design/icons";
 import DropDownWithSearch from "../../../common/dropdown-with-search/dropdownWithSearch";
 import styles from "./add-edit-relationship.module.scss";
@@ -23,6 +23,7 @@ import HCTooltip from "../../../common/hc-tooltip/hc-tooltip";
 import {QuestionCircleFill} from "react-bootstrap-icons";
 import {faExclamationCircle} from "@fortawesome/free-solid-svg-icons";
 import HCButton from "../../../common/hc-button/hc-button";
+import HCInput from "../../../common/hc-input/hc-input";
 
 type Props = {
   openRelationshipModal: boolean;
@@ -456,7 +457,7 @@ const AddEditRelationship: React.FC<Props> = (props) => {
 
   //format entity types to tuples for DropDownWithSearch to work
   const entityTypesToTuples = (entityTypes) => {
-    let entityTuples:any = [];
+    let entityTuples: any = [];
     entityTypes.map(entity => {
       entityTuples.push({value: entity.entityName, key: entity.entityName, struct: false});
     });
@@ -507,7 +508,7 @@ const AddEditRelationship: React.FC<Props> = (props) => {
     </Select>
   );
 
-  const deleteEntityProperty= async () => {
+  const deleteEntityProperty = async () => {
     let entityName = props.relationshipInfo.sourceNodeName;
     let propertyName = props.relationshipInfo.relationshipName;
     const response = await entityReferences(entityName, propertyName);
@@ -607,29 +608,28 @@ const AddEditRelationship: React.FC<Props> = (props) => {
           </Card>
         </div>
         <div className={styles.relationshipInputContainer}>
-          <Input
+          <HCInput
             id="relationship"
             placeholder="Relationship*"
             value={relationshipName}
             onChange={handleChange}
-            size={"small"}
-            // disabled={!canReadWrite}
+            size={"sm"}
             className={styles.relationshipInput}
-            aria-label="relationship-textarea"
-            style={errorMessage && submitClicked? {border: "solid 1px #C00"} : {}}
+            ariaLabel="relationship-textarea"
+            style={errorMessage && submitClicked ? {border: "solid 1px #C00"} : {}}
           />
-          {errorMessage && submitClicked?
+          {errorMessage && submitClicked ?
             <HCTooltip text={errorMessage} id="exclamation-tooltip" placement={"bottom-end"}>
-              <i data-testid="error-circle"><FontAwesomeIcon icon={faExclamationCircle} size="1x" className={styles.errorIcon}/></i>
+              <i data-testid="error-circle"><FontAwesomeIcon icon={faExclamationCircle} size="1x" className={styles.errorIcon} /></i>
             </HCTooltip> : ""}
           <HCTooltip text={ModelingTooltips.relationshipNameInfo(props.relationshipInfo.sourceNodeName)} id="relationship-name-tooltip" placement="bottom">
-            <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircle}/>
+            <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircle} />
           </HCTooltip>
         </div>
         <hr className={styles.horizontalLine}></hr>
         <Tooltip title={ModelingTooltips.cardinalityButton} placement={"bottom"}>
-          <HCButton className={styles.cardinalityButton} data-testid="cardinalityButton" onClick={() => toggleCardinality()}>
-            {oneToManySelected ? <img data-testid="oneToManyIcon" className={styles.oneToManyIcon} src={oneToManyIcon} alt={""} onClick={() => toggleCardinality()}/> : <img data-testid="oneToOneIcon" className={styles.oneToOneIcon} src={oneToOneIcon} alt={""} onClick={() => toggleCardinality()}/>}
+          <HCButton variant="onlined-light" className={styles.cardinalityButton} data-testid="cardinalityButton" onClick={() => toggleCardinality()}>
+            {oneToManySelected ? <img data-testid="oneToManyIcon" className={styles.oneToManyIcon} src={oneToManyIcon} alt={""} onClick={() => toggleCardinality()} /> : <img data-testid="oneToOneIcon" className={styles.oneToOneIcon} src={oneToOneIcon} alt={""} onClick={() => toggleCardinality()} />}
           </HCButton>
         </Tooltip>
         <div className={styles.nodeDisplay}>
@@ -642,11 +642,11 @@ const AddEditRelationship: React.FC<Props> = (props) => {
               <Dropdown overlay={menu} overlayClassName={styles.dropdownMenu} trigger={["click"]} placement="bottomRight">
                 <span className={styles.dropdownArrow}>
                   {
-                    <DownOutlined data-testid={"targetEntityDropdown"} onClick={(e) => toggleDropdown()}/>
+                    <DownOutlined data-testid={"targetEntityDropdown"} onClick={(e) => toggleDropdown()} />
                   }
                 </span>
               </Dropdown>
-              : null }
+              : null}
           </div>
           {submitClicked && emptyTargetEntity ? <span className={styles.targetEntityErrorMsg}>{ModelingTooltips.targetEntityEmpty}</span> : null}
         </div>

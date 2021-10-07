@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from "react";
-import {Input, Radio, Table, Switch} from "antd";
+import {Radio, Table, Switch} from "antd";
 import {useHistory} from "react-router-dom";
 import {Row, Col, Accordion, Card} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -29,6 +29,7 @@ import HCTooltip from "../../../common/hc-tooltip/hc-tooltip";
 import {QuestionCircleFill} from "react-bootstrap-icons";
 import styles from "./matching-step-detail.module.scss";
 import {DropdownButton, Dropdown} from "react-bootstrap";
+import HCInput from "../../../common/hc-input/hc-input";
 
 const DEFAULT_MATCHING_STEP: MatchingStep = {
   name: "",
@@ -88,7 +89,6 @@ const MatchingStepDetail: React.FC = () => {
   const [testMatchedData, setTestMatchedData] = useState<any>({stepName: "", sampleSize: 100, uris: []});
   const [previewMatchedActivity, setPreviewMatchedActivity] = useState<any>({sampleSize: 100, uris: [], actionPreview: []});
   const [showRulesetMultipleModal, toggleShowRulesetMultipleModal] = useState(false);
-
   const [rulesetDataList, setRulesetDataList] = useState<any>([{rulesetName: "", actionPreviewData: [{name: "", action: "", uris: ["", ""]}], score: 0}]);
   const [activeMatchedRuleset, setActiveMatchedRuleset] = useState<string[]>([]);
   const [activeMatchedUri, setActiveMatchedUri] = useState<string[]>([]);
@@ -457,8 +457,8 @@ const MatchingStepDetail: React.FC = () => {
     const index = tmpActiveMatchedRuleset.indexOf(key);
     index !== -1 ? tmpActiveMatchedRuleset.splice(index, 1) : tmpActiveMatchedRuleset.push(key);
     setActiveMatchedRuleset(tmpActiveMatchedRuleset);
-    let arr=activeMatchedUri;
-    for (let i=0;i<activeMatchedUri.length;i++) {
+    let arr = activeMatchedUri;
+    for (let i = 0; i < activeMatchedUri.length; i++) {
       let rulesetName = activeMatchedUri[i].split("/")[0];
       if (!activeMatchedRuleset.includes(rulesetName)) {
         arr = arr.filter(e => e !== activeMatchedUri[i]);
@@ -772,7 +772,7 @@ const MatchingStepDetail: React.FC = () => {
           <div><span className={styles.editingLabel}><b>Edit Thresholds</b></span><Switch aria-label="threshold-scale-switch" onChange={(e) => toggleDisplayThresholdTimeline(e)} defaultChecked={false} ></Switch>
             <span>
               <HCTooltip text={MatchingStepTooltips.thresholdScale} id="threshold-scale-tooltip" placement="right">
-                <QuestionCircleFill aria-label="icon: question-circle" color="#7F86B5" size={13} className={styles.scaleTooltip} data-testid={"info-tooltip-threshold"}/>
+                <QuestionCircleFill aria-label="icon: question-circle" color="#7F86B5" size={13} className={styles.scaleTooltip} data-testid={"info-tooltip-threshold"} />
               </HCTooltip>
               <br />
             </span></div>
@@ -809,7 +809,7 @@ const MatchingStepDetail: React.FC = () => {
           <div><span className={styles.editingLabel}><b>Edit Rulesets</b></span><Switch aria-label="ruleset-scale-switch"  onChange={(e) => toggleDisplayRulesetTimeline(e)} defaultChecked={false} ></Switch>
             <span>
               <HCTooltip text={MatchingStepTooltips.rulesetScale} id="ruleset-scale-tooltip" placement="right">
-                <QuestionCircleFill aria-label="icon: question-circle" color="#7F86B5" size={13} className={styles.scaleTooltip} data-testid={`info-tooltip-ruleset`}/>
+                <QuestionCircleFill aria-label="icon: question-circle" color="#7F86B5" size={13} className={styles.scaleTooltip} data-testid={`info-tooltip-ruleset`} />
               </HCTooltip>
               <br />
             </span></div>
@@ -833,18 +833,21 @@ const MatchingStepDetail: React.FC = () => {
                 <span className={styles.radioTitle}>Test URIs</span>
                 <span className={styles.selectTooltip} aria-label="testUriOnlyTooltip">
                   <HCTooltip text={MatchingStepTooltips.testUris} id="test-all-uris-tooltip" placement="right">
-                    <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircle}/>
+                    <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircle} />
                   </HCTooltip><br />
                 </span>
-                <Input
-                  placeholder="Enter URI or Paste URIs"
-                  className={styles.uriInput}
-                  value={uriContent}
-                  onChange={handleUriInputChange}
-                  aria-label="UriOnlyInput"
-                  disabled={inputUriDisabled}
-                />
-                <FontAwesomeIcon icon={faPlusSquare} className={inputUriDisabled ? styles.disabledAddIcon : styles.addIcon} onClick={handleClickAddUri} aria-label="addUriOnlyIcon" />
+                <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", paddingRight: 12}}>
+                  <HCInput
+                    placeholder="Enter URI or Paste URIs"
+                    className={styles.uriInput}
+                    value={uriContent}
+                    onChange={handleUriInputChange}
+                    ariaLabel="UriOnlyInput"
+                    disabled={inputUriDisabled}
+                  />
+                  <FontAwesomeIcon icon={faPlusSquare} className={inputUriDisabled ? styles.disabledAddIcon : styles.addIcon} onClick={handleClickAddUri} aria-label="addUriOnlyIcon" />
+                </div>
+
                 {duplicateUriWarning ? <div className={styles.duplicateUriWarning}>This URI has already been added.</div> : ""}
                 {singleUriWarning ? <div className={styles.duplicateUriWarning}>At least Two URIs are required.</div> : ""}
                 <div className={styles.UriTable}>
@@ -868,18 +871,21 @@ const MatchingStepDetail: React.FC = () => {
               <span className={styles.radioTitle}>Test URIs with All Data</span>
               <span aria-label="testUriTooltip">
                 <HCTooltip text={MatchingStepTooltips.testUrisAllData} id="test-uris-all-data-tooltip" placement="right">
-                  <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircle}/>
+                  <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircle} />
                 </HCTooltip>
               </span><br />
-              <Input
-                placeholder="Enter URI or Paste URIs"
-                className={styles.uriInput}
-                value={uriContent2}
-                onChange={handleUriInputChange2}
-                aria-label="UriInput"
-                disabled={inputUriDisabled2}
-              />
-              <FontAwesomeIcon icon={faPlusSquare} className={inputUriDisabled2 ? styles.disabledAddIcon : styles.addIcon} onClick={handleClickAddUri2} aria-label="addUriIcon" />
+              <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", paddingRight: 12}}>
+                <HCInput
+                  placeholder="Enter URI or Paste URIs"
+                  className={styles.uriInput}
+                  value={uriContent2}
+                  onChange={handleUriInputChange2}
+                  ariaLabel="UriInput"
+                  disabled={inputUriDisabled2}
+                />
+
+                <FontAwesomeIcon icon={faPlusSquare} className={inputUriDisabled2 ? styles.disabledAddIcon : styles.addIcon} onClick={handleClickAddUri2} aria-label="addUriIcon" />
+              </div>
               {duplicateUriWarning2 ? <div className={styles.duplicateUriWarning}>This URI has already been added.</div> : ""}
               {singleUriWarning2 ? <div className={styles.duplicateUriWarning}>At least one URI is required.</div> : ""}
               <div className={styles.UriTable}>
@@ -897,12 +903,12 @@ const MatchingStepDetail: React.FC = () => {
               <span>Test All Data</span>
               <span aria-label={"allDataTooltip"}>
                 <HCTooltip text={MatchingStepTooltips.testAllData} id="test-all-data-tooltip" placement="right">
-                  <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircle}/>
+                  <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircle} />
                 </HCTooltip>
               </span>
-              <span aria-label="allDataContent"><br />
+              <div aria-label="allDataContent" className={styles.allDataContent}>
                 Select All Data in your source query in order to preview matching activity against all URIs up to 100 displayed pair matches. It is best practice to test with a smaller-sized source query.
-              </span>
+              </div>
             </Radio>
           </Radio.Group>
           <div className={styles.testButton}>
@@ -958,7 +964,7 @@ const MatchingStepDetail: React.FC = () => {
                                 </div>
                               </div>
                               <Accordion.Body>
-                                <span aria-label="expandedTableView"><ExpandableTableView rowData={actionPreviewData} allRuleset={curationOptions.activeStep.stepArtifact.matchRulesets} entityData={curationOptions.activeStep}/></span>
+                                <span aria-label="expandedTableView"><ExpandableTableView rowData={actionPreviewData} allRuleset={curationOptions.activeStep.stepArtifact.matchRulesets} entityData={curationOptions.activeStep} /></span>
                               </Accordion.Body>
                             </Accordion.Item>
                           </Accordion>);

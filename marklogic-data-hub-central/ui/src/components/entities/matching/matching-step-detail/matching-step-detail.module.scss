@@ -150,6 +150,7 @@
     font-size: 21px;
     margin-left: 6px;
     color: #5b69af;
+    margin-top: 1vh;
     &:hover {
         color: var(--hoverColor);
     }
@@ -161,6 +162,7 @@
     font-size: 21px;
     margin-left: 6px;
     color: #cccccc;
+    margin-top: 1vh;
 }
 
 .testMatch {
@@ -170,10 +172,10 @@
 }
 
 .uriInput {
-    width: 24vw;
-    height: 4vh;
-    margin-left: 1.5vw;
-    margin-top: 1vh;
+  width: 24vw !important;
+  height: 4vh;
+  margin-left: 1.5vw;
+  margin-top: 1vh;
 }
 
 .testMatchedRadioGroup {
@@ -382,4 +384,8 @@
 
 .panelActionsMatch {
     text-align: end;
+}
+
+.allDataContent {
+    margin-top: 6px;
 }
