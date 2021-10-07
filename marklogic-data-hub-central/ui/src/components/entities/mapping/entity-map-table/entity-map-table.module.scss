@@ -356,3 +356,22 @@
     color: var(--hoverColor);
   }
 }
+
+.uriTextArea{ 
+  max-height: 90px;
+  min-height: 80px !important;
+  border-radius: 4px !important;
+}
+
+.genericTextArea{ 
+  max-height: 31px;
+  height: 31px;
+  border-radius: 4px !important;
+}
+
+.idTextArea{ 
+  height: 160px !important;
+  max-height: 330px;
+  overflow:hidden;
+  border-radius: 4px !important;
+}

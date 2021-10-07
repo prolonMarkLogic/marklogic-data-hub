@@ -1,16 +1,17 @@
-import React, {useState, useEffect, useContext} from "react";
-import {Form, Input, Icon, Radio, AutoComplete, Tooltip, Popover} from "antd";
+import React, { useState, useEffect, useContext } from "react";
+import { Form, Input, Icon, Radio, AutoComplete, Tooltip, Popover } from "antd";
 import axios from "axios";
 import styles from "./create-edit-step.module.scss";
 import "./create-edit-step.scss";
-import {UserContext} from "../../../util/user-context";
-import {NewMapTooltips, NewMatchTooltips, NewMergeTooltips, CommonStepTooltips} from "../../../config/tooltips.config";
-import {StepType} from "../../../types/curation-types";
-import {CurationContext} from "../../../util/curation-context";
+import { UserContext } from "../../../util/user-context";
+import { NewMapTooltips, NewMatchTooltips, NewMergeTooltips, CommonStepTooltips } from "../../../config/tooltips.config";
+import { StepType } from "../../../types/curation-types";
+import { CurationContext } from "../../../util/curation-context";
 import HCAlert from "../../common/hc-alert/hc-alert";
 import HCTooltip from "../../common/hc-tooltip/hc-tooltip";
-import {QuestionCircleFill} from "react-bootstrap-icons";
+import { QuestionCircleFill } from "react-bootstrap-icons";
 import HCButton from "../../common/hc-button/hc-button";
+import {FormControl} from "react-bootstrap";
 
 type Props = {
   tabKey: string;
@@ -34,26 +35,24 @@ type Props = {
 
 const formItemLayout = {
   labelCol: {
-    xs: {span: 24},
-    sm: {span: 7},
+    xs: { span: 24 },
+    sm: { span: 7 },
   },
   wrapperCol: {
-    xs: {span: 24},
-    sm: {span: 15},
+    xs: { span: 24 },
+    sm: { span: 15 },
   },
 };
 
 const srcTypeOptions = [
-  {label: "Collection", value: "collection"},
-  {label: "Query", value: "query"}
+  { label: "Collection", value: "collection" },
+  { label: "Query", value: "query" }
 ];
-
-const {TextArea} = Input;
 
 const CreateEditStep: React.FC<Props> = (props) => {
   // TODO use steps.config.ts for default values
-  const {handleError} = useContext(UserContext);
-  const {curationOptions, setActiveStepWarning, validateCalled, setValidateMatchCalled, setValidateMergeCalled, validateMerge} = useContext(CurationContext);
+  const { handleError } = useContext(UserContext);
+  const { curationOptions, setActiveStepWarning, validateCalled, setValidateMatchCalled, setValidateMergeCalled, validateMerge } = useContext(CurationContext);
   const [stepName, setStepName] = useState("");
   const [description, setDescription] = useState("");
 
@@ -429,7 +428,10 @@ const CreateEditStep: React.FC<Props> = (props) => {
   };
 
   return (
+
+
     <div className={styles.createEditStep}>
+
       {(props.stepType === StepType.Matching || props.stepType === StepType.Merging) ? curationOptions.activeStep.hasWarnings.length > 0 ? (
         curationOptions.activeStep.hasWarnings.map((warning, index) => {
           let description;
@@ -460,8 +462,8 @@ const CreateEditStep: React.FC<Props> = (props) => {
           Name:&nbsp;<span className={styles.asterisk}>*</span>
           &nbsp;
         </span>} labelAlign="left"
-        validateStatus={(stepName || !isStepNameTouched) ? (invalidChars ? "error" : "") : "error"}
-        help={invalidChars ? "Names must start with a letter and can contain letters, numbers, hyphens, and underscores only." : (stepName || !isStepNameTouched) ? "" : "Name is required"}
+          validateStatus={(stepName || !isStepNameTouched) ? (invalidChars ? "error" : "") : "error"}
+          help={invalidChars ? "Names must start with a letter and can contain letters, numbers, hyphens, and underscores only." : (stepName || !isStepNameTouched) ? "" : "Name is required"}
         >
           {tobeDisabled ? <Tooltip title={NewMatchTooltips.nameField} placement={"bottom"}> <Input
             id="name"
@@ -481,16 +483,16 @@ const CreateEditStep: React.FC<Props> = (props) => {
             onBlur={sendPayload}
           />}&nbsp;&nbsp;
           <div className={styles.inputHCTooltip}>
-            { props.stepType === StepType.Mapping ?
+            {props.stepType === StepType.Mapping ?
               <HCTooltip text={NewMapTooltips.name} id="map-step-name-tooltip" placement={"left"}>
-                <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircle}/>
-              </HCTooltip>:
+                <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircle} />
+              </HCTooltip> :
               props.stepType === StepType.Matching ?
                 <HCTooltip text={NewMatchTooltips.name} id="match-step-name-tooltip" placement={"left"}>
-                  <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircle}/>
-                </HCTooltip>:
+                  <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircle} />
+                </HCTooltip> :
                 <HCTooltip text={NewMergeTooltips.name} id="merge-step-name-tooltip" placement={"left"}>
-                  <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircle}/>
+                  <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircle} />
                 </HCTooltip>
             }
           </div>
@@ -509,16 +511,16 @@ const CreateEditStep: React.FC<Props> = (props) => {
             onBlur={sendPayload}
           />&nbsp;&nbsp;
           <div className={styles.inputHCTooltip}>
-            { props.stepType === StepType.Mapping ?
+            {props.stepType === StepType.Mapping ?
               <HCTooltip text={NewMapTooltips.description} id="map-step-description-tooltip" placement={"left"}>
-                <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircle}/>
-              </HCTooltip>:
+                <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircle} />
+              </HCTooltip> :
               props.stepType === StepType.Matching ?
                 <HCTooltip text={NewMatchTooltips.description} id="match-step-description-tooltip" placement={"left"}>
-                  <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircle}/>
-                </HCTooltip>:
+                  <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircle} />
+                </HCTooltip> :
                 <HCTooltip text={NewMergeTooltips.description} id="merge-step-description-tooltip" placement={"left"}>
-                  <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircle}/>
+                  <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircle} />
                 </HCTooltip>
             }
           </div>
@@ -528,8 +530,8 @@ const CreateEditStep: React.FC<Props> = (props) => {
           Source Query:&nbsp;<span className={styles.asterisk}>*</span>
           &nbsp;
         </span>} labelAlign="left"
-        validateStatus={((collections && selectedSource === "collection") || (srcQuery && selectedSource !== "collection") || (!isSelectedSourceTouched && !isCollectionsTouched && !isSrcQueryTouched)) ? "" : "error"}
-        help={((collections && selectedSource === "collection") || (srcQuery && selectedSource !== "collection") || (!isSelectedSourceTouched && !isCollectionsTouched && !isSrcQueryTouched)) ? "" : "Collection or Query is required"}
+          validateStatus={((collections && selectedSource === "collection") || (srcQuery && selectedSource !== "collection") || (!isSelectedSourceTouched && !isCollectionsTouched && !isSrcQueryTouched)) ? "" : "error"}
+          help={((collections && selectedSource === "collection") || (srcQuery && selectedSource !== "collection") || (!isSelectedSourceTouched && !isCollectionsTouched && !isSrcQueryTouched)) ? "" : "Collection or Query is required"}
         >
 
           <Radio.Group
@@ -541,17 +543,17 @@ const CreateEditStep: React.FC<Props> = (props) => {
           >
           </Radio.Group>
 
-          <span id={props.stepType !== StepType.Merging ? "radioCollectionPopover" : "radioCollectionMergePopover" }>
+          <span id={props.stepType !== StepType.Merging ? "radioCollectionPopover" : "radioCollectionMergePopover"}>
             <Popover
               content={collectionQueryInfo}
               trigger="hover"
               placement="left"
             >
-              <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircleCollection} data-testid="collectionTooltip"/>
+              <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircleCollection} data-testid="collectionTooltip" />
             </Popover></span>
 
           <HCTooltip text={CommonStepTooltips.radioQuery} id="radio-query-tooltip" placement={"top"}>
-            <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircleQuery} data-testid="queryTooltip"/>
+            <QuestionCircleFill color="#7F86B5" size={13} className={styles.questionCircleQuery} data-testid="queryTooltip" />
           </HCTooltip>
 
           {selectedSource === "collection" ? <div ><span className={styles.srcCollectionInput}><AutoComplete
@@ -569,22 +571,25 @@ const CreateEditStep: React.FC<Props> = (props) => {
             onBlur={sendPayload}
           >
             {/* {collectionsList} */}
-          </AutoComplete>&nbsp;&nbsp;{props.canReadWrite ? <Icon className={styles.searchIcon} type="search" theme="outlined" /> : ""}</span></div> : <span><TextArea
-            id="srcQuery"
-            placeholder="Enter source query"
-            value={srcQuery}
-            onChange={handleChange}
-            disabled={!props.canReadWrite}
-            className={styles.input}
-            onBlur={sendPayload}
-          ></TextArea></span>}
+          </AutoComplete>&nbsp;&nbsp;{props.canReadWrite ? <Icon className={styles.searchIcon} type="search" theme="outlined" /> : ""}</span></div> : <span>
+            <FormControl as="textarea"
+              id="srcQuery"
+              placeholder="Enter source query"
+              value={srcQuery}
+              onChange={handleChange}
+              disabled={!props.canReadWrite}
+              className={styles.input}
+              onBlur={sendPayload}
+              style={{borderRadius: 4, border: ((collections && selectedSource === "collection") || (srcQuery && selectedSource !== "collection") || (!isSelectedSourceTouched && !isCollectionsTouched && !isSrcQueryTouched)) ? "" : "1px solid #B32424"}}
+            />
+          </span>}
         </Form.Item>
         {props.stepType === StepType.Merging ?
           <Form.Item label={<span>
             Timestamp Path:
             &nbsp;
           </span>} labelAlign="left"
-          className={styles.timestamp}>
+            className={styles.timestamp}>
             <Input
               id="timestamp"
               placeholder="Enter path to the timestamp"
