@@ -7,8 +7,8 @@ import styles from "./Detail.module.scss";
 import TableView from "../components/table-view/table-view";
 import DetailHeader from "../components/detail-header/detail-header";
 import AsyncLoader from "../components/async-loader/async-loader";
-import {Layout, Menu, Tooltip} from "antd";
-import {Row, Col} from "react-bootstrap";
+import {Layout, Tooltip} from "antd";
+import {Row, Col, Tabs, Tab} from "react-bootstrap";
 import {xmlParser, xmlDecoder, xmlFormatter, jsonFormatter} from "../util/record-parser";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faThList, faCode} from "@fortawesome/free-solid-svg-icons";
@@ -269,13 +269,13 @@ const Detail: React.FC<Props> = ({history, location}) => {
     }
   };
 
-  const handleClick = (event) => {
-    setSelected(event.key);
+  const handleClick = (key) => {
+    setSelected(key);
 
     //Set the selected view property in user preferences.
     let preferencesObject = {
       ...detailPagePreferences,
-      selected: event.key
+      selected: key
     };
     updateUserPreferences(user.name, preferencesObject);
   };
@@ -316,24 +316,24 @@ const Detail: React.FC<Props> = ({history, location}) => {
                 {data && <DetailHeader document={data} contentType={contentType} uri={uri} primaryKey={pkValue} sources={sources.length ? sources : parentPagePreferences["sources"]} />}
               </div>
               <div id="menu" className={styles.menu}>
-                <Menu id="subMenu" onClick={(event) => handleClick(event)} mode="horizontal" selectedKeys={[selected]}>
-                  <Menu.Item key="instance" id="instance" data-cy="instance-view">
-                    <Tooltip title={"Show the processed data"}>
+                <Tabs  onSelect={(event) => handleClick(event)}  variant="tabs">
+                  <Tab eventKey="instance" id="instance" data-cy="instance-view" tabClassName={`${styles.tabActive} ${selected === "instance" && styles.active}`}
+                    title={<Tooltip title={"Show the processed data"}>
                       <FontAwesomeIcon icon={faThList} size="lg" />
                       <span className={styles.subMenu}>Instance</span>
-                    </Tooltip>
-                  </Menu.Item>
-                  <Menu.Item key="full" id="full" data-cy="source-view">
-                    <Tooltip title={"Show the complete " + contentType.toUpperCase()} >
+                    </Tooltip>}>
+                  </Tab>
+                  <Tab eventKey="full" id="full" data-cy="source-view" tabClassName={`${styles.tabActive} ${selected === "full" && styles.active}`}
+                    title={<Tooltip title={"Show the complete " + contentType.toUpperCase()} >
                       {contentType.toUpperCase() === "XML" ?
                         <FontAwesomeIcon icon={faCode} size="lg" />
                         :
                         <span className={styles.jsonIcon}></span>
                       }
                       <span className={styles.subMenu}>{contentType.toUpperCase()}</span>
-                    </Tooltip>
-                  </Menu.Item>
-                </Menu>
+                    </Tooltip>}>
+                  </Tab>
+                </Tabs>
               </div>
             </div>
             <div>
