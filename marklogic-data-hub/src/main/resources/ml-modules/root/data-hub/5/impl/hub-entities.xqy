@@ -690,18 +690,37 @@ declare function hent:fix-tde($nodes as node()*, $entity-model-contexts as xs:st
         element { fn:node-name($n) } {
           $n/namespace::node(),
           $n/@*,
+
           let $context-item :=  fn:replace(fn:string($n/tde:context), "\./", "")
+          let $join-prefix := $context-item || "_"
           let $parent-context-item := fn:replace(fn:string($n/../../tde:context), "\./", "")
           let $is-join-template := $n/tde:rows/tde:row/tde:view-name = $parent-context-item  || "_" || $context-item
           let $rows := $n/tde:rows/tde:row
           return
             if ($is-join-template) then (
               hent:fix-tde($n/tde:context, $entity-model-contexts, $uber-model, ()),
+
+                let $uber-definitions := $uber-model => map:get("definitions")
+                let $model_iri  := model-graph-iri($uber-model)
+                let $entityName := fn:substring-after($entity-model-contexts, "/")
+
+                (:searching values to load in triple section:)
+                let $entityMap := map:get($uber-definitions, $entityName)
+                let $propertiesMap := map:get($entityMap, "properties")
+                let $entityContextItemMap := map:get($propertiesMap, $context-item)
+                let $entityItems := map:get($entityContextItemMap, "items")
+                let $relatedEntityType := fn:string(map:get($entityItems, "relatedEntityType"))
+                let $primaryKey := fn:string(map:get($entityMap, "primaryKey"))
+                let $ancestorKey := fn:string($rows/tde:columns/tde:column[tde:name = $primaryKey]/tde:val)
+
+               return
+               (
+
               element tde:rows {
                 element tde:row {
                   $rows/(tde:schema-name|tde:view-name|tde:view-layout),
                   element tde:columns {
-                    let $join-prefix := $context-item || "_"
+
                     for $column in $rows/tde:columns/tde:column
                     return
                       element tde:column {
@@ -726,7 +745,31 @@ declare function hent:fix-tde($nodes as node()*, $entity-model-contexts as xs:st
                       }
                   }
                 }
-              }
+               },
+
+               <tde:vars>
+                <tde:var>
+                   <tde:name>subject-iri</tde:name>
+                   <tde:val>sem:iri(concat("{ $model_iri }/{ $entityName }/", fn:encode-for-uri(xs:string(./{$ancestorKey}))))</tde:val>
+                 </tde:var>
+               </tde:vars>,
+               <tde:triples>
+                 <tde:triple>
+                   <tde:subject>
+                  <tde:val>$subject-iri</tde:val>
+                   <tde:invalid-values>ignore</tde:invalid-values>
+                 </tde:subject>
+                <tde:predicate>
+                  <tde:val>sem:iri("{ $model_iri }/{ $entityName }/{ $context-item}")</tde:val>
+                  <tde:invalid-values>ignore</tde:invalid-values>
+                 </tde:predicate>
+                <tde:object>
+                  <tde:val>sem:iri(concat("{ $relatedEntityType }/", fn:encode-for-uri(xs:string(.))))</tde:val>
+                   <tde:invalid-values>ignore</tde:invalid-values>
+                </tde:object>
+               </tde:triple>
+               </tde:triples>
+                 )
             ) else
               hent:fix-tde($n/node(), $entity-model-contexts, $uber-model, $entity-name)
         }
