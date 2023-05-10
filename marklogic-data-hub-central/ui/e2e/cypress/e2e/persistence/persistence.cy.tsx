@@ -63,7 +63,7 @@ describe("Validate persistence across Hub Central", () => {
     loadPage.loadView("table").click();
     browsePage.waitForSpinnerToDisappear();
     loadPage.addNewButton("list").should("be.visible");
-    cy.waitUntil(() => cy.findByTestId("loadTableName").click());
+    cy.findByTestId("loadTableName").should("be.visible").click();
     cy.get("[aria-label=\"icon: caret-up\"]").should("have.attr", "class").and("match", /hc-table_activeCaret/);
   });
 
@@ -119,6 +119,11 @@ describe("Validate persistence across Hub Central", () => {
     toolbar.getModelToolbarIcon().should("be.visible").click();
     browsePage.waitForSpinnerToDisappear();
     cy.log("Table view");
+    modelPage.getPublishButton().invoke("attr", "class").then($classNames => {
+      if (!$classNames.includes("graph-view_disabledPointerEvents")) {
+        cy.publishDataModel();
+      }
+    });
     modelPage.selectView("table");
     browsePage.waitForSpinnerToDisappear();
     entityTypeTable.getExpandEntityIcon("Customer");
@@ -324,10 +329,10 @@ describe("Validate persistence across Hub Central", () => {
     cy.contains("A merge strategy defines how to combine the property values of candidate entities, but the merge strategy is not active until assigned to a merge rule. A merge strategy can be assigned to multiple merge rules.");
 
     mergingStepDetail.getSortIndicator("Strategy Name").scrollIntoView().click();
-    mergingStepDetail.getSortAscIcon().first().should("have.class", "hc-table_activeCaret__2ugNC");
+    mergingStepDetail.getSortAscIcon().first().invoke("attr", "class").should("contain", "hc-table_activeCaret__");
     mergingStepDetail.getSortIndicator("Strategy").last().scrollIntoView().click();
     mergingStepDetail.getSortIndicator("Strategy").last().scrollIntoView().click();
-    mergingStepDetail.getSortDescIcon().last().should("have.class", "hc-table_activeCaret__2ugNC");
+    mergingStepDetail.getSortDescIcon().last().invoke("attr", "class").should("contain", "hc-table_activeCaret__");
 
     cy.log("*** Return to Curate Tab and verify all states changed above are persisted");
     toolbar.getLoadToolbarIcon().should("be.visible").click();
@@ -336,8 +341,8 @@ describe("Validate persistence across Hub Central", () => {
     browsePage.waitForSpinnerToDisappear();
     cy.contains("A merge strategy defines how to combine the property values of candidate entities, but the merge strategy is not active until assigned to a merge rule. A merge strategy can be assigned to multiple merge rules.");
     mergingStepDetail.verifyRowExpanded();
-    mergingStepDetail.getSortAscIcon().first().should("have.class", "hc-table_activeCaret__2ugNC");
-    mergingStepDetail.getSortDescIcon().last().should("have.class", "hc-table_activeCaret__2ugNC");
+    mergingStepDetail.getSortAscIcon().first().invoke("attr", "class").should("contain", "hc-table_activeCaret__");
+    mergingStepDetail.getSortDescIcon().last().invoke("attr", "class").should("contain", "hc-table_activeCaret__");
     cy.findByTestId("arrow-left").click();
   });
 
@@ -410,5 +415,35 @@ describe("Validate persistence across Hub Central", () => {
     graphExplore.getSearchBar().should("have.value", "Adams");
     browsePage.getFacetItemCheckbox("source-name", "CustomerSourceName").should("exist");
     browsePage.getFacetItemCheckbox("collection", "Customer").should("exist");
+  });
+
+  it("MatchingStepDetails: Retain state in 'Test and review matched entities' section when switch Tile", () => {
+    cy.loginAsTestUserWithRoles("hub-central-flow-writer", "hub-central-match-merge-writer", "hub-central-mapping-writer", "hub-central-load-writer", "hub-central-entity-model-reader", "hub-central-entity-model-writer", "hub-central-saved-query-user").withRequest();
+    cy.visit("/tiles/curate");
+    cy.waitForAsyncRequest();
+    curatePage.toggleEntityTypeId("Person");
+    curatePage.selectMatchTab("Person");
+    curatePage.openStepDetails("match-person");
+    matchingStepDetail.getAllDataRadio().click();
+
+    toolbar.getRunToolbarIcon().click();
+    cy.waitForAsyncRequest();
+    toolbar.getCurateToolbarIcon().click();
+    matchingStepDetail.getTestMatchUriButton().click();
+    cy.findByText("Matched Entities");
+
+    matchingStepDetail.getAllDataURIRadio().click();
+    toolbar.getRunToolbarIcon().click();
+    cy.waitForAsyncRequest();
+    toolbar.getCurateToolbarIcon().click();
+    matchingStepDetail.getTestMatchUriButton().click();
+    cy.findByText("At least one URI is required.");
+
+    matchingStepDetail.getUriOnlyRadio().click();
+    toolbar.getRunToolbarIcon().click();
+    cy.waitForAsyncRequest();
+    toolbar.getCurateToolbarIcon().click();
+    matchingStepDetail.getTestMatchUriButton().click();
+    cy.findByText("At least Two URIs are required.");
   });
 });

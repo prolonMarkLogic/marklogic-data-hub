@@ -269,7 +269,9 @@ const PropertyTable: React.FC<Props> = props => {
                     <span
                       className={styles.modeledRelationshipIcon}
                       data-testid={"relationship-" + record.propertyName}
-                    >&nbsp;&nbsp;</span>
+                    >
+                      &nbsp;&nbsp;
+                    </span>
                   </HCTooltip>
                   <HCTooltip
                     text={foreignKeyTooltip}
@@ -305,14 +307,16 @@ const PropertyTable: React.FC<Props> = props => {
                     <span
                       className={styles.modeledRelationshipIconNoKey}
                       data-testid={"relationship-" + record.propertyName}
-                    >&nbsp;&nbsp;</span>
+                    >
+                      &nbsp;&nbsp;
+                    </span>
                   </HCTooltip>
                 </div>
               </span>
             );
           }
         }
-        return renderText;
+        return <span data-testid={`${record.propertyName}-type`}>{renderText}</span>;
       },
     },
     {

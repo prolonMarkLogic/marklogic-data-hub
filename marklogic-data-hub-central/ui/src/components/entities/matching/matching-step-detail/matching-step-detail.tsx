@@ -178,7 +178,10 @@ const MatchingStepDetail: React.FC = () => {
       setMatchingStep(matchingStepArtifact);
       handleMatchingActivity(matchingStepArtifact.name);
     } else {
-      history.push("/tiles/curate");
+      setTimeout(() => {
+        history.push("/tiles/curate");
+        setViewSettings({...storage, curate: {}, match: {}});
+      }, 300);
     }
     /*return () => {
       toggleDisplayRulesetTimeline(false);
@@ -237,6 +240,24 @@ const MatchingStepDetail: React.FC = () => {
     UriTableData,
     UriTableData2,
   ]);
+
+  useEffect(() => {
+    if (value === 1) {
+      setTestUrisOnlySelected(true);
+      setTestUrisAllDataSelected(false);
+      setAllDataSelected(false);
+    }
+    if (value === 2) {
+      setTestUrisAllDataSelected(true);
+      setTestUrisOnlySelected(false);
+      setAllDataSelected(false);
+    }
+    if (value === 3) {
+      setAllDataSelected(true);
+      setTestUrisOnlySelected(false);
+      setTestUrisAllDataSelected(false);
+    }
+  }, [value]);
 
   const handleMatchingActivity = async matchStepName => {
     let matchActivity = await calculateMatchingActivity(matchStepName);
@@ -330,7 +351,7 @@ const MatchingStepDetail: React.FC = () => {
   };
 
   const onTestMatchRadioChange = event => {
-    setValue(event.target.value);
+    setValue(parseInt(event.target.value));
     setPreviewMatchedData(-1);
   };
 
@@ -495,7 +516,8 @@ const MatchingStepDetail: React.FC = () => {
     setUriTestMatchClicked(false);
   };
 
-  const handleAllDataRadioClick = event => {
+
+  const handleAllDataRadioClick = () => {
     testMatchedData.uris = [];
     setAllDataSelected(true);
     setUriTableData([]);
@@ -570,7 +592,7 @@ const MatchingStepDetail: React.FC = () => {
   //   setTestMatchTab(event.key);
   // };
 
-  const handleUriInputSelected = event => {
+  const handleUriInputSelected = () => {
     setInputUriDisabled(false);
     setTestUrisOnlySelected(true);
     setTestUrisAllDataSelected(false);
@@ -584,7 +606,7 @@ const MatchingStepDetail: React.FC = () => {
     setRulesetDataList([{rulesetName: "", actionPreviewData: [{name: "", action: "", uris: ["", ""]}], score: 0}]);
   };
 
-  const handleUriInputSelected2 = event => {
+  const handleUriInputSelected2 = () => {
     setInputUriDisabled2(false);
     setInputUriDisabled(true);
     setTestUrisOnlySelected(false);
@@ -969,8 +991,7 @@ const MatchingStepDetail: React.FC = () => {
       </HCButton>
     </div>
   );
-
-  return (
+  return Object.keys(curationOptions.activeStep.stepArtifact).length !== 0 ? (
     <>
       <CustomPageHeader
         title={matchingStep.name}
@@ -980,7 +1001,6 @@ const MatchingStepDetail: React.FC = () => {
         }}
       />
       <p className={styles.headerDescription}>{MatchingStepDetailText.description}</p>
-
       <div className={styles.matchingDetailContainer}>
         <div
           className={
@@ -1275,9 +1295,9 @@ const MatchingStepDetail: React.FC = () => {
                 id={"test-uris"}
                 name={"test-review-matched-entities"}
                 type={"radio"}
-                defaultChecked={value == 1 ? true : false} // eslint-disable-line
+                defaultChecked={value === 1 ? true : false}
                 onChange={e => {
-                  handleUriInputSelected(e);
+                  handleUriInputSelected();
                   onTestMatchRadioChange(e);
                 }}
                 label={"Test URIs"}
@@ -1359,9 +1379,9 @@ const MatchingStepDetail: React.FC = () => {
               id={"test-uris-all-data"}
               name={"test-review-matched-entities"}
               type={"radio"}
-              defaultChecked={value == 2 ? true : false} // eslint-disable-line
+              defaultChecked={value === 2 ? true : false}
               onChange={e => {
-                handleUriInputSelected2(e);
+                handleUriInputSelected2();
                 onTestMatchRadioChange(e);
               }}
               label={"Test URIs with All Data"}
@@ -1439,9 +1459,9 @@ const MatchingStepDetail: React.FC = () => {
               id={"all-data"}
               name={"test-review-matched-entities"}
               type={"radio"}
-              defaultChecked={value == 3 ? true : false} // eslint-disable-line
+              defaultChecked={value === 3 ? true : false}
               onChange={e => {
-                handleAllDataRadioClick(e);
+                handleAllDataRadioClick();
                 onTestMatchRadioChange(e);
               }}
               label={"Test All Data"}
@@ -1787,6 +1807,8 @@ const MatchingStepDetail: React.FC = () => {
         toggleModal={toggleShowThresholdModal}
       />
     </>
+  ) : (
+    <></>
   );
 };
 

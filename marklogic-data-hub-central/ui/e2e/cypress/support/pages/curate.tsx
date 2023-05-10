@@ -257,6 +257,10 @@ class CuratePage {
     return cy.get(`[id="hc-alert-component-content"]`);
   }
 
+  alertContentAriaLabel(warning: string) {
+    return cy.get(`[aria-label="${warning}"]`);
+  }
+
   removeTargetCollection(collection: string) {
     this.getAdditionalCollSelectWrapper().get(`[aria-label="Remove ${collection}"]`).click();
   }
@@ -298,7 +302,14 @@ class CuratePage {
   getTooltip() {
     return cy.get(".tooltip-inner");
   }
-
+  expandAccordian(entity: string) {
+    this.getEntityTypePanel(entity).then(($ele) => {
+      if ($ele.hasClass("accordion-button collapsed")) {
+        cy.log("**Toggling Entity because it was closed.**");
+        this.toggleEntityTypeId(entity);
+      }
+    });
+  }
 }
 
 const curatePage = new CuratePage();

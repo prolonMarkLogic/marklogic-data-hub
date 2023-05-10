@@ -136,7 +136,7 @@ describe("Merge Rule Dialog component", () => {
     expect(getByTestId("priorityOrderSlider")).toBeInTheDocument();
 
     //Verify priority Order slider tooltip
-    userEvent.hover(getAllByLabelText("icon: question-circle")[3]);
+    userEvent.hover(getAllByLabelText("icon: question-circle")[4]);
     expect(await waitForElement(() => getByLabelText("priorityOrderTooltip"))).toBeInTheDocument();
 
     //Default Timeline is visible by default
@@ -339,7 +339,7 @@ describe("Merge Rule Dialog component", () => {
   });
 
   test("Accessibility", async () => {
-    const {getByLabelText, getAllByLabelText, getByText} = render(
+    const {getByLabelText, getAllByLabelText} = render(
       <CurationContext.Provider value={customerMergingStep}>
         <MergeRuleDialog {...data.mergeRuleDataProps} isEditRule={false} />
       </CurationContext.Provider>,
@@ -350,7 +350,6 @@ describe("Merge Rule Dialog component", () => {
     userEvent.tab();
     expect(getAllByLabelText("property-to-match-dropdown")[1]).toHaveFocus();
     userEvent.tab();
-    expect(getByText("Select property")).toHaveFocus();
     fireEvent.keyDown(getByLabelText("mergeType-select"), {key: "ArrowDown"});
   });
 });

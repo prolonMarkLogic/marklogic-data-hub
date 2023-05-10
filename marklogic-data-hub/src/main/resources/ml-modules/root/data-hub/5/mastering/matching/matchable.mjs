@@ -1,4 +1,3 @@
-'use strict';
 import consts from "/data-hub/5/impl/consts.mjs";
 import httpUtils from "/data-hub/5/impl/http-utils.mjs";
 import hubUtils from "/data-hub/5/impl/hub-utils.mjs";
@@ -39,7 +38,7 @@ export function buildActionDetails(matchingDocumentSet, thresholdBucket) {
   let actionBody;
   if (action === "custom") {
     actionBody = {
-      action: "custom",
+      action: "customActions",
       thresholdName,
       thresholdScore,
       uris,
@@ -54,7 +53,7 @@ export function buildActionDetails(matchingDocumentSet, thresholdBucket) {
       threshold: thresholdName,
       thresholdScore,
       uris,
-      matchResults: matchingDocumentSet.map((match) => ({uri: match.uri, score: match.score || "referenceDocument"}) )
+      matchResults: matchingDocumentSet.map((match) => ({uri: match.uri, matchedRulesets: match.matchedRulesets, score: match.score || "referenceDocument"}))
     };
   }
   return {
@@ -68,7 +67,7 @@ export class Matchable {
   constructor(matchStep, stepContext) {
     // update the match step if using the legacy format
     if (matchStep.scoring) {
-      const updateMatchOptions = hubUtils.requireFunction("/data-hub/5/data-services/mastering/updateMatchOptionsLib.mjs", "updateMatchOptions");
+      const updateMatchOptions = hubUtils.requireFunction("/data-hub/data-services/mastering/updateMatchOptionsLib.mjs", "updateMatchOptions");
       this.matchStep = updateMatchOptions(matchStep);
     } else {
       this.matchStep = matchStep;
@@ -194,8 +193,9 @@ export class Matchable {
     }
     const matchingRulesetDefinitions = this.matchRulesetDefinitions();
     let defaultScore = 0;
+    contentObjectB.matchedRulesets = [];
     for (const matchRuleset of matchingRulesetDefinitions) {
-      const rulesetScore = matchRuleset.score(contentObjectA, contentObjectB);
+      let rulesetScore = matchRuleset.score(contentObjectA, contentObjectB);
       if (matchingDebugTraceEnabled) {
         xdmp.trace(consts.TRACE_MATCHING_DEBUG, `Applying rule ${matchRuleset.name()} for ${xdmp.describe(contentObjectA.value, Sequence.from([]), Sequence.from([]))} and ${xdmp.describe(contentObjectB.value, Sequence.from([]), Sequence.from([]))} with score ${rulesetScore}`);
       }
@@ -204,13 +204,15 @@ export class Matchable {
           if (matchingDebugTraceEnabled) {
             xdmp.trace(consts.TRACE_MATCHING_DEBUG, `Decreasing score by ${rulesetScore} for ${xdmp.describe(contentObjectA.value, Sequence.from([]), Sequence.from([]))} and ${xdmp.describe(contentObjectB.value, Sequence.from([]), Sequence.from([]))}`);
           }
-          defaultScore -= rulesetScore;
+          rulesetScore = -Math.abs(rulesetScore);
         } else {
           if (matchingDebugTraceEnabled) {
             xdmp.trace(consts.TRACE_MATCHING_DEBUG, `Increasing score by ${rulesetScore}  for ${xdmp.describe(contentObjectA.value, Sequence.from([]), Sequence.from([]))} and ${xdmp.describe(contentObjectB.value, Sequence.from([]), Sequence.from([]))}`);
           }
-          defaultScore += rulesetScore;
+          rulesetScore = Math.abs(rulesetScore);
         }
+        defaultScore += rulesetScore;
+        contentObjectB.matchedRulesets.push({rulesetName: matchRuleset.name(), rulesetScore});
       }
     }
     if (matchingTraceEnabled) {
@@ -264,11 +266,11 @@ export class Matchable {
           if (collation) {
             const extendedValues = [];
             for (const value of typedValues) {
-              extendedValues.push(cts.valueMatch(indexes, value, ["case-insensitive"]));
+              extendedValues.push(cts.valueMatch(indexes, value, ["case-insensitive", "score-zero", "concurrent", "eager"]));
             }
             typedValues = Sequence.from(extendedValues);
           }
-          return cts.rangeQuery(indexes, "=", typedValues)
+          return cts.rangeQuery(indexes, "=", typedValues, ["score-function=zero"]);
         });
       } else {
         const pathParts = propertyPath.split(".").filter((path) => path);
@@ -325,7 +327,7 @@ export class Matchable {
     if (values instanceof Function) return values;
     const lastPropertyDefinitionIndex = propertyDefinitions.length - 1;
     const lastPropertyDefinition = propertyDefinitions[lastPropertyDefinitionIndex];
-    const parentPropertyDefinitions = propertyDefinitions.slice(0,lastPropertyDefinitionIndex).reverse();
+    const parentPropertyDefinitions = propertyDefinitions.slice(0, lastPropertyDefinitionIndex).reverse();
     const localname = lastPropertyDefinition.localname;
     const valuesArray = hubUtils.normalizeToArray(values).filter(val => val instanceof cts.query || fn.normalizeSpace(fn.string(val)));
     if (valuesArray.length === 0) {
@@ -356,7 +358,7 @@ const cachedPropertyValues = new Map();
 
 class MatchRulesetDefinition {
   constructor(matchRulesetNode, matchable) {
-    this.matchRulesetNode = matchRulesetNode
+    this.matchRulesetNode = matchRulesetNode;
     this.matchRulesNodes = this.matchRulesetNode.xpath("matchRules");
     this.matchRuleset = matchRulesetNode.toObject();
     this.matchable = matchable;
@@ -373,6 +375,10 @@ class MatchRulesetDefinition {
     return !!this.matchRuleset.reduce;
   }
 
+  matchRules() {
+    return this.matchRuleset.matchRules;
+  }
+
   _valueFunction(matchRule, model) {
     if (!matchRule._valueFunction) {
       matchRule._valueFunction = (documentNode) => {
@@ -385,7 +391,7 @@ class MatchRulesetDefinition {
           }
         }
         return cachedPropertyValues.get(key);
-      }
+      };
     }
     return matchRule._valueFunction;
   }
@@ -400,10 +406,10 @@ class MatchRulesetDefinition {
     let allEntries = [];
     let filterNode;
     //check if filter is present in options
-    if(fn.exists(options.filter)) {
+    if (fn.exists(options.filter)) {
       filterNode = xdmp.unquote(options.filter);
     }
-    for(const entry of entries) {
+    for (const entry of entries) {
       let meetsQualifier = false;
       if (filterNode) {
         for (let node of entry.xpath(".//*")) {
@@ -431,7 +437,7 @@ class MatchRulesetDefinition {
     let matchRule = passMatchRule.toObject();
     let dictionary = matchRule.options.dictionaryURI;
     let spellOption = {
-      distanceThreshold : matchRule.options.distanceThreshold
+      distanceThreshold: matchRule.options.distanceThreshold
     };
     const suggest = hubUtils.requireFunction("/MarkLogic/spell.xqy", "suggest");
     let results = hubUtils.normalizeToArray(value).map((val) => suggest(dictionary, fn.string(val), spellOption));
@@ -441,12 +447,11 @@ class MatchRulesetDefinition {
   zipMatchFunction(value, passMatchRule) {
     let node =  fn.head(hubUtils.normalizeToSequence(value));
     let result = [node];
-    if(node.length === 5) {
+    if (node.length === 5) {
       let wildcardValue = node + "-*";
       result.push(wildcardValue);
-    }
-    else if (node) {
-      let val = fn.string(node).substring(0,5);
+    } else if (node) {
+      let val = fn.string(node).substring(0, 5);
       result.push(val);
     }
     return result;
@@ -463,28 +468,28 @@ class MatchRulesetDefinition {
         propertyQueryFunction = (values) => this.matchable.xpathQuery(matchRule.documentXPath, values, matchRule.namespaces);
       }
       switch (matchRule.matchType) {
-        case "exact":
-          matchFunction = propertyQueryFunction;
-          convertToNode = true;
-          break;
-        case "doubleMetaphone":
-          matchFunction = this.doubleMetaphoneMatchFunction;
-          convertToNode = true;
-          break;
-        case "synonym":
-          matchFunction = this.synonymMatchFunction;
-          convertToNode = true;
-          break;
-        case "zip":
-          matchFunction = this.zipMatchFunction;
-          convertToNode = true;
-          break;
-        case "custom":
-          matchFunction = hubUtils.requireFunction(matchRule.algorithmModulePath, matchRule.algorithmFunction);
-          convertToNode = /\.xq[yml]?$/.test(matchRule.algorithmModulePath);
-          break;
-        default:
-          httpUtils.throwBadRequest(`Undefined match type "${matchRule.matchType}" provided.`);
+      case "exact":
+        matchFunction = propertyQueryFunction;
+        convertToNode = true;
+        break;
+      case "doubleMetaphone":
+        matchFunction = this.doubleMetaphoneMatchFunction;
+        convertToNode = true;
+        break;
+      case "synonym":
+        matchFunction = this.synonymMatchFunction;
+        convertToNode = true;
+        break;
+      case "zip":
+        matchFunction = this.zipMatchFunction;
+        convertToNode = true;
+        break;
+      case "custom":
+        matchFunction = hubUtils.requireFunction(matchRule.algorithmModulePath, matchRule.algorithmFunction);
+        convertToNode = /\.xq[yml]?$/.test(matchRule.algorithmModulePath);
+        break;
+      default:
+        httpUtils.throwBadRequest(`Undefined match type "${matchRule.matchType}" provided.`);
       }
       matchRule._matchFunction = (values) => {
         const results = matchFunction(values, passMatchRule, passMatchStep);
@@ -508,27 +513,30 @@ class MatchRulesetDefinition {
     }
     let score = 0;
     const query = this.buildCtsQuery(contentObjectA.value);
+    const isFuzzyMatch = this.fuzzyMatch();
     if (fn.exists(query)) {
-      const hashesA = this.queryHashes(contentObjectA.value);
-      const hashesB = this.queryHashes(contentObjectB.value);
-      if (matchingDebugTraceEnabled) {
-        xdmp.trace(matchingTraceEvent, `Comparing cts.doc('${contentObjectA.uri}') hashes with cts.doc('${contentObjectB.uri}') hashes.
-        Hashes A: ${xdmp.toJsonString([...hashesA])}.
-        Hashes B: ${xdmp.toJsonString([...hashesB])}`)
-      }
-      const outerHash = hashesA.size >= hashesB.size ? hashesA: hashesB;
-      const innerHash = outerHash === hashesA ? hashesB: hashesA;
-      let queryMatches = false;
-      if (outerHash.size === 0 || innerHash.size === 0) {
+      let queryMatches = cts.contains(contentObjectB.value, query);
+      if (!queryMatches) {
+        const hashesA = this.queryHashes(contentObjectA.value);
+        const hashesB = this.queryHashes(contentObjectB.value);
         if (matchingDebugTraceEnabled) {
-          xdmp.trace(matchingTraceEvent, `Hashes are empty, so using cts.contains.`)
+          xdmp.trace(matchingTraceEvent, `Comparing cts.doc('${contentObjectA.uri}') hashes with cts.doc('${contentObjectB.uri}') hashes.
+          Hashes A: ${xdmp.toJsonString([...hashesA])}.
+          Hashes B: ${xdmp.toJsonString([...hashesB])}`);
         }
-        queryMatches = cts.contains(contentObjectB.value, query);
-      }
-      for (const hash1 of outerHash) {
-        if (innerHash.has(hash1)) {
-          queryMatches = true;
-          break;
+        const outerHash = hashesA.size >= hashesB.size ? hashesA : hashesB;
+        const innerHash = outerHash === hashesA ? hashesB : hashesA;
+        if (outerHash.size === 0 || innerHash.size === 0) {
+          if (matchingDebugTraceEnabled) {
+            xdmp.trace(matchingTraceEvent, `Hashes are empty, so using cts.contains.`);
+          }
+          queryMatches = cts.contains(contentObjectB.value, query);
+        }
+        for (const hash1 of outerHash) {
+          if (innerHash.has(hash1)) {
+            queryMatches = isFuzzyMatch || cts.contains(contentObjectB.value, query);
+            break;
+          }
         }
       }
       if (queryMatches) {
@@ -730,19 +738,20 @@ export class ThresholdDefinition {
     const firstUri = matchingDocumentSet[0].uri;
     let key;
     switch (action) {
-      case "merge":
-        const currentMergeDoc = matchingDocumentSet.find((contentObj) => fn.startsWith(contentObj.uri,"/com.marklogic.smart-mastering/merged/"));
-        if (currentMergeDoc) {
-          return currentMergeDoc.uri;
-        }
-        key = this.generateMD5Key(matchingDocumentSet);
-        const format = firstUri.substr(firstUri.lastIndexOf(".") + 1);
-        return `/com.marklogic.smart-mastering/merged/${key}.${format}`;
-      case "notify":
-        key = this.generateMD5Key(matchingDocumentSet, this.name());
-        return `/com.marklogic.smart-mastering/matcher/notifications/${key}.xml`;
-      default:
-        return firstUri;
+    case "merge": {
+      const currentMergeDoc = matchingDocumentSet.find((contentObj) => fn.startsWith(contentObj.uri, "/com.marklogic.smart-mastering/merged/"));
+      if (currentMergeDoc) {
+        return currentMergeDoc.uri;
+      }
+      key = this.generateMD5Key(matchingDocumentSet);
+      const format = firstUri.substr(firstUri.lastIndexOf(".") + 1);
+      return `/com.marklogic.smart-mastering/merged/${key}.${format}`;
+    }
+    case "notify":
+      key = this.generateMD5Key(matchingDocumentSet, this.name());
+      return `/com.marklogic.smart-mastering/matcher/notifications/${key}.xml`;
+    default:
+      return firstUri;
     }
   }
 
@@ -770,4 +779,4 @@ export default {
   MatchRulesetDefinition,
   ThresholdDefinition,
   buildActionDetails
-}
+};

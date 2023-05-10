@@ -3,9 +3,9 @@ plugins {
     id 'java-library'
     id 'java-test-fixtures'
     id 'maven-publish'
-    id 'com.marklogic.ml-gradle' version '4.4.0'
+    id 'com.marklogic.ml-gradle' version '4.5.2'
     id "com.github.node-gradle.node" version "2.2.4"
-    id 'com.marklogic.ml-development-tools' version '6.0.0'
+    id 'com.marklogic.ml-development-tools' version '6.2.0'
 
     // Declaring this at each subproject level, as declaring it at root level resulted in an error about the plugin
     // not being able to resolve its "dataFiles" configuration
@@ -28,7 +28,7 @@ group = 'com.marklogic'
 
 ext {
     dataServicesGroup = "Data Services"
-    dataServicesPath = "src/main/resources/ml-modules/root/data-hub/5/data-services"
+    dataServicesPath = "src/main/resources/ml-modules/root/data-hub/data-services"
 
     thirdPartySourcePath = "src/main/resources/ml-modules/root/data-hub/third-party"
 }
@@ -169,7 +169,7 @@ task generateDataService(type: JavaExec) {
 
 
 // Dynamically generate a task for each data-service directory, where the task can generate a Java interface for the data service
-new File("src/main/resources/ml-modules/root/data-hub/5/data-services").listFiles().each { file ->
+new File("src/main/resources/ml-modules/root/data-hub/data-services").listFiles().each { file ->
     if (file.isDirectory() && new File(file, "service.json").exists()) {
         task "generate${file.getName()}Interface"(type: com.marklogic.client.tools.gradle.EndpointProxiesGenTask, group: dataServicesGroup) {
             description = "Must run this from the ./marklogic-data-hub directory"

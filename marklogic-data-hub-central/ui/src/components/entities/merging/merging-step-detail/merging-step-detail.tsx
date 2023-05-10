@@ -160,7 +160,10 @@ const MergingStepDetail: React.FC = () => {
       setMergingStep(mergingStepArtifact);
       retrieveCalculatedMergingActivity(mergingStepArtifact);
     } else {
-      history.push("/tiles/curate");
+      setTimeout(() => {
+        history.push("/tiles/curate");
+        setViewSettings({...storage, curate: {}, match: {}});
+      }, 300);
     }
   }, [JSON.stringify(curationOptions.activeStep.stepArtifact)]);
 
@@ -587,7 +590,7 @@ const MergingStepDetail: React.FC = () => {
     setDeleteModalVisibility(false);
   };
 
-  return (
+  return Object.keys(curationOptions.activeStep.stepArtifact).length !== 0 ? (
     <>
       <CustomPageHeader
         title={mergingStep.name}
@@ -701,6 +704,8 @@ const MergingStepDetail: React.FC = () => {
         {deleteModal}
       </div>
     </>
+  ) : (
+    <></>
   );
 };
 

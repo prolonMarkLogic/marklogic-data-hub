@@ -967,7 +967,10 @@ const MappingStepDetail: React.FC = () => {
       setSavedMappingArt(mappingStepArtifact);
       setMappingStepDetailPageData(mappingStepArtifact);
     } else {
-      history.push("/tiles/curate");
+      setTimeout(() => {
+        history.push("/tiles/curate");
+        setViewSettings({...storage, curate: {}, match: {}});
+      }, 300);
     }
     return () => {
       setSourceExpandedKeys([]);
@@ -2131,7 +2134,7 @@ const MappingStepDetail: React.FC = () => {
     return paginationObject;
   };
 
-  return (
+  return Object.keys(curationOptions.activeStep.stepArtifact).length !== 0 ? (
     <>
       <CustomPageHeader
         title={
@@ -2497,6 +2500,8 @@ const MappingStepDetail: React.FC = () => {
         openStepDetails={openStepDetails}
       />
     </>
+  ) : (
+    <></>
   );
 };
 
