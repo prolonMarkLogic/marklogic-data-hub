@@ -32,7 +32,7 @@ const jsonCustomer = {
           123,
           true,
           null,
-          { "info": "text" }
+          {"info": "text"}
         ],
         "Number": 10,
         "AnotherNumber": 5,
@@ -83,7 +83,7 @@ function mapsJSONasExpected() {
 
 function mapsJSONtoXMLasExpected() {
   let mappedInstance = flowApi.runFlowStepOnContent("simpleMappingFlow", "1", [jsonCustomer],
-    { "outputFormat": "xml" }).contentArray[0].value;
+    {"outputFormat": "xml"}).contentArray[0].value;
   mappedInstance = fn.head(mappedInstance.xpath('/*:envelope/*:instance/*:Customer'));
   return [
     test.assertEqual("Bob", fn.string(mappedInstance.xpath('./firstname')), `Unexpected output: ${describe(mappedInstance)}`),

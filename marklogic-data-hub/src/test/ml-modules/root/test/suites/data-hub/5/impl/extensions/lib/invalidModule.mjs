@@ -28,7 +28,7 @@ import flowUtils from "/data-hub/5/impl/flow-utils.mjs";
 const datahub = new DataHub();
 
 
-function main(content, options)
+function main(content, options) {
 
   //grab the doc id/uri
   let id = content.uri;

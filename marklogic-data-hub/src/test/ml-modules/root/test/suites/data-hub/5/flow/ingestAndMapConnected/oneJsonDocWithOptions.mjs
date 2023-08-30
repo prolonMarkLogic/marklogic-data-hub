@@ -12,7 +12,7 @@ const options = {
   "permissions": "data-hub-operator,read,data-hub-operator,update"
 };
 const contentArray = [
-  { "uri": "/customer1.json", "value": { "customerId": "1" }}
+  {"uri": "/customer1.json", "value": {"customerId": "1"}}
 ];
 
 const response = flowApi.runFlowOnContent(flowName, contentArray, jobId, options);

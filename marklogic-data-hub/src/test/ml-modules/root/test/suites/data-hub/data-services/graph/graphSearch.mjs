@@ -10,7 +10,7 @@ function searchNodes(queryOptions) {
 
 const productQuery = {
   "searchText": "",
-  "entityTypeIds": [ "Product" ],
+  "entityTypeIds": ["Product"],
   "selectedFacets": {}
 };
 const resultsTest1 = searchNodes(productQuery);
@@ -25,7 +25,7 @@ let assertions = [
 
 const babyRegistryQuery = {
   "searchText": "",
-  "entityTypeIds": [ "BabyRegistry"],
+  "entityTypeIds": ["BabyRegistry"],
   "selectedFacets": {}
 };
 const resultsTest2 = searchNodes(babyRegistryQuery);
@@ -37,7 +37,7 @@ assertions.concat([
 
 const nsCustomerQuery = {
   "searchText": "",
-  "entityTypeIds": [ "NamespacedCustomer"],
+  "entityTypeIds": ["NamespacedCustomer"],
   "selectedFacets": {}
 };
 const nsCustomerQueryResults = searchNodes(nsCustomerQuery);
@@ -51,7 +51,7 @@ assertions.concat([
 
 const multipleQuery = {
   "searchText": "",
-  "entityTypeIds": [ "BabyRegistry", "Product" ]
+  "entityTypeIds": ["BabyRegistry", "Product"]
 };
 
 const resultsTest3 = searchNodes(multipleQuery);
@@ -69,7 +69,7 @@ assertions.concat([
 
 const withRelatedQuery = {
   "searchText": "",
-  "entityTypeIds": [ "BabyRegistry" ],
+  "entityTypeIds": ["BabyRegistry"],
   "relatedEntityTypeIds": ["Product", "Customer"]
 
 };
@@ -82,23 +82,21 @@ assertions.concat([
 ]);
 
 resultsTest4.nodes.forEach(node => {
-  if(node.id === "/content/babyRegistry1.json") {
+  if (node.id === "/content/babyRegistry1.json") {
     assertions.push(test.assertFalse(node.hasRelationships, `BabyRegistry 3039-42 must have relationships flag in false. Result: ${xdmp.toJsonString(node)}`));
-  }
-  else if(node.id === "/content/babyRegistry1.json-Product") {
+  } else if (node.id === "/content/babyRegistry1.json-Product") {
     assertions.push(test.assertFalse(node.hasRelationships, `Product group node must have relationships flag in false. Result: ${xdmp.toJsonString(node)}`));
-  }
-  else if(node.id === "/content/customer1.json") {
+  } else if (node.id === "/content/customer1.json") {
     assertions.push(test.assertTrue(node.hasRelationships, `Customer 301 node must have relationships flag in true. Result: ${xdmp.toJsonString(node)}`));
     assertions.push(test.assertEqual("Columbus", node.propertiesOnHover.filter((p) => !!p["shipping.city"])[0]["shipping.city"], `Customer 301 node must have propertiesOnHover for shipping.city. Result: ${xdmp.toJsonString(node)}`));
   }
-})
+});
 
 // The relationship is defined in BabyRegistry model. But when searched for Customer, since there is a relation between
 // Customer and Baby Registry, BabyRegistry's related nodes and edges should be returned.
 const customerQuery = {
   "searchText": "",
-  "entityTypeIds": [ "Customer" ],
+  "entityTypeIds": ["Customer"],
   "relatedEntityTypeIds": ["BabyRegistry"],
   "selectedFacets": {}
 };
@@ -124,7 +122,7 @@ assertions.push(test.assertEqual("/content/customer without id.json", customerWi
 
 const nodeLeafQuery = {
   "searchText": "",
-  "entityTypeIds": [ "BabyRegistry" ],
+  "entityTypeIds": ["BabyRegistry"],
   "relatedEntityTypeIds": ["Customer"]
 };
 
@@ -137,17 +135,16 @@ assertions.concat([
 ]);
 
 resultsTest5.nodes.forEach(node => {
-  if(node.id === "/content/babyRegistry1.json") {
+  if (node.id === "/content/babyRegistry1.json") {
     assertions.push(test.assertTrue(node.hasRelationships, `BabyRegistry 3039-42 must have relationships flag in true. Result: ${xdmp.toJsonString(node)}`));
-  }
-  else if(node.id === "/content/customer1.json") {
+  } else if (node.id === "/content/customer1.json") {
     assertions.push(test.assertTrue(node.hasRelationships, `Customer 301 node must have relationships flag in true. Result: ${xdmp.toJsonString(node)}`));
   }
-})
+});
 
 const searchTextQuery = {
   "searchText": "Infant Newborn Toddler",
-  "entityTypeIds": [ "Product" ]
+  "entityTypeIds": ["Product"]
 };
 
 const resultsTestSearchBy = searchNodes(searchTextQuery);
@@ -161,12 +158,12 @@ assertions.concat([
 
 resultsTestSearchBy.nodes.forEach(node => {
   test.assertTrue((node.group.toString().includes("Product") || node.group.toString().includes("BasketballShoes") || node.group.toString().includes("test concept instanc")), xdmp.toJsonString(node));
-})
+});
 
 
 const RelatedByPropertyDifferentFromID = {
   "searchText": "",
-  "entityTypeIds": [ "Customer" ],
+  "entityTypeIds": ["Customer"],
   "relatedEntityTypeIds": ["Office"]
 };
 
@@ -182,8 +179,8 @@ assertions.concat([
 
 const conceptFilterQuery = {
   "searchText": "",
-  "entityTypeIds": [ "Product" ],
-  "conceptsFilterTypeIds": [ "http://www.example.com/Category/Sneakers" ]
+  "entityTypeIds": ["Product"],
+  "conceptsFilterTypeIds": ["http://www.example.com/Category/Sneakers"]
 };
 
 const resultsConceptFilter = searchNodes(conceptFilterQuery);
@@ -192,14 +189,14 @@ expectedEdgeCount = 1;
 
 assertions.concat([
   test.assertEqual(expectedNodeCount, resultsConceptFilter.total),
-  test.assertEqual(expectedNodeCount, resultsConceptFilter.nodes.length, xdmp.toJsonString({ query: conceptFilterQuery, results: resultsConceptFilter})),
+  test.assertEqual(expectedNodeCount, resultsConceptFilter.nodes.length, xdmp.toJsonString({query: conceptFilterQuery, results: resultsConceptFilter})),
   test.assertEqual(expectedEdgeCount, resultsConceptFilter.edges.length),
 ]);
 
 const conceptFilterQuery2 = {
   "searchText": "",
-  "entityTypeIds": [ "Product" ],
-  "conceptsFilterTypeIds": [ "http://www.example.com/Category/BasketballShoes" ]
+  "entityTypeIds": ["Product"],
+  "conceptsFilterTypeIds": ["http://www.example.com/Category/BasketballShoes"]
 };
 
 const resultsConceptFilter2 = searchNodes(conceptFilterQuery2);
@@ -214,8 +211,8 @@ assertions.concat([
 
 const conceptFilterQuery3 = {
   "searchText": "",
-  "entityTypeIds": [ "Product" ],
-  "conceptsFilterTypeIds": [ "http://www.example.com/Category/Sneakers","http://www.example.com/Category/BasketballShoes" ]
+  "entityTypeIds": ["Product"],
+  "conceptsFilterTypeIds": ["http://www.example.com/Category/Sneakers", "http://www.example.com/Category/BasketballShoes"]
 };
 
 const resultsConceptFilter3 = searchNodes(conceptFilterQuery3);
@@ -230,7 +227,7 @@ assertions.concat([
 
 const ConceptWithHasRelationship = {
   "searchText": "",
-  "entityTypeIds": [ "Office" ]
+  "entityTypeIds": ["Office"]
 };
 
 const resultConceptWithHasRelationship = searchNodes(ConceptWithHasRelationship);
@@ -243,20 +240,19 @@ assertions.concat([
 ]);
 
 resultConceptWithHasRelationship.nodes.forEach(node => {
-  if(node.id === "/content/office1.json") {
+  if (node.id === "/content/office1.json") {
     assertions.push(test.assertTrue(node.hasRelationships, "Office 1 must have relationships flag in true."));
     assertions.push(test.assertFalse(node.isConcept, "Office 1 shouldn't be a concept."));
-  }
-  else if(node.id === "http://www.example.com/Category/Sneakers") {
+  } else if (node.id === "http://www.example.com/Category/Sneakers") {
     assertions.push(test.assertTrue(node.hasRelationships), "Should have relationships flag set to true.");
     assertions.push(test.assertTrue(node.isConcept, "Sneakers should be a concept."));
     assertions.push(test.assertEqual("ClothType", fn.string(node.conceptClassName), "Sneakers should have a concept class name of ShoeType."));
   }
-})
+});
 
 const structuredConceptQuery = {
   "searchText": "",
-  "entityTypeIds": [ "Customer"],
+  "entityTypeIds": ["Customer"],
   "selectedFacets": {}
 };
 const structuredConceptQueryResults = searchNodes(structuredConceptQuery);
@@ -270,14 +266,14 @@ assertions.concat([
 
 const withAllEntitiesSelectedQuery = {
   "searchText": "",
-  "entityTypeIds": [ "BabyRegistry","Product", "Customer", "NamespacedCustomer", "Office"]
+  "entityTypeIds": ["BabyRegistry", "Product", "Customer", "NamespacedCustomer", "Office"]
 
 };
 const resultsAllEntitiesSelected = searchNodes(withAllEntitiesSelectedQuery);
 
 
 resultsAllEntitiesSelected.nodes.forEach(node => {
-    test.assertFalse(node.count != null && node.count > 1, `a node with count greater than 1 must not exists: ${xdmp.toJsonString(node)}`);
-})
+  test.assertFalse(node.count != null && node.count > 1, `a node with count greater than 1 must not exists: ${xdmp.toJsonString(node)}`);
+});
 
 assertions;

@@ -14,13 +14,13 @@ export const DocumentForTestingUtils = {
     // Found it difficult to figure out how to load a mapping step via test-data directory and get it into the collection
     // required by mapping.sjs' getArtifactNode().  Going this route instead.
     stepService.createDefaultMappingStep(DocumentForTestingUtils.STEP_NAME1);
-    stepService.updateStep('mapping',{
+    stepService.updateStep('mapping', {
       name: DocumentForTestingUtils.STEP_NAME1,
       sourceDatabase: DocumentForTestingUtils.DATABASE_NAME,
       sourceQuery: 'cts.collectionQuery("raw-content")'
     });
     stepService.createDefaultMappingStep(DocumentForTestingUtils.STEP_NAME2);
-    stepService.updateStep('mapping',{
+    stepService.updateStep('mapping', {
       name: DocumentForTestingUtils.STEP_NAME2,
       sourceDatabase: DocumentForTestingUtils.DATABASE_NAME,
       sourceRecordScope: 'entireRecord',
@@ -67,8 +67,8 @@ export const DocumentForTestingUtils = {
     assertions.push(test.assertTrue(struct === property.struct, `Expected ${struct} for the "struct" value for the source property with the "${xpath}" xpath but got ${property.struct}`));
     assertions.push(test.assertEqual(level, property.level, `Unexpected "level" value for the source property with the "${xpath}" xpath`));
   }
-}
+};
 
 export default {
   DocumentForTestingUtils
-}
+};

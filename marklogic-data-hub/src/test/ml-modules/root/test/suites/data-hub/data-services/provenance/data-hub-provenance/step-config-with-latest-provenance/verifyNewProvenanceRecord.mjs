@@ -7,6 +7,6 @@ const jobId = "verifyNewProvenanceRecord-jobId";
 const recordOpts = {
   "startDateTime": fn.currentDateTime(),
   "user": xdmp.getCurrentUser()
-}
+};
 const record = provLib.newProvenanceRecord(jobId, recordOpts);
 assertLib.verifyNewProvenanceRecord(record, jobId);

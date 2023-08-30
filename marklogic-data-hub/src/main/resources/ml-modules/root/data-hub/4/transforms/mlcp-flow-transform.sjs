@@ -23,7 +23,7 @@ const tracelib = require("/data-hub/4/impl/trace-lib.sjs");
 const ERROR_CODE = "RESTAPI-SRVEXERR";
 
 // not throwing error with shared lib to avoid call to MJS
-function throwNotFoundWithArray(args){
+function throwNotFoundWithArray(args) {
   fn.error(null, ERROR_CODE, Sequence.from([404].concat(args)));
 }
 
@@ -35,10 +35,9 @@ function transform(content, context) {
   let transformString = context.transform_param;
   let pattern = '^.*(options=\{.*\}).*$';
   let match = new RegExp(pattern).exec(transformString);
-  if (match === null){
+  if (match === null) {
     parsedTransformParam = transformString;
-  }
-  else{
+  } else {
     optionsString = match[1];
     parsedTransformParam = transformString.replace(optionsString, '');
   }

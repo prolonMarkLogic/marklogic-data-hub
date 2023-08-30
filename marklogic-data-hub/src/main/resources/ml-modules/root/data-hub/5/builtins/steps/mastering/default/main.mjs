@@ -22,8 +22,8 @@ const emptySequence = Sequence.from([]);
 function main(content, options, stepExecutionContext) {
   const filteredContent = [];
   masteringStepLib.checkOptions(content, options, filteredContent);
-  let mergeOptions = new NodeBuilder().addNode({ options: options.mergeOptions }).toNode();
-  let matchOptions = new NodeBuilder().addNode({ options: options.matchOptions }).toNode();
+  let mergeOptions = new NodeBuilder().addNode({options: options.mergeOptions}).toNode();
+  let matchOptions = new NodeBuilder().addNode({options: options.matchOptions}).toNode();
   // Data Hub will persist the results for us.
   let persistResults = false;
   if (filteredContent.length) {
@@ -43,7 +43,7 @@ function main(content, options, stepExecutionContext) {
 
 
 function jobReport(jobID, stepResponse, options, outputContentArray) {
-   return masteringStepLib.jobReport(jobID, stepResponse, options, outputContentArray, requiredOptionProperties);
+  return masteringStepLib.jobReport(jobID, stepResponse, options, outputContentArray, requiredOptionProperties);
 }
 
 export default {

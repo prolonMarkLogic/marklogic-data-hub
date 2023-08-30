@@ -1,7 +1,7 @@
 const test = require('/test/test-helper.xqy');
 const lib = require('/test/suites/data-hub/5/smart-mastering/merging-json/lib/lib.xqy');
 const merging = require('/com.marklogic.smart-mastering/merging.xqy');
-const con = require('/com.marklogic.smart-mastering/constants.xqy')
+const con = require('/com.marklogic.smart-mastering/constants.xqy');
 
 const actual = fn.head(merging.getJsonOptions(lib['OPTIONS-NAME'])).toObject();
 
@@ -24,27 +24,27 @@ for (let prop of actual.options.propertyDefs.properties) {
     assertions.push(
       test.assertEqual('IdentificationID', prop.localname),
       test.assertEqual('', prop.namespace)
-    )
+    );
   } else if (prop.name === 'name') {
     assertions.push(
       test.assertEqual('PersonName', prop.localname),
       test.assertEqual('', prop.namespace)
-    )
+    );
   } else if (prop.name === 'address') {
     assertions.push(
       test.assertEqual('Address', prop.localname),
       test.assertEqual('', prop.namespace)
-    )
+    );
   } else if (prop.name === 'deep') {
     assertions.push(
       test.assertEqual('/es:envelope/es:headers/custom/this/has:a/deep/path', prop.path),
       test.assertNotExists(prop.namespace),
       test.assertNotExists(prop.localname)
-    )
+    );
   } else {
-    test.fail('Unexpected property: ' + prop.name)
+    test.fail('Unexpected property: ' + prop.name);
   }
-};
+}
 
 for (let alg of actual.options.algorithms.custom) {
   if (alg.name === 'name') {
@@ -59,7 +59,7 @@ for (let alg of actual.options.algorithms.custom) {
       test.assertEqual('http://marklogic.com/smart-mastering/merging', alg.namespace)
     );
   } else {
-    test.fail('Unexpected algorithm: ' + alg.name)
+    test.fail('Unexpected algorithm: ' + alg.name);
   }
 }
 
@@ -67,7 +67,7 @@ for (let merge of actual.options.merging) {
   if (merge.propertyName === 'ssn') {
     assertions.push(
       test.assertEqual('docA', merge.sourceRef.documentUri)
-    )
+    );
   } else if (merge.propertyName === 'name') {
     assertions.push(
       test.assertEqual('1', merge.maxValues),
@@ -75,19 +75,19 @@ for (let merge of actual.options.merging) {
       test.assertEqual('true', merge.synonymsSupport),
       test.assertEqual('/mdm/config/thesauri/first-name-synonyms.xml', merge.thesaurus),
       test.assertEqual('8', merge.length.weight)
-    )
+    );
   } else if (merge.propertyName === 'address') {
     assertions.push(
       test.assertEqual('1', merge.maxValues),
       test.assertEqual('standard', merge.algorithmRef),
       test.assertEqual('SOURCE2', merge.sourceWeights[0].source.name),
       test.assertEqual('10', merge.sourceWeights[0].source.weight)
-    )
+    );
   } else {
-    test.fail('Unexpected property: ' + merge.propertyName)
+    test.fail('Unexpected property: ' + merge.propertyName);
   }
 }
 
 
 
-assertions
+assertions;

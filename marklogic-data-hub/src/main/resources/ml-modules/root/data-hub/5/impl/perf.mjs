@@ -36,7 +36,7 @@ export default class Performance {
   }
 
   instrumentStep(executionContext, fun, jobId, batchId, flowName, stepModule, uri) {
-    return this.instrumentFunction(executionContext, fun, stepMetric, { jobId, batchId, flowName, stepModule, uri });
+    return this.instrumentFunction(executionContext, fun, stepMetric, {jobId, batchId, flowName, stepModule, uri});
   }
 
   instrumentDataHub(datahubObject, hierarchy = "datahub") {
@@ -72,7 +72,7 @@ export default class Performance {
       let startElapsed = xdmp.elapsedTime();
       let result = fun.apply(executionContext, arguments);
       let endElapsed = xdmp.elapsedTime();
-      let profileOutput = Object.assign({ time: fn.currentDateTime(), elapsedTime: endElapsed.subtract(startElapsed) }, details);
+      let profileOutput = Object.assign({time: fn.currentDateTime(), elapsedTime: endElapsed.subtract(startElapsed)}, details);
       if (profileType === stepMetric) {
         perfInstance.stepMetrics.push(profileOutput);
       } else {

@@ -1,12 +1,11 @@
-'use strict'
+'use strict';
 
 function orderedMerge(propertyName, properties, propertySpec) {
   const sortedProperties = properties.sort((a, b) => {
     if (propertySpec.goHigh) {
       if (a.values > b.values) return -1;
       if (a.values < b.values) return 1;
-    }
-    else {
+    } else {
       if (a.values < b.values) return -1;
       if (a.values > b.values) return 1;
     }

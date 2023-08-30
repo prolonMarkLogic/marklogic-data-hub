@@ -33,4 +33,4 @@ const assertions = [
   )
 ];
 
-assertions
+assertions;

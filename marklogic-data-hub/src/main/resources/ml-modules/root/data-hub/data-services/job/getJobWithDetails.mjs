@@ -25,7 +25,7 @@ const jobId = external.jobId;
 const jobWithDetails = jobs.getJobWithDetails(jobId);
 
 if (jobWithDetails) {
-    jobWithDetails;
+  jobWithDetails;
 } else {
-    httpUtils.throwNotFound(`Job with ID '${jobId}' not found`);
+  httpUtils.throwNotFound(`Job with ID '${jobId}' not found`);
 }

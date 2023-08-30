@@ -40,6 +40,6 @@ assertions.push(
     "definition; this is expected behavior for DHF, though it could certainly be considered a bug by a user that " +
     "wants to have multiple entity definitions with the same name and different config in separate models. This test " +
     "has been added to document this behavior as expected, as it's been that way since at least DHF 4.")
-)
+);
 
 assertions;

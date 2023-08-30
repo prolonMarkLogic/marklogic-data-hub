@@ -4,7 +4,7 @@ xdmp.invokeFunction(() => {
   const hubTestX = require("/test/data-hub-test-helper.xqy");
 
   hubTestX.resetHub();
-}, { update: "true" });
+}, {update: "true"});
 
 xdmp.invokeFunction(() => {
   const defaultStep = {};
@@ -16,4 +16,4 @@ xdmp.invokeFunction(() => {
   };
 
   hubTest.createSimpleMappingProject([defaultStep, stepThatThrowsError]);
-}, { update: "true" });
+}, {update: "true"});

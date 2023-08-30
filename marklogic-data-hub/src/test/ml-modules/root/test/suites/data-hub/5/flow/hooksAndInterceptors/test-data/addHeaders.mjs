@@ -1,4 +1,4 @@
-let { contentArray, options, stepExecutionContext, headerNameToAdd, headerValueToAdd } = external;
+let {contentArray, options, stepExecutionContext, headerNameToAdd, headerValueToAdd} = external;
 
 contentArray.forEach(content => {
   const contentValue = content.value.toObject();

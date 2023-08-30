@@ -6,7 +6,7 @@ function main(content, options) {
   let contentValue = content["value"];
   const contentContext = content["context"];
 
-  if(hubUtils.isJsonDocument(contentValue)) {
+  if (hubUtils.isJsonDocument(contentValue)) {
     contentValue = contentValue.toObject();
     contentValue = (contentValue && contentValue.content) ? contentValue.content : contentValue;
   }

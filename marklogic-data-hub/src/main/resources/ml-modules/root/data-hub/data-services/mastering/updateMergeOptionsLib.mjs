@@ -1,7 +1,6 @@
 'use strict';
 
-function updateMergeOptions(opt)
-{
+function updateMergeOptions(opt) {
   let mergeRules = [];
   let mergeStrategies = [];
   let newOpt = {
@@ -23,24 +22,22 @@ function updateMergeOptions(opt)
   }
 
   if (opt.mergeStrategies) {
-    opt.mergeStrategies.forEach((item) =>
-      {
-        mergeStrategies.push(strategy(item, algorithms));
-      }
+    opt.mergeStrategies.forEach((item) => {
+      mergeStrategies.push(strategy(item, algorithms));
+    }
     );
   }
 
   if (opt.merging) {
     const namespaces = opt.propertyDefs ? opt.propertyDefs.namespaces : {};
-    opt.merging.forEach((item) =>
-      {
-        // The default merge rule has moved to merge strategies
-        if (item.default) {
-          mergeStrategies.push(strategy(Object.assign({ name: "Default Strategy"},item), algorithms));
-        } else {
-          mergeRules.push(mergeRule(item, algorithms, properties, namespaces));
-        }
+    opt.merging.forEach((item) => {
+      // The default merge rule has moved to merge strategies
+      if (item.default) {
+        mergeStrategies.push(strategy(Object.assign({name: "Default Strategy"}, item), algorithms));
+      } else {
+        mergeRules.push(mergeRule(item, algorithms, properties, namespaces));
       }
+    }
     );
   }
 
@@ -89,7 +86,7 @@ function updateMergeOptions(opt)
     }
   }
 
-  return newOpt
+  return newOpt;
 }
 
 function strategy(item, algorithms) {
@@ -106,15 +103,14 @@ function strategy(item, algorithms) {
     }
     if (item.sourceWeights) {
       let sources = [];
-      item.sourceWeights.forEach((sw) =>
-        {
-          if (sw.source) {
-            let source = {};
-            source.sourceName = sw.source.name;
-            source.weight = Number(sw.source.weight);
-            sources.push(source);
-          }
+      item.sourceWeights.forEach((sw) => {
+        if (sw.source) {
+          let source = {};
+          source.sourceName = sw.source.name;
+          source.weight = Number(sw.source.weight);
+          sources.push(source);
         }
+      }
       );
       priorityOrder.sources = sources;
     }
@@ -149,8 +145,7 @@ function mergeRule(item, algorithms, properties, namespaces) {
         if (namespaces) {
           mr.namespaces = namespaces;
         }
-      }
-      else if (prop.localname) {
+      } else if (prop.localname) {
         mr.entityPropertyPath = prop.localname;
       }
     } else {
@@ -167,22 +162,21 @@ function mergeRule(item, algorithms, properties, namespaces) {
     }
     if (item.sourceWeights) {
       let sources = [];
-      item.sourceWeights.forEach((sw) =>
-        {
-          if (sw.source) {
-            let source = {};
-            source.sourceName = sw.source.name;
-            source.weight = sw.source.weight;
-            sources.push(source);
-          }
+      item.sourceWeights.forEach((sw) => {
+        if (sw.source) {
+          let source = {};
+          source.sourceName = sw.source.name;
+          source.weight = sw.source.weight;
+          sources.push(source);
         }
+      }
       );
       priorityOrder.sources = sources;
     }
     mr.priorityOrder = priorityOrder;
   }
 
-  return mr
+  return mr;
 }
 
 function targetCollectionObject(parent) {
@@ -191,10 +185,9 @@ function targetCollectionObject(parent) {
   if (parent.remove && parent.remove.collection) { obj.remove = parent.remove.collection; }
   if (obj.add || obj.remove) {
     return obj;
-  }
-  else {
+  } else {
     return null;
   }
 }
 
-export default { updateMergeOptions };
+export default {updateMergeOptions};

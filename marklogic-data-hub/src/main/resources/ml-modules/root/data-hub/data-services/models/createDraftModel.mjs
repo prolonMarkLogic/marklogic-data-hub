@@ -32,9 +32,9 @@ if (name == null) {
   httpUtils.throwBadRequest("The model must have an info object with a title property");
 }
 
-const entityModel = entityLib.findDraftModelByEntityName(name)
+const entityModel = entityLib.findDraftModelByEntityName(name);
 if (entityModel) {
-  if(!entityModel.info.draftDeleted) {
+  if (!entityModel.info.draftDeleted) {
     httpUtils.throwBadRequest(`An entity type is already using the name ${name}. An entity type cannot use the same name as an existing entity type.`);
   }
 } else if (fn.docAvailable(entityLib.getModelUri(name))) {
@@ -52,11 +52,11 @@ model.definitions[name] = {
   properties: {}
 };
 
-if(namespace || namespacePrefix){
-  if(!namespace){
+if (namespace || namespacePrefix) {
+  if (!namespace) {
     httpUtils.throwBadRequest(`You cannot enter a prefix without specifying a namespace URI `);
   }
-  if(!namespacePrefix){
+  if (!namespacePrefix) {
     httpUtils.throwBadRequest(`Since you entered a namespace, you must specify a prefix.`);
   }
   model.definitions[name].namespace = namespace;
@@ -72,14 +72,13 @@ if (input.description) {
 //   model.info.version = version;
 // }
 
-if(hubCentralConfig){
+if (hubCentralConfig) {
   model.hubCentral = hubCentralConfig;
 }
 
-try{
+try {
   entityLib.writeDraftModel(name, model);
-}
-catch (e){
+} catch (e) {
   httpUtils.throwBadRequest(hubUtils.getErrorMessage(e));
 }
 

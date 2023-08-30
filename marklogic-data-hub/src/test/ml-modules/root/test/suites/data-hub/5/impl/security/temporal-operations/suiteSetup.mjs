@@ -40,41 +40,42 @@ xdmp.invokeFunction(() => {
   };
 
   const matchStep = {
-    "name" : "match-customers",
-    "stepDefinitionName" : "default-matching",
-    "stepDefinitionType" : "MATCHING",
-    "sourceQuery" : "cts.collectionQuery('kool')",
-    "targetEntityType" : "http://example.org/Customer-0.0.1/Customer",
-    "sourceDatabase" : "data-hub-FINAL",
-    "targetDatabase" : "data-hub-FINAL",
-    "targetFormat" : "json",
-    "stepId" : "match-customers-matching",
-    "matchRulesets" : [ {
-    "name" : "customerId - Exact",
-    "weight" : 10,
-    "matchRules" : [ {
-      "entityPropertyPath" : "customerId",
-      "matchType" : "exact",
-      "options" : { }
-    } ]
-  } ],
-    "thresholds" : [ {
-    "thresholdName" : "Definitive Match",
-    "action" : "merge",
-    "score" : 10
-  } ]
+    "name": "match-customers",
+    "stepDefinitionName": "default-matching",
+    "stepDefinitionType": "MATCHING",
+    "sourceQuery": "cts.collectionQuery('kool')",
+    "targetEntityType": "http://example.org/Customer-0.0.1/Customer",
+    "sourceDatabase": "data-hub-FINAL",
+    "targetDatabase": "data-hub-FINAL",
+    "targetFormat": "json",
+    "stepId": "match-customers-matching",
+    "matchRulesets": [{
+      "name": "customerId - Exact",
+      "weight": 10,
+      "matchRules": [{
+        "entityPropertyPath": "customerId",
+        "matchType": "exact",
+        "options": { }
+      }]
+    }],
+    "thresholds": [{
+      "thresholdName": "Definitive Match",
+      "action": "merge",
+      "score": 10
+    }]
   };
 
   hubTest.createSimpleProject("simpleMatchingFlow",
     [matchStep],
     customerModel);
-}, { update: "true" });
+}, {update: "true"});
 
 hubTest.runWithRolesAndPrivileges(roles, [], function () {
   xdmp.invokeFunction(function () {
     try {
       temporal.axisRemove("system");
     } catch (e) {
+      xdmp.log(`Error' Reason: ${xdmp.toJsonString(e)}`);
     }
   }, {update: "true"});
 });
@@ -85,11 +86,12 @@ hubTest.runWithRolesAndPrivileges(roles, [], function () {
     let config = admin.getConfiguration();
     let elementRangeIndexes = [
       admin.databaseRangeElementIndex("dateTime", "", "systemStart", "", fn.false()),
-      admin.databaseRangeElementIndex("dateTime", "", "systemEnd", "", fn.false())]
+      admin.databaseRangeElementIndex("dateTime", "", "systemEnd", "", fn.false())];
     elementRangeIndexes.forEach((elementRangeIndex) => {
       try {
         config = admin.databaseAddRangeElementIndex(config, xdmp.database(), elementRangeIndex);
       } catch (e) {
+        xdmp.log(`Error' Reason: ${xdmp.toJsonString(e)}`);
       }
     });
     admin.saveConfiguration(config);

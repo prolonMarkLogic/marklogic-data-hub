@@ -19,21 +19,21 @@ import hubTest from "/test/data-hub-test-helper.mjs";
 const test = require("/test/test-helper.xqy");
 
 const assertions = hubTest.runWithRolesAndPrivileges(['data-hub-developer'], [],
-    function() {
-      const contentWithNoPermissions = {uri: "/a.json", value: {"a":true}};
-      flowUtils.writeContentArray([contentWithNoPermissions]);
+  function() {
+    const contentWithNoPermissions = {uri: "/a.json", value: {"a": true}};
+    flowUtils.writeContentArray([contentWithNoPermissions]);
 
-      const record = hubTest.getRecord("/a.json");
-      const message = "In the absence of configured permissions, the user's default permissions should be used; " +
+    const record = hubTest.getRecord("/a.json");
+    const message = "In the absence of configured permissions, the user's default permissions should be used; " +
         "a user with data-hub-developer should have default tde-admin and tde-view permissions since it inherits " +
         "the tde-admin role; record: " + xdmp.toJsonString(record);
-      return [
-        test.assertEqual("read", record.permissions["tde-admin"][0], message),
-        test.assertEqual("update", record.permissions["tde-admin"][1], message),
-        test.assertEqual("read", record.permissions["tde-view"][0], message),
-        test.assertEqual(2, Object.keys(record.permissions).length, message)
-      ]
-    }
+    return [
+      test.assertEqual("read", record.permissions["tde-admin"][0], message),
+      test.assertEqual("update", record.permissions["tde-admin"][1], message),
+      test.assertEqual("read", record.permissions["tde-view"][0], message),
+      test.assertEqual(2, Object.keys(record.permissions).length, message)
+    ];
+  }
 );
 
-assertions
+assertions;

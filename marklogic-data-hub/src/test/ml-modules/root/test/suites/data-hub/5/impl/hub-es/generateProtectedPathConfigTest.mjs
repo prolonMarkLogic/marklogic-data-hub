@@ -76,7 +76,7 @@ function multipleProtectedPropertiesWithNamespace() {
 
     test.assertEqual("pii-reader", result.config["query-roleset"]["role-name"][0])
   ];
-};
+}
 
 function multipleEntityDefinitionsWithProtectedProperties() {
   const result = hubEs.generateProtectedPathConfig([

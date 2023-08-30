@@ -89,7 +89,7 @@ modelResponseArr.sort(function(modelA, modelB) {
   return 0;
 });
 
-modelResponseArr = modelResponseArr.concat(conceptResponseArr)
+modelResponseArr = modelResponseArr.concat(conceptResponseArr);
 
 function buildConceptResponse(modelObject) {
   const conceptName = modelObject.info.name;
@@ -101,10 +101,10 @@ function buildConceptResponse(modelObject) {
 
 }
 
-function getEntityOrConceptName(modelObject){
+function getEntityOrConceptName(modelObject) {
   if (modelObject.hasOwnProperty("entityName")) {
     return modelObject.entityName;
-  }else{
+  } else {
     return modelObject.conceptName;
   }
 }

@@ -45,7 +45,7 @@ function getModuleNs(type) {
 }
 
 function getFlow(entityName, flowName, flowType) {
-  let duration = xs.dayTimeDuration("PT10S")
+  let duration = xs.dayTimeDuration("PT10S");
   let key = FLOW_CACHE_KEY_PREFIX + entityName + flowName + flowType;
   let flow =  fn.head(hul.fromFieldCacheOrEmpty(key, duration));
   if (!flow) {
@@ -105,8 +105,7 @@ function runFlow(jobId, flow, identifier, content, options, mainFunc) {
   return runMain(itemContext, mainFunc);
 }
 
-function cleanData(resp, destination, dataFormat)
-{
+function cleanData(resp, destination, dataFormat) {
   if (resp instanceof Document) {
     if (fn.count(resp.xpath('node()')) > 1) {
       fn.error(null, "DATAHUB-TOO-MANY-NODES", Sequence.from([400, "Too Many Nodes!. Return just 1 node"]));
@@ -125,28 +124,23 @@ function cleanData(resp, destination, dataFormat)
     // object with $type key is ES response type
     if (resp instanceof Object && resp.hasOwnProperty('$type')) {
       return resp;
-    }
-    else if (dataFormat === consts.XML) {
+    } else if (dataFormat === consts.XML) {
       return json.transformFromJson(resp, json.config("custom"));
-    }
-    else {
+    } else {
       return resp;
     }
   } else if (resp instanceof ArrayNode || resp instanceof Array) {
     if (dataFormat === consts.XML) {
       return json.arrayValues(resp);
-    }
-    else {
+    } else {
       return resp;
     }
   } else if (resp === null) {
     if (destination === "headers" && dataFormat === consts.JSON) {
       return {};
-    }
-    else if (destination === "triples" && dataFormat === consts.JSON) {
+    } else if (destination === "triples" && dataFormat === consts.JSON) {
       return [];
-    }
-    else {
+    } else {
       return resp;
     }
   }
@@ -162,7 +156,7 @@ function cleanData(resp, destination, dataFormat)
 
 function tripleToXml(triple) {
   let n = json.transformFromJson({trip: triple}, json.config("custom"));
-  return fn.head(n).xpath('node()')
+  return fn.head(n).xpath('node()');
 }
 
 /**
@@ -173,15 +167,14 @@ function tripleToXml(triple) {
  */
 
 function cleanXMLforJSON(input) {
-  for(let node in input) {
-    if(node instanceof Text){
-      fn.replace(node,"<\?[^>]+\?>","")
-    } else if(node instanceof Element){
-    } else if(node instanceof Comment){
+  for (let node in input) {
+    if (node instanceof Text) {
+      fn.replace(node, "<\?[^>]+\?>", "");
+    } else if (node instanceof Comment) {
       return;
-    } else if (node instanceof ProcessingInstruction){
+    } else if (node instanceof ProcessingInstruction) {
       return;
-    }else {
+    } else {
       return node;
     }
   }
@@ -205,14 +198,13 @@ function makeEnvelope(content, headers, triples, dataFormat) {
         title: content['$type'],
         version: content['$version']
       };
-    }
-    else {
+    } else {
       instance = content;
     }
 
     let attachments = null;
     if (content instanceof Object && content.hasOwnProperty("$attachments")) {
-      if(content['$attachments'] instanceof Element){
+      if (content['$attachments'] instanceof Element) {
         let config = json.config('custom');
         config['element-namespace'] = "http://marklogic.com/entity-services";
         attachments = json.transformToJson(flowlib.cleanXmlForJson(content['$attachments']), config);
@@ -229,87 +221,83 @@ function makeEnvelope(content, headers, triples, dataFormat) {
         attachments: attachments
       }
     };
-  }
-  else if (dataFormat === consts.XML) {
+  } else if (dataFormat === consts.XML) {
     const nb = new NodeBuilder();
     nb.startDocument();
-      nb.startElement("envelope", "http://marklogic.com/entity-services");
-        nb.startElement("headers", "http://marklogic.com/entity-services");
-        if (headers && headers instanceof Sequence) {
-          for (let header of headers) {
-            nb.addNode(header);
-          }
-        } else if(headers) {
-          nb.addNode(headers);
-        }
-        nb.endElement();
+    nb.startElement("envelope", "http://marklogic.com/entity-services");
+    nb.startElement("headers", "http://marklogic.com/entity-services");
+    if (headers && headers instanceof Sequence) {
+      for (let header of headers) {
+        nb.addNode(header);
+      }
+    } else if (headers) {
+      nb.addNode(headers);
+    }
+    nb.endElement();
 
-        nb.startElement("triples", "http://marklogic.com/entity-services");
-        if (triples && triples instanceof Sequence) {
-          for (let triple of triples) {
-            if (triple instanceof sem.triple) {
-              nb.addNode(tripleToXml(triple));
-            }
-            else {
-              nb.addNode(triple);
-            }
-          }
-        } else if (triples) {
-          if (triples instanceof sem.triple) {
-            nb.addNode(tripleToXml(triples));
-          }
-          else {
-            nb.addNode(triples);
-          }
+    nb.startElement("triples", "http://marklogic.com/entity-services");
+    if (triples && triples instanceof Sequence) {
+      for (let triple of triples) {
+        if (triple instanceof sem.triple) {
+          nb.addNode(tripleToXml(triple));
+        } else {
+          nb.addNode(triple);
         }
-        nb.endElement();
+      }
+    } else if (triples) {
+      if (triples instanceof sem.triple) {
+        nb.addNode(tripleToXml(triples));
+      } else {
+        nb.addNode(triples);
+      }
+    }
+    nb.endElement();
 
-        nb.startElement("instance", "http://marklogic.com/entity-services");
-        if (content instanceof Object && content.hasOwnProperty("$type")) {
-          nb.startElement("info", "http://marklogic.com/entity-services");
-            nb.startElement("title", "http://marklogic.com/entity-services");
-              nb.addText(content["$type"]);
-            nb.endElement();
-            nb.startElement("version", "http://marklogic.com/entity-services");
-              nb.addText(content["$version"]);
-            nb.endElement();
-          nb.endElement();
-          let canonical = instanceToCanonicalXml(content);
-          if (canonical) {
-            nb.addNode(canonical);
-          }
-        }
-        else if (content) {
-          if (content instanceof Sequence) {
-            for (let c of content) {
-              nb.addNode(c);
-            }
-          } else if (tracelib.isXmlNode(content)) {
-            nb.addNode(content);
-          } else {
-            nb.addText(content.toString());
-          }
-        }
-        nb.endElement();
-
-        nb.startElement("attachments", "http://marklogic.com/entity-services");
-        if (content instanceof Object && content.hasOwnProperty("$attachments")) {
-            let attachments = content["$attachments"];
-            if (attachments instanceof XMLDocument || tracelib.isXmlNode(attachments)) {
-              nb.addNode(attachments);
-            } else {
-              let config = json.config('custom');
-              let  cx = (config, 'attribute-names' , ('subKey' , 'boolKey' , 'empty' ));
-              nb.addNode(json.transformFromJson(attachments, config));
-            }
-        }
-        nb.endElement();
+    nb.startElement("instance", "http://marklogic.com/entity-services");
+    if (content instanceof Object && content.hasOwnProperty("$type")) {
+      nb.startElement("info", "http://marklogic.com/entity-services");
+      nb.startElement("title", "http://marklogic.com/entity-services");
+      nb.addText(content["$type"]);
       nb.endElement();
+      nb.startElement("version", "http://marklogic.com/entity-services");
+      nb.addText(content["$version"]);
+      nb.endElement();
+      nb.endElement();
+      let canonical = instanceToCanonicalXml(content);
+      if (canonical) {
+        nb.addNode(canonical);
+      }
+    } else if (content) {
+      if (content instanceof Sequence) {
+        for (let c of content) {
+          nb.addNode(c);
+        }
+      } else if (tracelib.isXmlNode(content)) {
+        nb.addNode(content);
+      } else {
+        nb.addText(content.toString());
+      }
+    }
+    nb.endElement();
+
+    nb.startElement("attachments", "http://marklogic.com/entity-services");
+    if (content instanceof Object && content.hasOwnProperty("$attachments")) {
+      let attachments = content["$attachments"];
+      if (attachments instanceof XMLDocument || tracelib.isXmlNode(attachments)) {
+        nb.addNode(attachments);
+      } else {
+        let config = json.config('custom');
+        let  cx = (config, 'attribute-names', ('subKey', 'boolKey', 'empty'));
+        nb.addNode(json.transformFromJson(attachments, config));
+      }
+    }
+    nb.endElement();
+    nb.endElement();
     nb.endDocument();
     return nb.toNode();
   }
 
-  fn.error(null, "RESTAPI-INVALIDCONTENT", Sequence.from(["Invalid data format: " + dataFormat + ".  Must be JSON or XML"]))
+  fn.error(null, "RESTAPI-INVALIDCONTENT", Sequence.from(["Invalid data format: " + dataFormat + ".  Must be JSON or XML"]));
 }
 
 function makeLegacyEnvelope(content, headers, triples, dataFormat) {
@@ -324,66 +312,62 @@ function makeLegacyEnvelope(content, headers, triples, dataFormat) {
         content: content
       }
     };
-  }
-  else if (dataFormat === consts.XML) {
+  } else if (dataFormat === consts.XML) {
     const nb = new NodeBuilder();
     nb.startDocument();
-      nb.startElement("envelope", "http://marklogic.com/data-hub/envelope");
-        nb.startElement("headers", "http://marklogic.com/data-hub/envelope");
-        if (headers) {
-          if (headers instanceof Sequence) {
-            for (let header of headers) {
-              nb.addNode(header);
-            }
-          }
-          else {
-            nb.addNode(headers);
-          }
+    nb.startElement("envelope", "http://marklogic.com/data-hub/envelope");
+    nb.startElement("headers", "http://marklogic.com/data-hub/envelope");
+    if (headers) {
+      if (headers instanceof Sequence) {
+        for (let header of headers) {
+          nb.addNode(header);
         }
-        nb.endElement();
-        nb.startElement("triples", "http://marklogic.com/data-hub/envelope");
-        if (triples) {
-          if (triples instanceof Sequence) {
-            for (let triple of triples) {
-              if (triple instanceof sem.triple) {
-                nb.addNode(tripleToXml(triple));
-              }
-              else {
-                nb.addNode(triple);
-              }
-            }
+      } else {
+        nb.addNode(headers);
+      }
+    }
+    nb.endElement();
+    nb.startElement("triples", "http://marklogic.com/data-hub/envelope");
+    if (triples) {
+      if (triples instanceof Sequence) {
+        for (let triple of triples) {
+          if (triple instanceof sem.triple) {
+            nb.addNode(tripleToXml(triple));
           } else {
-            if (triples instanceof sem.triple) {
-              nb.addNode(tripleToXml(triples));
-            }
-            else {
-              nb.addNode(triples);
-            }
+            nb.addNode(triple);
           }
         }
-        nb.endElement();
-        nb.startElement("content", "http://marklogic.com/data-hub/envelope");
-        if (content) {
-          nb.addNode(content);
+      } else {
+        if (triples instanceof sem.triple) {
+          nb.addNode(tripleToXml(triples));
+        } else {
+          nb.addNode(triples);
         }
-        nb.endElement();
-      nb.endElement();
+      }
+    }
+    nb.endElement();
+    nb.startElement("content", "http://marklogic.com/data-hub/envelope");
+    if (content) {
+      nb.addNode(content);
+    }
+    nb.endElement();
+    nb.endElement();
     nb.endDocument();
     return nb.toNode();
   }
 
-  fn.error(null, "RESTAPI-INVALIDCONTENT", Sequence.from(["Invalid data format: " + dataFormat + ".  Must be JSON or XML"]))
+  fn.error(null, "RESTAPI-INVALIDCONTENT", Sequence.from(["Invalid data format: " + dataFormat + ".  Must be JSON or XML"]));
 }
 
 function instanceToCanonicalJson(entityInstance) {
   let o;
   if (entityInstance['$ref']) {
     o = entityInstance['$ref'];
-  }
-  else {
+  } else {
     o = {};
     for (let key in entityInstance) {
       if (key === '$attachments' || key === '$type' || key === '$version') {
+        //skipping this part
       } else {
         let instanceProperty = entityInstance[key];
         if (instanceProperty instanceof Array) {
@@ -429,59 +413,57 @@ function instanceToCanonicalXml(entityInstance) {
   let ns = getElementNamespace(namespace, namespacePrefix);
   const nb = new NodeBuilder();
   nb.startDocument();
-    nb.startElement(typeQName, ns);
-      if (entityInstance['$ref']) {
-        nb.addNode(entityInstance['$ref']);
-      } else {
-        for (let key in entityInstance) {
-          if (xdmp.castableAs('http://www.w3.org/2001/XMLSchema', 'NCName', key) && key !== '$type') {
-            let nsKey = getElementName(namespace, namespacePrefix, key);
-            let prop = entityInstance[key];
-            if (prop instanceof Sequence) {
-              for (let item of prop) {
-                if (item instanceof ObjectNode) {
-                  instanceToCanonicalXml(item);
-                } else {
-                  nb.startElement(nsKey, ns);
-                  if (item) {
-                    nb.addNode(item);
-                  }
-                  nb.endElement();
-                }
-              }
-            } else if (prop instanceof Array) {
-              for (let item of prop) {
-                if (item instanceof Object) {
-                  nb.startElement(nsKey, ns);
-                  nb.addAttribute('datatype', 'array');
-                  let canonical = instanceToCanonicalXml(item);
-                  if (canonical) {
-                    nb.addNode(canonical);
-                  }
-                  nb.endElement();
-                }
-                else {
-                  nb.startElement(nsKey, ns);
-                  nb.addAttribute('datatype', 'array');
-                  if (item) {
-                    nb.addNode(item);
-                  }
-                  nb.endElement();
-                }
-              }
-            }
-            else {
+  nb.startElement(typeQName, ns);
+  if (entityInstance['$ref']) {
+    nb.addNode(entityInstance['$ref']);
+  } else {
+    for (let key in entityInstance) {
+      if (xdmp.castableAs('http://www.w3.org/2001/XMLSchema', 'NCName', key) && key !== '$type') {
+        let nsKey = getElementName(namespace, namespacePrefix, key);
+        let prop = entityInstance[key];
+        if (prop instanceof Sequence) {
+          for (let item of prop) {
+            if (item instanceof ObjectNode) {
+              instanceToCanonicalXml(item);
+            } else {
               nb.startElement(nsKey, ns);
-              if(prop) {
-                nb.addText(prop.toString());
+              if (item) {
+                nb.addNode(item);
               }
               nb.endElement();
             }
           }
-
+        } else if (prop instanceof Array) {
+          for (let item of prop) {
+            if (item instanceof Object) {
+              nb.startElement(nsKey, ns);
+              nb.addAttribute('datatype', 'array');
+              let canonical = instanceToCanonicalXml(item);
+              if (canonical) {
+                nb.addNode(canonical);
+              }
+              nb.endElement();
+            } else {
+              nb.startElement(nsKey, ns);
+              nb.addAttribute('datatype', 'array');
+              if (item) {
+                nb.addNode(item);
+              }
+              nb.endElement();
+            }
+          }
+        } else {
+          nb.startElement(nsKey, ns);
+          if (prop) {
+            nb.addText(prop.toString());
+          }
+          nb.endElement();
         }
       }
-    nb.endElement();
+
+    }
+  }
+  nb.endElement();
   nb.endDocument();
   return nb.toNode();
 }
@@ -518,20 +500,18 @@ function runMain(itemContext, func) {
     let id = rfc.getId(itemContext);
     if (rfc.getFlowType() === consts.HARMONIZE_FLOW) {
       resp = func(id, options);
-    }
-    else {
+    } else {
       let content = rfc.getContent(itemContext);
       resp = func(id, content, options);
     }
-  }
-  catch(ex) {
+  } catch (ex) {
     if (! ex.name.includes("DATAHUB-PLUGIN-ERROR")) {
       // this is an error in main.(sjs|xqy)
       // log the trace event for main
       xdmp.log(ex.message, "warning");
-      throw(ex);
+      throw (ex);
     }  else {
-      throw(ex);
+      throw (ex);
     }
   }
 
@@ -580,10 +560,9 @@ function runWriters(identifiers, targetDatabase = config.FINALDATABASE) {
 function runWriter(writerFunction, itemContext, identifier, envelope, options) {
   let resp = null;
   try {
-      // resp = xdmp.apply(writerFunction, identifier, envelope, options);
-      resp = writerFunction(identifier, envelope, options);
-  }
-  catch(ex) {
+    // resp = xdmp.apply(writerFunction, identifier, envelope, options);
+    resp = writerFunction(identifier, envelope, options);
+  } catch (ex) {
     xdmp.log(ex.message, "warning");
   }
 
@@ -593,12 +572,11 @@ function runWriter(writerFunction, itemContext, identifier, envelope, options) {
 function safeRun(func) {
   try {
     let resp = func();
-    if(!resp instanceof Document){
+    if (!(resp instanceof Document)) {
       resp = xdmp.describe(resp, 1000000, 1000000);
     }
     return resp;
-  }
-  catch(ex) {
+  } catch (ex) {
     xdmp.log(JSON.stringify(ex, Object.getOwnPropertyNames(ex)), "warning");
   }
 }

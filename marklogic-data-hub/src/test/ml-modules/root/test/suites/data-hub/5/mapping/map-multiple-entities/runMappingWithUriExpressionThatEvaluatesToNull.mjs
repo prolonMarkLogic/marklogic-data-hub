@@ -10,7 +10,7 @@ const content = ["/content/customerInfo.json"].map(uri => {
   };
 });
 
-let result = datahub.flow.runFlow('customerFlow', 'mapWithUriExpressionEvaluatesToNull', content, {outputFormat: 'json', mapping:{name:'mapWithUriExpressionEvaluatesToNull'}}, 3);
+let result = datahub.flow.runFlow('customerFlow', 'mapWithUriExpressionEvaluatesToNull', content, {outputFormat: 'json', mapping: {name: 'mapWithUriExpressionEvaluatesToNull'}}, 3);
 
 [
   test.assertEqual(1, result.totalCount),

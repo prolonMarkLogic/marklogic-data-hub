@@ -4,4 +4,4 @@ const hubTestX = require("/test/data-hub-test-helper.xqy");
 xdmp.invokeFunction(() => {
   hubTestX.resetHub();
   hubTest.createSimpleMappingProject([{}]);
-}, { update: "true" });
+}, {update: "true"});

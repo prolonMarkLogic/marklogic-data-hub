@@ -14,7 +14,7 @@ let assertions = [
 
 const withRelatedQuery = {
   "searchText": "",
-  "entityTypeIds": [ "BabyRegistry" ]
+  "entityTypeIds": ["BabyRegistry"]
 
 };
 const resultsTest4 = searchNodes(withRelatedQuery);
@@ -25,21 +25,21 @@ assertions.concat([
 ]);
 
 resultsTest4.nodes.forEach(node => {
-  if(node.id == "http://marklogic.com/example/BabyRegistry-0.0.1/BabyRegistry/3039-42") {
-    assertions.push(test.assertEqual("2021-01-07-08:00",node.label.toString()), "BabyRegistry 3039-42 must have arrivalDate value as label.");
+  if (node.id == "http://marklogic.com/example/BabyRegistry-0.0.1/BabyRegistry/3039-42") {
+    assertions.push(test.assertEqual("2021-01-07-08:00", node.label.toString()), "BabyRegistry 3039-42 must have arrivalDate value as label.");
   }
-  if(node.id == "http://marklogic.com/example/BabyRegistry-0.0.1/BabyRegistry/3039-42") {
+  if (node.id == "http://marklogic.com/example/BabyRegistry-0.0.1/BabyRegistry/3039-42") {
     assertions.push(test.assertFalse("30039" === node.label.toString()), "BabyRegistry 3039-42 must have arrivalDate value as label  not primaryKey.");
   }
 
-  if(node.id == "http://marklogic.com/example/BabyRegistry-0.0.1/BabyRegistry/3039-42") {
+  if (node.id == "http://marklogic.com/example/BabyRegistry-0.0.1/BabyRegistry/3039-42") {
     assertions.push(test.assertTrue(node.propertiesOnHover.length == 2));
   }
-})
+});
 
 const withStructurePropertiesOnHover = {
   "searchText": "",
-  "entityTypeIds": [ "Customer" ]
+  "entityTypeIds": ["Customer"]
 };
 const resultsWithStructureProperties = searchNodes(withStructurePropertiesOnHover);
 let expectedCount = 3;
@@ -49,21 +49,21 @@ assertions.concat([
 ]);
 
 resultsWithStructureProperties.nodes.forEach(node => {
-  if(node.id == "http://example.org/Customer-0.0.1/Customer/301") {
-    assertions.push(test.assertEqual("301",node.label.toString()), "Customer 301 must have id value as label.");
+  if (node.id == "http://example.org/Customer-0.0.1/Customer/301") {
+    assertions.push(test.assertEqual("301", node.label.toString()), "Customer 301 must have id value as label.");
   }
-  if(node.id == "http://example.org/Customer-0.0.1/Customer/301") {
+  if (node.id == "http://example.org/Customer-0.0.1/Customer/301") {
     assertions.push(test.assertTrue(node.propertiesOnHover.length == 3));
   }
 
   (!node.isConcept) && node.propertiesOnHover.forEach(propertyOnHover => {
-    if(JSON.stringify(propertyOnHover).toString().includes("shipping.Address.city")){
-      assertions.push(test.assertEqual("{\"shipping.Address.city\":\"Columbus\"}",JSON.stringify(propertyOnHover).toString()), "Customer 301 must have Columbus as shipping.Address.city.");
+    if (JSON.stringify(propertyOnHover).toString().includes("shipping.Address.city")) {
+      assertions.push(test.assertEqual("{\"shipping.Address.city\":\"Columbus\"}", JSON.stringify(propertyOnHover).toString()), "Customer 301 must have Columbus as shipping.Address.city.");
     }
-    if(JSON.stringify(propertyOnHover).toString().includes("billing.Address.city")){
-      assertions.push(test.assertEqual("{\"billing.Address.city\":\"Cincinnati\"}",JSON.stringify(propertyOnHover).toString()), "Customer 301 must have Cincinnati as billing.Address.city.");
+    if (JSON.stringify(propertyOnHover).toString().includes("billing.Address.city")) {
+      assertions.push(test.assertEqual("{\"billing.Address.city\":\"Cincinnati\"}", JSON.stringify(propertyOnHover).toString()), "Customer 301 must have Cincinnati as billing.Address.city.");
     }
-  })
-})
+  });
+});
 
 assertions;

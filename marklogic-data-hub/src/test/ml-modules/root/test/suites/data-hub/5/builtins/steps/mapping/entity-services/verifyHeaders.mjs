@@ -49,7 +49,7 @@ const jsonInstance = xdmp.toJSON({
 
 const xmlInstance = xdmp.unquote(`<testEntity>
       <hello>world</hello>
-    </testEntity>`)
+    </testEntity>`);
 
 const options = {};
 const currentUser = `${xdmp.getCurrentUser()}`;

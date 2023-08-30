@@ -4,12 +4,12 @@ function invoke(module, args) {
   return fn.head(xdmp.invoke("/data-hub/data-services/mapping/" + module, args));
 }
 
-function getUris(mappingName, limit){
-  return invoke("getUris.mjs", {"stepName": mappingName, "limit":limit});
+function getUris(mappingName, limit) {
+  return invoke("getUris.mjs", {"stepName": mappingName, "limit": limit});
 }
 
-function getDoc(mappingName, uri){
-  return invoke("getDocument.mjs", {"stepName": mappingName, "uri":uri});
+function getDoc(mappingName, uri) {
+  return invoke("getDocument.mjs", {"stepName": mappingName, "uri": uri});
 }
 
 const resp =[];
@@ -32,9 +32,9 @@ const expectedResponse = xdmp.toJsonString({
 
 const getDocument = getDoc("testMapping", "/content/doc2.json");
 resp.concat([
-  test.assertEqual(1, getUris("testMapping",1).length),
-  test.assertEqual(2, getUris("testMapping",2).length),
-  test.assertEqual(["/content/doc1.json","/content/doc2.json"], getUris("testMapping",5).sort()),
+  test.assertEqual(1, getUris("testMapping", 1).length),
+  test.assertEqual(2, getUris("testMapping", 2).length),
+  test.assertEqual(["/content/doc1.json", "/content/doc2.json"], getUris("testMapping", 5).sort()),
   test.assertEqual(expectedResponse, xdmp.toJsonString(getDocument))
 ]);
 
@@ -45,4 +45,4 @@ resp.concat([
   test.assertEqual(0, getUris("testIncompleteMapping", 5).length)
 ]);
 
-resp
+resp;

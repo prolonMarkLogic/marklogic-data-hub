@@ -26,44 +26,44 @@ import featuresUtils from "./features-util.mjs";
 const INFO_EVENT = consts.TRACE_CORE;
 
 function onArtifactSave(artifactType, artifactName) {
-    //Complete in upcoming stories
-    return true;
+  //Complete in upcoming stories
+  return true;
 }
 
 function onArtifactPublish(artifactType, artifactName) {
-    //Complete in upcoming stories
-    return true;
+  //Complete in upcoming stories
+  return true;
 }
 
 function onInstanceSave(context, model, contentArray) {
-    let permissions = [];
-    const stepContext = context.flowStep;
-    if (!model) {
-        return contentArray;
-    }
-
-    const feature = featuresUtils.getFeatureFromContext(stepContext, model, 'docPermission');
-    if(feature) {
-      const modelName = model.info.title;
-      hubUtils.hubTrace(INFO_EVENT, `Processing doc permission feature for an instance of ${modelName} while running ${stepContext.name}`);
-      permissions = feature.permissions;
-      addPermissionsToObject(permissions, contentArray);
-    }
-    hubUtils.hubTrace(INFO_EVENT, `Finished processing doc permission feature `);
+  let permissions = [];
+  const stepContext = context.flowStep;
+  if (!model) {
     return contentArray;
+  }
+
+  const feature = featuresUtils.getFeatureFromContext(stepContext, model, 'docPermission');
+  if (feature) {
+    const modelName = model.info.title;
+    hubUtils.hubTrace(INFO_EVENT, `Processing doc permission feature for an instance of ${modelName} while running ${stepContext.name}`);
+    permissions = feature.permissions;
+    addPermissionsToObject(permissions, contentArray);
+  }
+  hubUtils.hubTrace(INFO_EVENT, `Finished processing doc permission feature `);
+  return contentArray;
 }
 
 function addPermissionsToObject(permissions, contentArray) {
-    // add permissions to the contentObject
-    contentArray.forEach(contentObject => {
+  // add permissions to the contentObject
+  contentArray.forEach(contentObject => {
     const permissionsArray = hubUtils.parsePermissions(permissions);
     contentObject.context.permissions = contentObject.context.permissions.concat(permissionsArray);
-    });
+  });
 }
 
 
 export default {
-    onArtifactSave,
-    onArtifactPublish,
-    onInstanceSave
+  onArtifactSave,
+  onArtifactPublish,
+  onInstanceSave
 };

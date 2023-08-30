@@ -185,7 +185,6 @@ function castDataType(dataType, value) {
     convertedValue = xs.duration(value);
   } else if (dataType === 'negativeInteger') {
     convertedValue = xs.negativeInteger(value);
-  } else if (dataType === 'array') {
   } else if (dataType === 'float') {
     convertedValue = xs.float(value);
   } else if (dataType === 'nonNegativeInteger') {

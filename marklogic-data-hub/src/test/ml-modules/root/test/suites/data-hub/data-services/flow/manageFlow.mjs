@@ -95,4 +95,4 @@ try {
   );
 }
 
-assertions
+assertions;

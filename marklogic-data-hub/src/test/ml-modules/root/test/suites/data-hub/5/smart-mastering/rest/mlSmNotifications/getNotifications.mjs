@@ -11,7 +11,7 @@ assertions.push(
 
 results["notifications"].forEach(notification => {
   assertions.push(test.assertEqual("Test, Test", notification["meta"]["label"]));
-})
+});
 
 assertions;
 

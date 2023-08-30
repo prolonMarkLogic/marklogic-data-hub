@@ -1,8 +1,8 @@
-var contentArray;
-var options;
+let contentArray;
+let options;
 
 // This is passed in because it's defined in the interceptors config in the flow file
-var headerValueToAdd;
+let headerValueToAdd;
 
 contentArray.forEach(content => {
   content.value.envelope.headers.hello = headerValueToAdd;

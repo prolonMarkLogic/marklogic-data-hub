@@ -18,12 +18,12 @@ import defaultConfig from "/com.marklogic.hub/config.mjs";
 
 export default class Debug {
   constructor(config = null) {
-    if(!config) {
+    if (!config) {
       config = defaultConfig;
     }
     this.logLevel   = config && config.HUBLOGLEVEL || 'default';
-    this.logLevels  = ['default','notice','trace','info'];
-    this.logTypes   = ['error','warning','notice','trace','info'];
+    this.logLevels  = ['default', 'notice', 'trace', 'info'];
+    this.logTypes   = ['error', 'warning', 'notice', 'trace', 'info'];
   }
 
   _addMetadata(payload) {
@@ -44,16 +44,16 @@ export default class Debug {
     let logLevel = this.logLevel;
     let typeCheck = {
       'error': function () {
-        return ['default','notice','trace','info'].includes(logLevel);
+        return ['default', 'notice', 'trace', 'info'].includes(logLevel);
       },
       'warning': function () {
-        return ['default','notice','trace','info'].includes(logLevel);
+        return ['default', 'notice', 'trace', 'info'].includes(logLevel);
       },
       'notice': function () {
-        return ['notice','trace','info'].includes(logLevel);
+        return ['notice', 'trace', 'info'].includes(logLevel);
       },
       'trace': function () {
-        return ['trace','info'].includes(logLevel);
+        return ['trace', 'info'].includes(logLevel);
       },
       'info': function () {
         return ['info'].includes(logLevel);
@@ -82,13 +82,13 @@ export default class Debug {
       this._log(payload) :
       new Error('Log level "' + this.logLevel + '" does not have permission to log type: "' + payload.type + '"' || '[unknown]');
 
-//      when eventually logging to the database, we
-//      should return a Promise to be resolved after
-//      payload has been saved to DB.
+    //      when eventually logging to the database, we
+    //      should return a Promise to be resolved after
+    //      payload has been saved to DB.
 
-//      return new Promise((resolve, reject) => {
-//        resolve(payload);
-//      })
+    //      return new Promise((resolve, reject) => {
+    //        resolve(payload);
+    //      })
   }
 }
 

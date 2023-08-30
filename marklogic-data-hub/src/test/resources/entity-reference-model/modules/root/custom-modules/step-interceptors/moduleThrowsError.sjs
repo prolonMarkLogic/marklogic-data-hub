@@ -1,4 +1,4 @@
-var contentArray;
-var options;
+let contentArray;
+let options;
 
 throw Error("This error is intentional");

@@ -46,20 +46,20 @@ function testGetQuery() {
   let id = entitySearchService.saveQuery(saveQuery).savedQuery.id;
   let result = JSON.parse(entitySearchService.getSavedQuery(id));
   assertions.push(
-      test.assertNotEqual(null, result),
-      test.assertNotEqual(null, result.savedQuery),
-      test.assertNotEqual(null, result.savedQuery.systemMetadata),
-      test.assertEqual(id, result.savedQuery.id),
-      test.assertEqual(xdmp.getCurrentUser(), result.savedQuery.owner),
-      test.assertEqual(4, Object.keys(result.savedQuery.systemMetadata).length)
+    test.assertNotEqual(null, result),
+    test.assertNotEqual(null, result.savedQuery),
+    test.assertNotEqual(null, result.savedQuery.systemMetadata),
+    test.assertEqual(id, result.savedQuery.id),
+    test.assertEqual(xdmp.getCurrentUser(), result.savedQuery.owner),
+    test.assertEqual(4, Object.keys(result.savedQuery.systemMetadata).length)
   );
 
   id = "some-non-existent-query-id";
   result = entitySearchService.getSavedQuery(id);
   assertions.push(
-      test.assertNotEqual(null, result),
-      test.assertEqual(null, result.savedQuery),
-      test.assertEqual(0, Object.keys(result).length)
+    test.assertNotEqual(null, result),
+    test.assertEqual(null, result.savedQuery),
+    test.assertEqual(0, Object.keys(result).length)
   );
   return assertions;
 }
@@ -68,8 +68,8 @@ function testGetQueries() {
   let assertions = [];
   const result = entitySearchService.getSavedQueries();
   assertions.push(
-      test.assertNotEqual(null, result),
-      test.assertEqual(1, result.length)
+    test.assertNotEqual(null, result),
+    test.assertEqual(1, result.length)
   );
   return assertions;
 }

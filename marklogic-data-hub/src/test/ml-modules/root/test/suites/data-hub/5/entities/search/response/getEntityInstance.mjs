@@ -138,11 +138,11 @@ function getInstanceWithNamespace() {
 }
 
 function getInstanceWithNonExistingDocUri() {
-    let docUri = "/content/someURI.xml";
-    const props = getEntityInstancePropertiesForUri(docUri);
-    return [
-      test.assertEqual(null, props)
-    ]
+  let docUri = "/content/someURI.xml";
+  const props = getEntityInstancePropertiesForUri(docUri);
+  return [
+    test.assertEqual(null, props)
+  ];
 }
 
 function getInstanceFromTextDocument() {
@@ -150,7 +150,7 @@ function getInstanceFromTextDocument() {
   const props = getEntityInstancePropertiesForUri(docUri);
   return [
     test.assertEqual(null, props)
-  ]
+  ];
 }
 
 function getInstanceWithInstanceInDifferentXpath() {
@@ -164,11 +164,11 @@ function getEntityInstancePropertiesForUri(docUri) {
 }
 
 []
-    .concat(getInstanceWithoutESInfo())
-    .concat(getInstanceWithESInfo())
-    .concat(getInstanceWithAdditionalProperty())
-    .concat(getInstanceWithNonExistentModel())
-    .concat(getInstanceWithNamespace())
-    .concat(getInstanceWithNonExistingDocUri())
-    .concat(getInstanceFromTextDocument())
-    .concat(getInstanceWithInstanceInDifferentXpath());
+  .concat(getInstanceWithoutESInfo())
+  .concat(getInstanceWithESInfo())
+  .concat(getInstanceWithAdditionalProperty())
+  .concat(getInstanceWithNonExistentModel())
+  .concat(getInstanceWithNamespace())
+  .concat(getInstanceWithNonExistingDocUri())
+  .concat(getInstanceFromTextDocument())
+  .concat(getInstanceWithInstanceInDifferentXpath());

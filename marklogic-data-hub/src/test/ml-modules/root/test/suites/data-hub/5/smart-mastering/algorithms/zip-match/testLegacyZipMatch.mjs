@@ -79,6 +79,6 @@ assertions.push(
   test.assertEqual("/content/FiveDigitMatch.json", actionDetails.uris[0]),
   test.assertEqual("/content/NineDigitMatch.json", actionDetails.uris[1]),
   test.assertEqual(smTest.TEST_DOC_URI, actionDetails.uris[2])
-)
+);
 
 assertions;

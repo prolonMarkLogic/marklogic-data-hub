@@ -24,52 +24,52 @@ let userCollections = ["http://marklogic.com/data-hub/saved-query"];
 let queryDocument = JSON.parse(saveQuery);
 
 if (queryDocument == null || queryDocument.savedQuery == null) {
-    httpUtils.throwBadRequest("The request is empty or malformed");
+  httpUtils.throwBadRequest("The request is empty or malformed");
 }
 
 if (queryDocument.savedQuery.name == null || !queryDocument.savedQuery.name) {
-    httpUtils.throwBadRequest("Query name is required");
+  httpUtils.throwBadRequest("Query name is required");
 }
 
 if (queryDocument.savedQuery.query == null || Object.keys(queryDocument.savedQuery.query) == 0) {
-    httpUtils.throwBadRequest("Query to be saved cannot be empty");
+  httpUtils.throwBadRequest("Query to be saved cannot be empty");
 }
 
 if (queryDocument.savedQuery.query.entityTypeIds.length === 1 && (queryDocument.savedQuery.propertiesToDisplay == null || queryDocument.savedQuery.propertiesToDisplay.length == 0)) {
-    httpUtils.throwBadRequest("Entity type properties to be displayed cannot be empty");
+  httpUtils.throwBadRequest("Entity type properties to be displayed cannot be empty");
 }
 
 const id = queryDocument.savedQuery.id;
 const positiveQuery = cts.andQuery([cts.collectionQuery("http://marklogic.com/data-hub/saved-query"), cts.jsonPropertyValueQuery("name", queryDocument.savedQuery.name),
-    cts.jsonPropertyValueQuery("owner", xdmp.getCurrentUser())]);
+  cts.jsonPropertyValueQuery("owner", xdmp.getCurrentUser())]);
 const negativeQuery = cts.documentQuery("/saved-queries/" + id + ".json");
 const queryNameExists = cts.exists(cts.andNotQuery(positiveQuery, negativeQuery));
-if(queryNameExists) {
-    httpUtils.throwBadRequest(`You already have a saved query with a name of ${queryDocument.savedQuery.name}`);
+if (queryNameExists) {
+  httpUtils.throwBadRequest(`You already have a saved query with a name of ${queryDocument.savedQuery.name}`);
 }
 
 if (cts.doc("/saved-queries/" + id + ".json")) {
-    queryDocument.savedQuery.systemMetadata.lastUpdatedBy = xdmp.getCurrentUser();
-    queryDocument.savedQuery.systemMetadata.lastUpdatedDateTime = fn.currentDateTime();
-    hubUtils.nodeReplace(cts.doc("/saved-queries/" + id + ".json"), queryDocument);
+  queryDocument.savedQuery.systemMetadata.lastUpdatedBy = xdmp.getCurrentUser();
+  queryDocument.savedQuery.systemMetadata.lastUpdatedDateTime = fn.currentDateTime();
+  hubUtils.nodeReplace(cts.doc("/saved-queries/" + id + ".json"), queryDocument);
 } else {
-    queryDocument.savedQuery.id = sem.uuidString();
-    queryDocument.savedQuery.owner = xdmp.getCurrentUser();
-    queryDocument.savedQuery.systemMetadata = {
-        "createdBy": xdmp.getCurrentUser(),
-        "createdDateTime": fn.currentDateTime(),
-        "lastUpdatedBy": xdmp.getCurrentUser(),
-        "lastUpdatedDateTime": fn.currentDateTime()
-    };
-    insertDocument(queryDocument);
+  queryDocument.savedQuery.id = sem.uuidString();
+  queryDocument.savedQuery.owner = xdmp.getCurrentUser();
+  queryDocument.savedQuery.systemMetadata = {
+    "createdBy": xdmp.getCurrentUser(),
+    "createdDateTime": fn.currentDateTime(),
+    "lastUpdatedBy": xdmp.getCurrentUser(),
+    "lastUpdatedDateTime": fn.currentDateTime()
+  };
+  insertDocument(queryDocument);
 }
 
 function insertDocument(queryDocument) {
-    let docUri = "/saved-queries/" + queryDocument.savedQuery.id + ".json";
-    let permissions = [xdmp.permission('data-hub-saved-query-user', 'read'),
-        xdmp.permission('data-hub-saved-query-user', 'update'),
-        xdmp.defaultPermissions()];
-    hubUtils.writeDocument(docUri, queryDocument, permissions, userCollections);
+  let docUri = "/saved-queries/" + queryDocument.savedQuery.id + ".json";
+  let permissions = [xdmp.permission('data-hub-saved-query-user', 'read'),
+    xdmp.permission('data-hub-saved-query-user', 'update'),
+    xdmp.defaultPermissions()];
+  hubUtils.writeDocument(docUri, queryDocument, permissions, userCollections);
 }
 
 queryDocument;

@@ -7,21 +7,21 @@ const quickStartRequiredOptionProperty = 'mergeOptions';
 const hubCentralRequiredOptionProperty = 'mergeRules';
 
 function main(content, options) {
-  masteringStepLib.checkOptions(null, options, null, [[quickStartRequiredOptionProperty,hubCentralRequiredOptionProperty]]);
+  masteringStepLib.checkOptions(null, options, null, [[quickStartRequiredOptionProperty, hubCentralRequiredOptionProperty]]);
 
   const mergeable = new Mergeable(options);
   const thresholdObj = {action: "merge"};
-  const threshold = new ThresholdDefinition(thresholdObj, null); 
+  const threshold = new ThresholdDefinition(thresholdObj, null);
   let contentArray = hubUtils.normalizeToArray(content);
   const uri = threshold.generateActionURI(contentArray);
   let mergedDocument = {
-    uri: uri, 
-    previousUri: contentArray.map(c => c.uri), 
-    value: mergeable.buildMergeDocument(contentArray), 
+    uri: uri,
+    previousUri: contentArray.map(c => c.uri),
+    value: mergeable.buildMergeDocument(contentArray),
     context: {
       collections: [],
       permissions: []
-    }}
+    }};
   for (const contentToArchive of contentArray) {
     contentToArchive.context.collections = [];
     mergeable.applyDocumentContext(contentToArchive, {action: "archive"});

@@ -33,7 +33,7 @@ function verifyMappingContainsUriParam() {
   return [
     test.assertTrue(fn.head(xmlMapping.xpath("/*:mapping/*:param[@name = 'URI']")) != null),
     test.assertTrue(fn.head(stylesheet.xpath("/*:stylesheet/*:param[@name = 'URI']")) != null)
-  ]
+  ];
 }
 
 []

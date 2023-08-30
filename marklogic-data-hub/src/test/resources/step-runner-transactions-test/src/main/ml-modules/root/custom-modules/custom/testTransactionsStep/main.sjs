@@ -26,9 +26,8 @@ const flowApi = mjsProxy.requireMjsModule('/data-hub/public/flow/flow-api.mjs');
  */
 function main(content, options) {
   let testInvokeQueryMode =
-    xdmp.invokeFunction
-    (
-      function(){ return cts.uris(null, ["limit=1"]);},
+    xdmp.invokeFunction(
+      function() { return cts.uris(null, ["limit=1"]); },
       {
         database: xdmp.database(),
         transactionMode: "query",
@@ -36,13 +35,14 @@ function main(content, options) {
       }
     );
 
-  let testInvokeUpdateMode= xdmp.invokeFunction
-  (
-    function(){xdmp.documentInsert(
-      '/testInsert.json',
-      {test:'new content here'},
-      {metadata: {'valid-start' : '2014-06-03T14:13:05.472585-07:00',
-          'valid-end' : '9999-12-31T11:59:59Z'}, collections: ["separateTransaction"]})},{
+  let testInvokeUpdateMode= xdmp.invokeFunction(
+    function() {
+      xdmp.documentInsert(
+        '/testInsert.json',
+        {test: 'new content here'},
+        {metadata: {'valid-start': '2014-06-03T14:13:05.472585-07:00',
+          'valid-end': '9999-12-31T11:59:59Z'}, collections: ["separateTransaction"]});
+    }, {
       database: xdmp.database(),
       transactionMode: "update-auto-commit",
       isolation: "different-transaction"

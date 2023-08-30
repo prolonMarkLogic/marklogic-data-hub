@@ -1,7 +1,7 @@
 'use strict';
 
 const test = require("/test/test-helper.xqy");
-import { DocumentForTestingUtils as utils } from "/test/suites/data-hub/data-services/lib/mappingService.mjs";;
+import {DocumentForTestingUtils as utils} from "/test/suites/data-hub/data-services/lib/mappingService.mjs";
 
 const assertions = [];
 
@@ -9,9 +9,9 @@ const result = utils.invokeService(utils.STEP_NAME1, '/content/envelopedCustomer
 const data = result.data;
 
 const expectedNamespaces = {
-  "entity-services":"http://marklogic.com/entity-services",
-  "OrderNS":"https://www.w3schools.com/OrderNS"
-}
+  "entity-services": "http://marklogic.com/entity-services",
+  "OrderNS": "https://www.w3schools.com/OrderNS"
+};
 
 assertions.push(test.assertExists(data, "Top-level 'data' property does not exist"));
 assertions.push(test.assertExists(data['OrderNS:Order'], "The data's first property is expected to be 'OrderNS:Order' but was given '" + Object.keys(data).join("' and '") + "'"));

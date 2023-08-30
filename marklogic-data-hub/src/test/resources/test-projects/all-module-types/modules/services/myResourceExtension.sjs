@@ -15,13 +15,13 @@
 */
 'use strict';
 
-function get(context, params) {};
+function get(context, params) {}
 
-function post(context, params, input) {};
+function post(context, params, input) {}
 
-function put(context, params, input) {};
+function put(context, params, input) {}
 
-function deleteFunction(context, params) {};
+function deleteFunction(context, params) {}
 
 exports.GET = get;
 exports.POST = post;

@@ -28,11 +28,11 @@ function findStepResponses(query) {
   const response = {};
   const orderByConstraint = [];
 
-  if(sortColumn) {
+  if (sortColumn) {
     orderByConstraint.push(sortDirection === 'ascending' ? op.asc(sortColumn) : op.desc(sortColumn));
   }
 
-  if(sortColumn !== 'startTime') {
+  if (sortColumn !== 'startTime') {
     orderByConstraint.push(op.desc('startTime'));
   }
 
@@ -64,7 +64,7 @@ function findStepResponses(query) {
         obj.stepStatus = obj.stepStatus.split(" ")[0];
       }
     }
-  })
+  });
   response["total"] = totalCount[1][0];
   response["start"] = start;
   response["pageLength"] = pageLength;
@@ -95,7 +95,7 @@ function buildDateTimeSqlCondition(fieldName, beginTime, endTime) {
 }
 
 function buildWhereClause(selectedFacets) {
-  if(!selectedFacets || !Object.keys(selectedFacets).length) {
+  if (!selectedFacets || !Object.keys(selectedFacets).length) {
     return "";
   }
 
@@ -108,7 +108,7 @@ function buildWhereClause(selectedFacets) {
       if (dateTimeCondition) {
         whereClause = whereClause + " " + dateTimeCondition;
       }
-    } else if (facetType === "stepStatus"){
+    } else if (facetType === "stepStatus") {
       let inCondition = "";
       selectedFacets[facetType].forEach((element, index) => {
         if (index === selectedFacets[facetType].length - 1) {
@@ -116,14 +116,14 @@ function buildWhereClause(selectedFacets) {
         } else {
           inCondition = inCondition.concat(" (Job.StepResponse.".concat(facetType) + " LIKE " + sanitizeLikeSqlValue(element) + ") OR");
         }
-      })
+      });
       whereClause = whereClause + " ( " + inCondition + ")";
     } else {
       const inCondition = selectedFacets[facetType].map(element => sanitizeSqlValue(element)).join();
       whereClause = whereClause + " " + "Job.StepResponse.".concat(facetType) + " IN (" + inCondition + ")";
     }
 
-    if(index < keys.length-1) {
+    if (index < keys.length-1) {
       whereClause = whereClause.concat(" ").concat("AND");
     }
   });
@@ -140,20 +140,20 @@ function computeFacets(whereClause) {
     const uniqueFacets = [];
     results = results.map(result => {
       let colResult = "";
-      if(column.includes("stepStatus")) {
+      if (column.includes("stepStatus")) {
         if (result[column].includes("errors")) {
-          colResult = "errors"
+          colResult = "errors";
         } else {
-          colResult = result[column].split(" ")[0]
+          colResult = result[column].split(" ")[0];
         }
       } else {
         colResult = result[column];
       }
-      if(colResult !== "" && uniqueFacets.filter(obj => obj.name === colResult) < 1) {
+      if (colResult !== "" && uniqueFacets.filter(obj => obj.name === colResult) < 1) {
         uniqueFacets.push({
           "name": colResult !== "" ? colResult : undefined,
           "value": colResult !== "" ? colResult : undefined
-        })
+        });
       }
     });
     facets[column] = {
@@ -189,7 +189,7 @@ function getMatchingPropertyValues(facetValuesSearchQuery) {
       ' FROM Job.StepResponse WHERE ' + 'Job.StepResponse.' + facetName + ' like ' + updatedSearchTerm + ' LIMIT ' + limit;
   let results = xdmp.sql(matchingPropertiesQuery, ["map", "optimize=0"]).toObject();
   const deficit = limit - results.length;
-  if(deficit) {
+  if (deficit) {
     updatedSearchTerm = '_%'.concat(searchTerm.replace(/%/g, "|%")).concat('%');
     updatedSearchTerm = sanitizeSqlValue(updatedSearchTerm);
     matchingPropertiesQuery = 'select DISTINCT(Job.StepResponse.' + facetName + ') AS ' + facetName +
@@ -244,49 +244,49 @@ function findJobs(parameters) {
   const total = cts.estimate(finalQuery);
   const {start = 1, pageLength = 100} = parameters;
   // Use fragment plan to ensure we are a paginating on job document rather than step response row
-  const fragmentPlan = op.fromView('Job','StepResponse', 'fragmentIds', op.fragmentIdCol('fragmentId1'))
-      .groupBy(op.fragmentIdCol('fragmentId1'), [op.min('firstStartTime',op.col('stepStartTime')),op.max('lastEndTime',op.col('stepEndTime'))])
-      .where(finalQuery)
-      .orderBy([op.desc('firstStartTime')])
-      .offset(pageLength * (start-1)).limit(pageLength);
-  const stepResponses = op.fromView('Job','StepResponse', 'stepResponses', op.fragmentIdCol('fragmentId2'));
+  const fragmentPlan = op.fromView('Job', 'StepResponse', 'fragmentIds', op.fragmentIdCol('fragmentId1'))
+    .groupBy(op.fragmentIdCol('fragmentId1'), [op.min('firstStartTime', op.col('stepStartTime')), op.max('lastEndTime', op.col('stepEndTime'))])
+    .where(finalQuery)
+    .orderBy([op.desc('firstStartTime')])
+    .offset(pageLength * (start-1)).limit(pageLength);
+  const stepResponses = op.fromView('Job', 'StepResponse', 'stepResponses', op.fragmentIdCol('fragmentId2'));
   // Join stepResponses plan to fragmentPlan and construct JSON Objects
-  const jsonPlan = fragmentPlan.joinInner(stepResponses,op.on(op.fragmentIdCol('fragmentId1'),op.fragmentIdCol('fragmentId2')))
-      .select([op.fragmentIdCol('fragmentId1'),op.col('firstStartTime'),
-        op.as('job',
-          op.jsonObject([
-            op.prop('jobId', op.jsonString(op.col('jobId'))),
-            op.prop('jobStatus', op.jsonString(op.col('jobStatus'))),
-            op.prop('user', op.jsonString(op.col('user'))),
-            op.prop('flowName', op.jsonString(op.col('flowName'))),
-            op.prop('startTime', op.jsonString(op.col('firstStartTime'))),
-            op.prop('endTime', op.jsonString(op.col('lastEndTime'))),
-            op.prop('stepResponses', op.jsonArray([op.jsonObject([
-              op.prop('stepName', op.jsonString(op.col('stepName'))),
-              op.prop('stepDefinitionType', op.jsonString(op.col('stepDefinitionType'))),
-              op.prop('stepStatus', op.jsonString(op.col('stepStatus'))),
-              op.prop('stepStartTime', op.jsonString(op.col('stepStartTime'))),
-              op.prop('stepEndTime', op.jsonString(op.col('stepEndTime'))),
-              op.prop('failedItemCount', op.jsonNumber(op.col('failedItemCount'))),
-              op.prop('successfulItemCount', op.jsonNumber(op.col('successfulItemCount')))
-            ])]))
-          ])
+  const jsonPlan = fragmentPlan.joinInner(stepResponses, op.on(op.fragmentIdCol('fragmentId1'), op.fragmentIdCol('fragmentId2')))
+    .select([op.fragmentIdCol('fragmentId1'), op.col('firstStartTime'),
+      op.as('job',
+        op.jsonObject([
+          op.prop('jobId', op.jsonString(op.col('jobId'))),
+          op.prop('jobStatus', op.jsonString(op.col('jobStatus'))),
+          op.prop('user', op.jsonString(op.col('user'))),
+          op.prop('flowName', op.jsonString(op.col('flowName'))),
+          op.prop('startTime', op.jsonString(op.col('firstStartTime'))),
+          op.prop('endTime', op.jsonString(op.col('lastEndTime'))),
+          op.prop('stepResponses', op.jsonArray([op.jsonObject([
+            op.prop('stepName', op.jsonString(op.col('stepName'))),
+            op.prop('stepDefinitionType', op.jsonString(op.col('stepDefinitionType'))),
+            op.prop('stepStatus', op.jsonString(op.col('stepStatus'))),
+            op.prop('stepStartTime', op.jsonString(op.col('stepStartTime'))),
+            op.prop('stepEndTime', op.jsonString(op.col('stepEndTime'))),
+            op.prop('failedItemCount', op.jsonNumber(op.col('failedItemCount'))),
+            op.prop('successfulItemCount', op.jsonNumber(op.col('successfulItemCount')))
+          ])]))
+        ])
       )])
-      .orderBy([op.desc('firstStartTime'), op.fragmentIdCol('fragmentId1')])
-      // Consolidate JSON Objects that are for the same JobId
-      .reduce((previous, result) => {
-        const job = result.job.toObject();
-        if (Array.isArray(previous)) {
-          const lastJob = previous[previous.length - 1];
-          if (lastJob.jobId === job.jobId) {
-            lastJob.stepResponses.push(job.stepResponses[0]);
-          } else {
-            previous.push(job);
-          }
-          return previous;
+    .orderBy([op.desc('firstStartTime'), op.fragmentIdCol('fragmentId1')])
+  // Consolidate JSON Objects that are for the same JobId
+    .reduce((previous, result) => {
+      const job = result.job.toObject();
+      if (Array.isArray(previous)) {
+        const lastJob = previous[previous.length - 1];
+        if (lastJob.jobId === job.jobId) {
+          lastJob.stepResponses.push(job.stepResponses[0]);
+        } else {
+          previous.push(job);
         }
-        return [job];
-      });
+        return previous;
+      }
+      return [job];
+    });
   return {
     total,
     start,
@@ -313,37 +313,37 @@ function installJobTemplates() {
               "name": "jobId",
               "scalarType": "string",
               "val": "../../jobId/string()",
-              "nullable":false
+              "nullable": false
             },
             {
               "name": "user",
               "scalarType": "string",
               "val": "../../user/string()",
-              "nullable":true
+              "nullable": true
             },
             {
               "name": "flowName",
               "scalarType": "string",
               "val": "../../flow/string()",
-              "nullable":true
+              "nullable": true
             },
             {
               "name": "stepName",
               "scalarType": "string",
               "val": "./stepName/string()",
-              "nullable":true
+              "nullable": true
             },
             {
               "name": "stepDefinitionType",
               "scalarType": "string",
               "val": "./stepDefinitionType/string()",
-              "nullable":true
+              "nullable": true
             },
             {
               "name": "jobStatus",
               "scalarType": "string",
               "val": "../../jobStatus/string()",
-              "nullable":true
+              "nullable": true
             },
             {
               "name": "entityName",
@@ -355,31 +355,31 @@ function installJobTemplates() {
               "name": "stepStatus",
               "scalarType": "string",
               "val": "./status/string()",
-              "nullable":true
+              "nullable": true
             },
             {
               "name": "stepStartTime",
               "scalarType": "dateTime",
               "val": "./stepStartTime",
-              "nullable":true
+              "nullable": true
             },
             {
               "name": "stepEndTime",
               "scalarType": "dateTime",
               "val": "./stepEndTime",
-              "nullable":true
+              "nullable": true
             },
             {
               "name": "failedItemCount",
               "scalarType": "int",
               "val": "./failedEvents",
-              "nullable":true
+              "nullable": true
             },
             {
               "name": "successfulItemCount",
               "scalarType": "int",
               "val": "./successfulEvents",
-              "nullable":true
+              "nullable": true
             }
           ]
         }

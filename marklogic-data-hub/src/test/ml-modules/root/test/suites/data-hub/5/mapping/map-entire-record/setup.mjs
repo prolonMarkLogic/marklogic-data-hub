@@ -30,4 +30,4 @@ xdmp.invokeFunction(() => {
       }
     }
   ]);
-}, { update: "true" });
+}, {update: "true"});

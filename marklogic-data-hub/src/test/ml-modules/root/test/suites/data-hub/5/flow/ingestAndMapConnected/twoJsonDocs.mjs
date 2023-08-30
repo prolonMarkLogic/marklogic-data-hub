@@ -58,8 +58,8 @@ const options = {
   }
 };
 const contentArray = [
-  { "uri": "/customer1.json", "value": { "customerId": "1" } },
-  { "uri": "/customer2.json", "value": { "customerId": "2" } }
+  {"uri": "/customer1.json", "value": {"customerId": "1"}},
+  {"uri": "/customer2.json", "value": {"customerId": "2"}}
 ];
 
 const response = flowApi.runFlowOnContent(flowName, contentArray, jobId, options);

@@ -20,4 +20,4 @@ xdmp.securityAssert("http://marklogic.com/data-hub/privileges/read-entity-model"
 import hubEs from "/data-hub/5/impl/hub-es.mjs";
 
 const models = fn.head(xdmp.fromJSON(external.models));
-hubEs.generateProtectedPathConfig(models)
+hubEs.generateProtectedPathConfig(models);

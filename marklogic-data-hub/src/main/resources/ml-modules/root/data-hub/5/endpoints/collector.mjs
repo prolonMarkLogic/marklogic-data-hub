@@ -32,10 +32,10 @@ if (method !== 'GET') {
 }
 
 const requestParams = new Map();
-parameters.queryParameter(requestParams, "flow-name",fn.true(),fn.false())
-parameters.queryParameter(requestParams, "options",fn.false(),fn.false())
-parameters.queryParameter(requestParams, "step",fn.false(),fn.false())
-parameters.queryParameter(requestParams, "database",fn.true(),fn.false())
+parameters.queryParameter(requestParams, "flow-name", fn.true(), fn.false());
+parameters.queryParameter(requestParams, "options", fn.false(), fn.false());
+parameters.queryParameter(requestParams, "step", fn.false(), fn.false());
+parameters.queryParameter(requestParams, "database", fn.true(), fn.false());
 
 const flowName = requestParams["flow-name"];
 let step = requestParams.step;
@@ -62,32 +62,32 @@ if (!stepDefinition) {
 let combinedOptions = Object.assign({}, stepDefinition.options, flowDoc.options, stepDoc.options, options);
 const database = combinedOptions.sourceDatabase || requestParams.database;
 
-if(combinedOptions.sourceQueryIsModule == true) {
+if (combinedOptions.sourceQueryIsModule == true) {
   const stepName = stepDoc.name;
   const sourceModule = combinedOptions["sourceModule"];
 
-  if(!sourceModule) {
+  if (!sourceModule) {
     httpUtils.throwBadRequest(`sourceModule is not defined in the step: ${stepName}. modulePath and functionName properties should be defined in the sourceModule object`);
   }
 
-  if(!sourceModule["modulePath"] || !sourceModule["functionName"]) {
+  if (!sourceModule["modulePath"] || !sourceModule["functionName"]) {
     httpUtils.throwBadRequest(`Either modulePath or functionName is not defined in the step: ${stepName}. modulePath and functionName properties should be defined in the sourceModule object`);
   }
 
   const collectorFunction = hubUtils.requireFunction(sourceModule["modulePath"], sourceModule["functionName"]);
   xdmp.invokeFunction(() => {
     return hubUtils.normalizeToSequence(collectorFunction(combinedOptions.options));
-  }, {database: xdmp.database(database)})
+  }, {database: xdmp.database(database)});
 } else {
-  if(!combinedOptions.sourceQuery && flowDoc.sourceQuery) {
+  if (!combinedOptions.sourceQuery && flowDoc.sourceQuery) {
     combinedOptions.sourceQuery = flowDoc.sourceQuery;
   }
 
   let query = combinedOptions.sourceQuery;
 
-  if(combinedOptions.sourceQueryLimit){
+  if (combinedOptions.sourceQueryLimit) {
     let sourceQueryLimit = fn.number(combinedOptions.sourceQueryLimit);
-    if(isNaN (sourceQueryLimit) || sourceQueryLimit < 1){
+    if (isNaN(sourceQueryLimit) || sourceQueryLimit < 1) {
       httpUtils.throwBadRequest(`Invalid value ${sourceQueryLimit} for 'sourceQueryLimit' in step '${stepDoc.name}'. It should be a number greater than zero`);
     }
   }

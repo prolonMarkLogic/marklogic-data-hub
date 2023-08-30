@@ -29,7 +29,6 @@ const flowName = external.flowName;
 if (jobs.getJob(jobId)) {
   hubUtils.hubTrace(consts.TRACE_FLOW, `Overwriting job '${jobId}' for flow '${flowName}'`);
   Job.newJob(flowName, jobId).update();
-}
-else {
+} else {
   Job.newJob(flowName, jobId).create();
 }

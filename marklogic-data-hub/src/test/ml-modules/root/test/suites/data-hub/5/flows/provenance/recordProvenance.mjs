@@ -37,10 +37,10 @@ function assertValidRelationshipProvenance(provDocument) {
 const flowName = "doesntMatter";
 
 const fakeFlow = {
-  name:flowName,
+  name: flowName,
   steps: {
     "1": {
-      name:"myStep",
+      name: "myStep",
       stepDefinitionName: "myCustomStep",
       stepDefinitionType: "custom"
     }

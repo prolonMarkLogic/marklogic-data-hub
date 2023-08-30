@@ -13,7 +13,7 @@ let content = ['/content/mapEntireRecord.json'].map(uri => {
     value: fn.head(xdmp.unquote('{"envelope": { "headers": { "createdBy": "admin"}, "instance": {"CustomerID": 101} } }'))
   };
 });
-datahub.flow.runFlow('simpleMappingFlow', 'testJob1', content, {outputFormat: 'json', mapping:{name:'mappingStep1'}}, 1);
+datahub.flow.runFlow('simpleMappingFlow', 'testJob1', content, {outputFormat: 'json', mapping: {name: 'mappingStep1'}}, 1);
 const mappedCustomerInstanceJSON = hubTest.getRecord("/content/mapEntireRecord.json").document;
 
 assertions = assertions.concat([
@@ -29,12 +29,12 @@ content = ['/content/mapEntireRecord.xml'].map(uri => {
   };
 });
 
-datahub.flow.runFlow('simpleMappingFlow', 'testJob2', content, {outputFormat: 'xml', mapping:{name:'mappingStep2'}}, 2);
+datahub.flow.runFlow('simpleMappingFlow', 'testJob2', content, {outputFormat: 'xml', mapping: {name: 'mappingStep2'}}, 2);
 const mappedCustomerInstanceXML = hubTest.getRecord("/content/mapEntireRecord.xml").document;
 const actualCustomerID = String(mappedCustomerInstanceXML.xpath('*:envelope/*:instance/Customer/customerId/text()'));
 const actualName = String(mappedCustomerInstanceXML.xpath('*:envelope/*:instance/Customer/name/text()'));
 assertions = assertions.concat([
-  test.assertEqual("201", actualCustomerID ),
+  test.assertEqual("201", actualCustomerID),
   test.assertEqual("admin", actualName)
 ]);
 

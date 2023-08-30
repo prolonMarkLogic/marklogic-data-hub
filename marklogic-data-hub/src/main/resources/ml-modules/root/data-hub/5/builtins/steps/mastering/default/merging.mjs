@@ -107,7 +107,8 @@ function main(content, options, stepExecutionContext) {
             actionNodeObj.uriToActOn = uriToActOn;
             return actionNodeObj;
           });
-      if (otherMergesForURI.some((otherMerge) => otherMerge.uris.length > uriActionDetails.uris.length || (otherMerge.uris.length === uriActionDetails.uris.length && otherMerge.uriToActOn.localeCompare(uriToProcess) < 0))) {
+      if (otherMergesForURI.some((otherMerge) =>
+        otherMerge.uris.length > uriActionDetails.uris.length || (otherMerge.uris.length === uriActionDetails.uris.length && otherMerge.uriToActOn.localeCompare(uriToProcess) < 0))) {
         continue;
       }
       otherMergesForURI.forEach((actionDetails) => actionDetails.uris.forEach(

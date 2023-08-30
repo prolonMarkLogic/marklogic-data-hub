@@ -4,7 +4,7 @@ const test = require("/test/test-helper.xqy");
 const assertions = [];
 let caughtException = null;
 //try {
-    merging.main({uri: '/merge-with-doc1.json'}, {mergeOptions: {}});
+merging.main({uri: '/merge-with-doc1.json'}, {mergeOptions: {}});
 //} catch (e) {
 //    caughtException = e;
 //}

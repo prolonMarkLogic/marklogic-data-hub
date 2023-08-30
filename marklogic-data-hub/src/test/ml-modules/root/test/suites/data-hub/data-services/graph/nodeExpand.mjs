@@ -49,7 +49,7 @@ assertions.concat([
 ]);
 
 const expandConceptQuery = {
-  "isConcept":true,
+  "isConcept": true,
   "objectConcept": "http://www.example.com/Category/Sneakers"
 };
 const resultConceptExpand = nodeExpandWithLimit4(expandConceptQuery);

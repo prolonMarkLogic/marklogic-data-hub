@@ -60,6 +60,6 @@ function main(content, options) {
 }
 
 export default {
-    main
+  main
 };
 

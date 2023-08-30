@@ -5,29 +5,29 @@ const test = require("/test/test-helper.xqy");
 const assertions = [];
 
 function verifySingleValueResults(content, results) {
-    let resultsNode = xdmp.toJSON(results);
-    let mergeAction = resultsNode.xpath('matchSummary/actionDetails/*[action = "merge"]');
-    let assertions = [
-        test.assertEqual(1, fn.count(results), `A matchSummary should be returned. Results: ${results}`),
-        test.assertEqual(1, fn.count(mergeAction), `A merge action should be in the matchSummary. Results: ${xdmp.toJsonString(results)}`)
-    ];
-    let mergeActionObject = fn.head(mergeAction).toObject();
-    return assertions.concat([
-        test.assertEqual(2, mergeActionObject.uris.length, `merge action should be only on 2 URIs. Results: ${JSON.stringify(mergeActionObject)}`),
-        test.assertTrue(mergeActionObject.uris.some((uri) => /CustBillingCityStateMatch1\./.test(uri)), `merge action should have URI matching "CustBillingCityStateMatch1.". Results: ${JSON.stringify(mergeActionObject)}`),
-        test.assertTrue(mergeActionObject.uris.some((uri) => /CustBillingCityStateMatch2\./.test(uri)), `merge action should have URI matching "CustBillingCityStateMatch2.". Results: ${JSON.stringify(mergeActionObject)}`)
-    ]);
+  let resultsNode = xdmp.toJSON(results);
+  let mergeAction = resultsNode.xpath('matchSummary/actionDetails/*[action = "merge"]');
+  let assertions = [
+    test.assertEqual(1, fn.count(results), `A matchSummary should be returned. Results: ${results}`),
+    test.assertEqual(1, fn.count(mergeAction), `A merge action should be in the matchSummary. Results: ${xdmp.toJsonString(results)}`)
+  ];
+  let mergeActionObject = fn.head(mergeAction).toObject();
+  return assertions.concat([
+    test.assertEqual(2, mergeActionObject.uris.length, `merge action should be only on 2 URIs. Results: ${JSON.stringify(mergeActionObject)}`),
+    test.assertTrue(mergeActionObject.uris.some((uri) => /CustBillingCityStateMatch1\./.test(uri)), `merge action should have URI matching "CustBillingCityStateMatch1.". Results: ${JSON.stringify(mergeActionObject)}`),
+    test.assertTrue(mergeActionObject.uris.some((uri) => /CustBillingCityStateMatch2\./.test(uri)), `merge action should have URI matching "CustBillingCityStateMatch2.". Results: ${JSON.stringify(mergeActionObject)}`)
+  ]);
 }
 function testSingleValueJsonMatches() {
-    const content = hubUtils.queryToContentDescriptorArray(cts.documentQuery('/content/CustBillingCityStateMatch2.json'), {}, xdmp.databaseName(xdmp.database()));
-    const results = match.main(content, { stepId: 'matchCustomerBillingCityState-matching'})[0].value;
-    return verifySingleValueResults(content, results);
+  const content = hubUtils.queryToContentDescriptorArray(cts.documentQuery('/content/CustBillingCityStateMatch2.json'), {}, xdmp.databaseName(xdmp.database()));
+  const results = match.main(content, {stepId: 'matchCustomerBillingCityState-matching'})[0].value;
+  return verifySingleValueResults(content, results);
 }
 
 function testSingleValueNamespacedXmlMatches() {
-    const content = hubUtils.queryToContentDescriptorArray(cts.documentQuery('/content/CustBillingCityStateMatch2.xml'), {}, xdmp.databaseName(xdmp.database()));
-    const results = match.main(content, { stepId: 'matchNSCustomerBillingCityState-matching'})[0].value;
-    return verifySingleValueResults(content, results);
+  const content = hubUtils.queryToContentDescriptorArray(cts.documentQuery('/content/CustBillingCityStateMatch2.xml'), {}, xdmp.databaseName(xdmp.database()));
+  const results = match.main(content, {stepId: 'matchNSCustomerBillingCityState-matching'})[0].value;
+  return verifySingleValueResults(content, results);
 }
 
 function verifySingleValueArrayResults(content, results) {
@@ -49,14 +49,14 @@ function verifySingleValueArrayResults(content, results) {
 }
 function testSingleValueArrayJsonMatches() {
   const content = hubUtils.queryToContentDescriptorArray(cts.documentQuery('/content/CustShippingCityStateMatch2.json'), {}, xdmp.databaseName(xdmp.database()));
-  const results = match.main(content, { stepId: 'matchCustomerShippingCityState-matching'})[0].value;
+  const results = match.main(content, {stepId: 'matchCustomerShippingCityState-matching'})[0].value;
   return verifySingleValueArrayResults(content, results);
 }
 
 function testSingleValueArrayNamespacedXmlMatches() {
   const content = hubUtils.queryToContentDescriptorArray(cts.documentQuery('/content/NsCustShippingCityStateMatch2.xml'), {}, xdmp.databaseName(xdmp.database()));
   xdmp.log(`Content: ${xdmp.describe(content, Sequence.from([]), Sequence.from([]))}`);
-  const results = match.main(content, { stepId: 'matchNSCustomerShippingCityState-matching'})[0].value;
+  const results = match.main(content, {stepId: 'matchNSCustomerShippingCityState-matching'})[0].value;
   return verifySingleValueArrayResults(content, results);
 }
 
@@ -80,22 +80,22 @@ function verifyMultiValueArrayResults(content, results) {
 }
 function testMultiValueArrayJsonMatches() {
   const content = hubUtils.queryToContentDescriptorArray(cts.documentQuery('/content/CustShippingCityStateMatch4.json'), {}, xdmp.databaseName(xdmp.database()));
-  const results = match.main(content, { stepId: 'matchCustomerShippingCityState-matching'})[0].value;
+  const results = match.main(content, {stepId: 'matchCustomerShippingCityState-matching'})[0].value;
   return verifyMultiValueArrayResults(content, results);
 }
 
 function testMultiValueArrayNamespacedXmlMatches() {
   const content = hubUtils.queryToContentDescriptorArray(cts.documentQuery('/content/NsCustShippingCityStateMatch2.xml'), {}, xdmp.databaseName(xdmp.database()));
-  const results = match.main(content, { stepId: 'matchNamespacedCustomers-matching'})[0].value;
+  const results = match.main(content, {stepId: 'matchNamespacedCustomers-matching'})[0].value;
   return verifyMultiValueArrayResults(content, results);
 }
 
 assertions
-    .concat(testSingleValueJsonMatches())
-    //.concat(testSingleValueNamespacedXmlMatches())
-    .concat(testSingleValueArrayJsonMatches())
-    //.concat(testSingleValueArrayNamespacedXmlMatches())
-    .concat(testMultiValueArrayJsonMatches())
-    //.concat(testMultiValueArrayNamespacedXmlMatches())
-    ;
+  .concat(testSingleValueJsonMatches())
+//.concat(testSingleValueNamespacedXmlMatches())
+  .concat(testSingleValueArrayJsonMatches())
+//.concat(testSingleValueArrayNamespacedXmlMatches())
+  .concat(testMultiValueArrayJsonMatches())
+//.concat(testMultiValueArrayNamespacedXmlMatches())
+;
 

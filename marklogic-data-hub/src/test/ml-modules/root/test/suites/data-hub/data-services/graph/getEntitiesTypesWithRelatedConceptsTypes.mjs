@@ -13,7 +13,7 @@ let assertions = [
 
 const result = getEntitiesWithRelatedConcepts();
 
-assertions.push(test.assertEqual(4,result.entitites.length, `should contain 3 entities. Entities: ${xdmp.toJsonString(result.entitites)}`));
+assertions.push(test.assertEqual(4, result.entitites.length, `should contain 3 entities. Entities: ${xdmp.toJsonString(result.entitites)}`));
 
 result.entitites.forEach(entity => {
   if (entity.entityType == "http://example.org/Office-0.0.1/Office") {

@@ -28,4 +28,4 @@ xdmp.invokeFunction(() => {
       permissions: doc.context.permissions
     });
   });
-}, { update: "true"});
+}, {update: "true"});

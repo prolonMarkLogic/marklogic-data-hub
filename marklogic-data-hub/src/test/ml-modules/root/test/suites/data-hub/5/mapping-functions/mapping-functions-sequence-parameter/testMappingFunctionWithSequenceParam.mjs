@@ -17,4 +17,4 @@ assertions = assertions.concat([
   test.assertEqual(3, fn.number(instance.Customer.integers[1])),
   test.assertEqual(4, fn.number(instance.Customer.integers[2]))
 ]);
-assertions
+assertions;

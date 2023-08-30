@@ -66,16 +66,16 @@ result.map(item => {
       }
     }
   }
-})
+});
 
 const supportsGraphConceptsSearch = true;
 
-hashmapEntityType.forEach (function(relatedConcepts, entityType) {
+hashmapEntityType.forEach(function(relatedConcepts, entityType) {
   let entityNode = {};
   entityNode.entityType = entityType;
   entityNode.relatedConcepts = relatedConcepts;
   nodes.push(entityNode);
-})
+});
 
 const response = {
   supportsGraphConceptsSearch,

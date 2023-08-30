@@ -27,23 +27,23 @@ xdmp.invokeFunction(function() {
 });
 
 xdmp.invokeFunction(function() {
-  const draftModel = entityLib.findDraftModelByEntityName(modelUri)
-  assertions.push(test.assertEqual(draftModel.info.title, modelUri))
-  assertions.push(test.assertTrue(draftModel.info.isDraft))
-  assertions.push(test.assertFalse(draftModel.info.isDraftDeleted))
-  assertions.push(test.assertEqual("integer", draftModel.definitions[modelUri].properties["age"].datatype))
+  const draftModel = entityLib.findDraftModelByEntityName(modelUri);
+  assertions.push(test.assertEqual(draftModel.info.title, modelUri));
+  assertions.push(test.assertTrue(draftModel.info.isDraft));
+  assertions.push(test.assertFalse(draftModel.info.isDraftDeleted));
+  assertions.push(test.assertEqual("integer", draftModel.definitions[modelUri].properties["age"].datatype));
 });
 
 xdmp.invokeFunction(function() {
   declareUpdate();
-  entityLib.deleteDraftModel(modelUri)
+  entityLib.deleteDraftModel(modelUri);
 });
 
 xdmp.invokeFunction(function() {
-  const deletedModel = entityLib.findDraftModelByEntityName(modelUri)
-  assertions.push(test.assertEqual(deletedModel.info.title, modelUri))
-  assertions.push(test.assertTrue(deletedModel.info.isDraft))
-  assertions.push(test.assertTrue(deletedModel.info.isDraftDeleted))
+  const deletedModel = entityLib.findDraftModelByEntityName(modelUri);
+  assertions.push(test.assertEqual(deletedModel.info.title, modelUri));
+  assertions.push(test.assertTrue(deletedModel.info.isDraft));
+  assertions.push(test.assertTrue(deletedModel.info.isDraftDeleted));
 });
 
 const newModel = {
@@ -70,11 +70,11 @@ xdmp.invokeFunction(function() {
 
 
 xdmp.invokeFunction(function() {
-  const newDraft = entityLib.findDraftModelByEntityName(modelUri)
-  assertions.push(test.assertFalse(newDraft.info.isDraft))
-  assertions.push(test.assertFalse(newDraft.info.isDraftDeleted))
-  assertions.push(test.assertEqual("string", newDraft.definitions[modelUri].properties["fullname"].datatype))
-  assertions.push(test.assertEqual(null, newDraft.definitions[modelUri].properties["age"]))
+  const newDraft = entityLib.findDraftModelByEntityName(modelUri);
+  assertions.push(test.assertFalse(newDraft.info.isDraft));
+  assertions.push(test.assertFalse(newDraft.info.isDraftDeleted));
+  assertions.push(test.assertEqual("string", newDraft.definitions[modelUri].properties["fullname"].datatype));
+  assertions.push(test.assertEqual(null, newDraft.definitions[modelUri].properties["age"]));
 });
 
 assertions;

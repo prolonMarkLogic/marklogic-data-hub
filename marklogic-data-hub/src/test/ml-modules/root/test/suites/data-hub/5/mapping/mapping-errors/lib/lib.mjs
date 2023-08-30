@@ -9,8 +9,8 @@ const content = ['/content/customer.json'].map(uri => {
   };
 });
 
-function runMappingStep(stepName, stepNumber){
-  return datahub.flow.runFlow('simpleMappingFlow', 'testJob', content, {outputFormat: 'json', mapping:{name:stepName}}, stepNumber);
+function runMappingStep(stepName, stepNumber) {
+  return datahub.flow.runFlow('simpleMappingFlow', 'testJob', content, {outputFormat: 'json', mapping: {name: stepName}}, stepNumber);
 }
 
 function validateAndTestMapping(stepName) {
@@ -22,4 +22,4 @@ function validateAndTestMapping(stepName) {
 export default {
   runMappingStep,
   validateAndTestMapping
-}
+};

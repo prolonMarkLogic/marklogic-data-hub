@@ -18,8 +18,8 @@ const runtimeOptions = {
 };
 
 const contentArray = [
-  { "uri": "/customer1.json", "value": { "customerId": "1" } },
-  { "uri": "/customer2.json", "value": { "customerId": "2" } }
+  {"uri": "/customer1.json", "value": {"customerId": "1"}},
+  {"uri": "/customer2.json", "value": {"customerId": "2"}}
 ];
 
 const assertions = [];

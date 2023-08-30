@@ -18,10 +18,10 @@
 const test = require("/test/test-helper.xqy");
 const hent = require("/data-hub/5/impl/hub-entities.xqy");
 
-function checkForTde(uri){
+function checkForTde(uri) {
   return fn.head(xdmp.eval(
     `fn.docAvailable('${uri}') `,
-    {uri:uri}, {database: xdmp.schemaDatabase()}
+    {uri: uri}, {database: xdmp.schemaDatabase()}
   ));
 }
 
@@ -33,7 +33,7 @@ function verifyTdeGeneration() {
   ];
 }
 
-function testIfTdeisEnabled(){
+function testIfTdeisEnabled() {
   let entity1 = {
     "info": {
       "title": "Person",
@@ -46,7 +46,7 @@ function testIfTdeisEnabled(){
         "tdeGenerationDisabled": "true"
       }
     }
-  }
+  };
   let entity2 = {
     "info": {
       "title": "Person",
@@ -59,7 +59,7 @@ function testIfTdeisEnabled(){
         "tdeGenerationDisabled": true
       }
     }
-  }
+  };
 
   let entity3 = {
     "info": {
@@ -73,7 +73,7 @@ function testIfTdeisEnabled(){
         "tdeGenerationDisabled": "randomValue"
       }
     }
-  }
+  };
 
   let entity4 = {
     "info": {
@@ -87,7 +87,7 @@ function testIfTdeisEnabled(){
 
       }
     }
-  }
+  };
   let entity5 = {
     "info": {
       "title": "Person",
@@ -99,11 +99,11 @@ function testIfTdeisEnabled(){
       "Customer": {
         "tdeGenerationDisabled": true
       },
-      "Person":{
+      "Person": {
 
       }
     }
-  }
+  };
 
   let entity6 = {
     "info": {
@@ -117,7 +117,7 @@ function testIfTdeisEnabled(){
         "tdeGenerationDisabled": false
       }
     }
-  }
+  };
   return [
     test.assertFalse(hent.isTdeGenerationEnabled(entity1), "There's no entity with a name matching info/title, so we use 'Customer' " +
       "will return false since value of 'tdeGenerationDisabled' is 'true'"),
@@ -132,4 +132,4 @@ function testIfTdeisEnabled(){
 }
 
 [].concat(verifyTdeGeneration())
-  .concat(testIfTdeisEnabled())
+  .concat(testIfTdeisEnabled());

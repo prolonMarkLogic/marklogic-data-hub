@@ -16,7 +16,7 @@ function createContent(id, options) {
     "$namespace": "http://marklogic.com/Person",
     "$namespacePrefix": "prs",
     "Id": Id
-  }
+  };
 }
 
 module.exports = {

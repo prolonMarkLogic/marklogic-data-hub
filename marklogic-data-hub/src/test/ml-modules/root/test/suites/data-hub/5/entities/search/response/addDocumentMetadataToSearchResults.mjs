@@ -29,16 +29,16 @@ function verifyMetadataForDocumentWithAllMetadata() {
     ]
   };
 
-  let expectedSources = [{"datahubSourceName":"loadData"}, {"datahubSourceName":"someOtherName"}];
+  let expectedSources = [{"datahubSourceName": "loadData"}, {"datahubSourceName": "someOtherName"}];
 
   xdmp.invokeFunction(function() {
     declareUpdate();
     xdmp.documentSetMetadata("/content/sally.json",
-        {
-          "datahubCreatedByStep": "map-step",
-          "datahubCreatedInFlow": "CurateCustomerJSON",
-          "datahubCreatedOn": "2020-10-08T15:14:28.772612-07:00"
-        });
+      {
+        "datahubCreatedByStep": "map-step",
+        "datahubCreatedInFlow": "CurateCustomerJSON",
+        "datahubCreatedOn": "2020-10-08T15:14:28.772612-07:00"
+      });
   });
 
   xdmp.invokeFunction(function() {
@@ -65,7 +65,7 @@ function verifyMetadataForDocumentWithoutMetadata() {
   };
   entitySearchLib.addDocumentMetadataToSearchResults(response);
   const hubMetadata = response.results[0].hubMetadata;
-  return[
+  return [
     test.assertEqual(null, hubMetadata.lastProcessedByFlow),
     test.assertEqual(null, hubMetadata.lastProcessedByStep),
     test.assertEqual(null, hubMetadata.lastProcessedDateTime)
@@ -87,14 +87,14 @@ function verifyMetadataForDocumentWithPartialMetadata() {
   xdmp.invokeFunction(function() {
     declareUpdate();
     xdmp.documentSetMetadata("/content/tim.json",
-        {
-          "datahubCreatedByStep": "map-step"
-        });
+      {
+        "datahubCreatedByStep": "map-step"
+      });
   });
   xdmp.invokeFunction(function() {
     entitySearchLib.addDocumentMetadataToSearchResults(response);
   });
-  return[
+  return [
     test.assertEqual(null, response.results[0].hubMetadata.lastProcessedByFlow),
     test.assertEqual("map-step", response.results[0].hubMetadata.lastProcessedByStep),
     test.assertEqual(null, response.results[0].hubMetadata.lastProcessedDateTime),
@@ -129,7 +129,7 @@ function verifyDocumentSizes() {
     test.assertEqual("MB", response.results[1].documentSize.units),
     test.assertEqual(207, response.results[2].documentSize.value),
     test.assertEqual("B", response.results[2].documentSize.units)
-  ]
+  ];
 }
 
 function verifySourcesIsArray() {
@@ -149,15 +149,15 @@ function verifySourcesIsArray() {
   };
 
   entitySearchLib.addDocumentMetadataToSearchResults(response);
-  return[
+  return [
     test.assertTrue(Array.isArray(response.results[0].hubMetadata.sources)),
     test.assertTrue(Array.isArray(response.results[1].hubMetadata.sources))
   ];
 }
 
 []
-    .concat(verifyMetadataForDocumentWithAllMetadata())
-    .concat(verifyMetadataForDocumentWithoutMetadata())
-    .concat(verifyMetadataForDocumentWithPartialMetadata())
-    .concat(verifyDocumentSizes())
-    .concat(verifySourcesIsArray());
+  .concat(verifyMetadataForDocumentWithAllMetadata())
+  .concat(verifyMetadataForDocumentWithoutMetadata())
+  .concat(verifyMetadataForDocumentWithPartialMetadata())
+  .concat(verifyDocumentSizes())
+  .concat(verifySourcesIsArray());

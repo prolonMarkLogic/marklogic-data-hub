@@ -19,4 +19,4 @@ function shouldValidate(validateEntityValue) {
   test.assertFalse(shouldValidate("false")),
   test.assertFalse(shouldValidate(true)),
   test.assertFalse(shouldValidate("true"))
-]
+];

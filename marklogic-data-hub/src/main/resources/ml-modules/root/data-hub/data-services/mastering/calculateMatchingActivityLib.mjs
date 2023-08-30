@@ -25,8 +25,7 @@ let scoreMin = scoreMinParam;
 let scoreMax = scoreMaxParam;
 let combinations = combinationsParam;
 let rulesetNameObjectMap;
-function calculateMatchingActivity(step)
-{
+function calculateMatchingActivity(step) {
   // ruleset name object map: name/object (rulesetNameObjectMap)
   rulesetNameObjectMap = {};
   // ruleset name array, sorted in weight descending order (rulesetNames)
@@ -48,9 +47,9 @@ function calculateMatchingActivity(step)
   );
   // sort reduce rulesets
   reduceRulesetNames = reduceRulesetNames.sort(
-      function(a, b) {
-        return rulesetNameObjectMap[b].weight - rulesetNameObjectMap[a].weight;
-      }
+    function(a, b) {
+      return rulesetNameObjectMap[b].weight - rulesetNameObjectMap[a].weight;
+    }
   );
 
   // keys are threshold scores, values are threshold objects
@@ -61,8 +60,7 @@ function calculateMatchingActivity(step)
     thresholdScores.push(obj.score);
     if (thresholdScoreObjectMap.has(obj.score)) {
       thresholdScoreObjectMap.get(obj.score).push(obj);
-    }
-    else {
+    } else {
       let arr = [];
       arr.push(obj);
       thresholdScoreObjectMap.set(obj.score, arr);
@@ -145,20 +143,17 @@ function highestThreshold(score) {
   for (let threshold of thresholdScores) {
     if (threshold > score) {
       return highest;
-    }
-    else {
+    } else {
       highest = threshold;
     }
   }
   return highest;
 }
 
-function addToCombinationsMap(score, names)
-{
+function addToCombinationsMap(score, names) {
   if (combinations.has(score)) {
     combinations.get(score).push(names);
-  }
-  else {
+  } else {
     let arr = [];
     arr.push(names);
     combinations.set(score, arr);
@@ -170,8 +165,7 @@ function addToCombinationsMap(score, names)
 // cumuWeight: the sum of the weights of the rulesets in cumuRulesets
 // lastScore: the last threshold score met by the accumulated rulesets, or zero if none met yet
 // remainingRulesets: an array of ruleset names that have not been considered yet
-function combos(cumuRulesets, cumuWeight, lastScore, remainingRulesets)
-{
+function combos(cumuRulesets, cumuWeight, lastScore, remainingRulesets) {
   // base case, no more rules to add, return
   if (remainingRulesets.length === 0) {
     return;
@@ -191,13 +185,12 @@ function combos(cumuRulesets, cumuWeight, lastScore, remainingRulesets)
     // we don't need to add to this combination, so no recursion
     if (newCumuWeight >= scoreMax) {
       addToCombinationsMap(scoreMax, cumuRulesets.concat(name));
-    }
-    else {
+    } else {
       let highest = highestThreshold(newCumuWeight);
 
       // if new combination exceeds a higher threshold than previously, add to results map
       if (newCumuWeight >= scoreMin && highest > lastScore) {
-        addToCombinationsMap(highest, cumuRulesets.concat(name))
+        addToCombinationsMap(highest, cumuRulesets.concat(name));
       }
 
       combos(
@@ -217,7 +210,7 @@ function buildRulesetObject(ruleset) {
     let resRule = {
       "entityPropertyPath": rule.entityPropertyPath,
       "matchAlgorithm": rule.matchType
-    }
+    };
     resRules.push(resRule);
   }
   return {
@@ -230,37 +223,36 @@ function buildRulesetObject(ruleset) {
 function rulesetsCombosAboveScore(rulesets, score) {
   if (rulesets && rulesets.length) {
     return rulesets
-        // add individual rulesets at or above the score to their own array
-        .filter((ruleset) => ruleset.weight > score)
-        .map((ruleset) => [ruleset])
-        // calculate combinations of rulesets at or above the score to their own array
-        .concat(rulesetsCombosAboveScoreRecursion(
-            rulesets
-                .filter((ruleset) => ruleset.weight < score),
-            0,
-            score,
-            []
-        ));
+    // add individual rulesets at or above the score to their own array
+      .filter((ruleset) => ruleset.weight > score)
+      .map((ruleset) => [ruleset])
+    // calculate combinations of rulesets at or above the score to their own array
+      .concat(rulesetsCombosAboveScoreRecursion(
+        rulesets
+          .filter((ruleset) => ruleset.weight < score),
+        0,
+        score,
+        []
+      ));
   }
 }
 
 function rulesetsCombosAboveScoreRecursion(
-    remainingRulesets,
-    combinedWeight,
-    score,
-    accumulatedRulesets
-)
-{
+  remainingRulesets,
+  combinedWeight,
+  score,
+  accumulatedRulesets
+) {
   if (score === 0 || combinedWeight > score) {
     return accumulatedRulesets;
   } else {
     let results = [];
     remainingRulesets.forEach((ruleset, i) => {
       let subCombo = rulesetsCombosAboveScoreRecursion(
-          remainingRulesets.slice(i + 1),
-          combinedWeight + ruleset.weight,
-          score,
-          accumulatedRulesets.concat([ruleset])
+        remainingRulesets.slice(i + 1),
+        combinedWeight + ruleset.weight,
+        score,
+        accumulatedRulesets.concat([ruleset])
       );
       if (subCombo.length) {
         results.push(subCombo);
@@ -270,5 +262,5 @@ function rulesetsCombosAboveScoreRecursion(
   }
 }
 
-export default { calculateMatchingActivity };
+export default {calculateMatchingActivity};
 

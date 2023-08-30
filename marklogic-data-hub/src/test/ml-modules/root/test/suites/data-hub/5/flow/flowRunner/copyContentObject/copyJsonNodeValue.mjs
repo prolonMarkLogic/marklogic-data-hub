@@ -4,7 +4,7 @@ const test = require("/test/test-helper.xqy");
 // Ignoring context, since that's tested in copyJsonObjectValue.mjs
 const content = {
   "uri": "my-uri",
-  "value": xdmp.toJSON({"hello":"world"})
+  "value": xdmp.toJSON({"hello": "world"})
 };
 
 const copy = flowRunner.copyContentObject(content);
@@ -21,4 +21,4 @@ const assertions = [
   test.assertEqual("world", copy.value.toObject().hello)
 ];
 
-assertions
+assertions;

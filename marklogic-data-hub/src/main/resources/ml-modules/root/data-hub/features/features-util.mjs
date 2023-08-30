@@ -19,16 +19,16 @@
 * Returns the feature that are always enabled. They do not use flags.
 * */
 function getExtraFeatures() {
-    const features = {
-        "mapping": { "enabled" : true},
-        "schemaValidation": { "enabled" : true},
-        "provenance": { "enabled" : true}
-    };
-    return features;
+  const features = {
+    "mapping": {"enabled": true},
+    "schemaValidation": {"enabled": true},
+    "provenance": {"enabled": true}
+  };
+  return features;
 }
 
 function getModelFeatures(model, artifactName) {
-  if(model.definitions && model.definitions[artifactName] && model.definitions[artifactName].features) {
+  if (model.definitions && model.definitions[artifactName] && model.definitions[artifactName].features) {
     return model.definitions[artifactName].features;
   }
   return undefined;

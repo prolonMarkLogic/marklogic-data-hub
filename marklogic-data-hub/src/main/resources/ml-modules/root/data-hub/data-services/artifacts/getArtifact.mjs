@@ -29,7 +29,7 @@ if ("ingestion" === artifactType) {
 } else if ("flow" === artifactType || "stepDefinition" === artifactType) {
   xdmp.securityAssert("http://marklogic.com/data-hub/privileges/read-flow", "execute");
 } else if ("model" === artifactType) {
-    xdmp.securityAssert("http://marklogic.com/data-hub/privileges/read-entity-model", "execute");
+  xdmp.securityAssert("http://marklogic.com/data-hub/privileges/read-entity-model", "execute");
 } else {
   httpUtils.throwBadRequest("Unsupported artifact type: " + artifactType);
 }

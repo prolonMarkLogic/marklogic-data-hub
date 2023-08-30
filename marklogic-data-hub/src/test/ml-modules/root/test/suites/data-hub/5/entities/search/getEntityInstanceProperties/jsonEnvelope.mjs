@@ -39,4 +39,4 @@ const assertions = [
     "to retrieve from envelope/instance")
 ];
 
-assertions
+assertions;

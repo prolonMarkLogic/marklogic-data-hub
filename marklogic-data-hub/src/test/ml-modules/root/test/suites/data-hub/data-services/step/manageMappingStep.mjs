@@ -22,8 +22,8 @@ let info = {
   selectedSource: "collection",
   sourceQuery: "cts.collectionQuery('customer-input')",
   targetEntityType: "http://example.org/Customer-0.0.1/Customer",
-  headers:"",
-  customHook:"",
+  headers: "",
+  customHook: "",
   interceptors: ""
 };
 
@@ -66,9 +66,9 @@ let propertiesToAssign = {
   description: "modified description",
   additionalCollections: ["anotherOne", "anotherTwo"],
   version: "1",
-  properties : {
-    "customerID" : {
-      "sourcedFrom" : "CustomerID"
+  properties: {
+    "customerID": {
+      "sourcedFrom": "CustomerID"
     }
   }
 };

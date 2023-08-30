@@ -1,5 +1,5 @@
 import esMapping from "/data-hub/5/builtins/steps/mapping/entity-services/main.mjs";
-function invokeTestMapping(docURI, mappingName, mappingVersion ) {
+function invokeTestMapping(docURI, mappingName, mappingVersion) {
   let doc = cts.doc(docURI);
   let result = esMapping.main({uri: docURI, value: doc}, {
     mapping: {name: mappingName, version: mappingVersion},
@@ -12,4 +12,4 @@ function invokeTestMapping(docURI, mappingName, mappingVersion ) {
 
 export default {
   invokeTestMapping
-}
+};

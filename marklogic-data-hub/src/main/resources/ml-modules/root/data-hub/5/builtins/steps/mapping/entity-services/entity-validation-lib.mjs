@@ -52,13 +52,13 @@ function validateJsonEntity(newInstance, options = {}, validateEntityValue, enti
         "data": e.data,
         "message": e.message,
         "formattedMessages": []
-      }
+      };
 
       for (let errorMessage of e.data) {
         let formattedErrorMessage = formatErrorMessageForJson(errorMessage.toString());
         if (formattedErrorMessage == null) {
           formattedErrorMessage = {
-            message : errorMessage.trim()
+            message: errorMessage.trim()
           };
         }
         options.headers.datahub.validationErrors.formattedMessages.push(formattedErrorMessage);
@@ -112,10 +112,10 @@ function validateXmlEntity(newInstance, options = {}, validateEntityValue, entit
         }
         options.headers.datahub.validationErrors = [];
 
-          let error;
-          for (error of result.xpath("/*:error")) {
+        let error;
+        for (error of result.xpath("/*:error")) {
           let validationError = {
-            error : {
+            error: {
               code: fn.string(error.xpath("./*:code/text()")),
               name: fn.string(error.xpath("./*:name/text()")),
               message: fn.string(error.xpath("./*:message/text()")),
@@ -176,8 +176,7 @@ function addSchemaLocationToXmlInstance(newInstance, entityInfo = {}) {
 function addFormattedMessagesForXml(validationError) {
   if (validationError.error.code == "XDMP-VALIDATEMISSINGELT") {
     buildFormattedMessagesForMissingElementsError(validationError);
-  }
-  else if (validationError.error.code == "XDMP-VALIDATEUNEXPECTED") {
+  } else if (validationError.error.code == "XDMP-VALIDATEUNEXPECTED") {
     buildFormattedMessagesForUnexpectedNodeError(validationError);
   }
 }
@@ -200,7 +199,7 @@ function buildFormattedMessagesForMissingElementsError(validationError = {}) {
         let names = str.split(",");
         let notRequiredPos = names.findIndex(val => val.endsWith("?"));
         if (notRequiredPos > -1) {
-          validationError.error.formattedMessages = buildFormattedMessagesForMissingXmlPropertyNames(names.slice(0, notRequiredPos))
+          validationError.error.formattedMessages = buildFormattedMessagesForMissingXmlPropertyNames(names.slice(0, notRequiredPos));
         }
       }
     }
@@ -224,7 +223,7 @@ function buildFormattedMessagesForUnexpectedNodeError(validationError = {}) {
       let propertyNames = tokens[3].substring(1, tokens[3].length - 1).split(",");
       let notRequiredPos = propertyNames.findIndex(val => val == foundPropertyName);
       if (notRequiredPos > -1) {
-        validationError.error.formattedMessages = buildFormattedMessagesForMissingXmlPropertyNames(propertyNames.slice(0, notRequiredPos))
+        validationError.error.formattedMessages = buildFormattedMessagesForMissingXmlPropertyNames(propertyNames.slice(0, notRequiredPos));
       }
     }
   }

@@ -30,4 +30,4 @@ const semanticConceptInfo = {
   description
 };
 
-semanticConceptInfo
+semanticConceptInfo;

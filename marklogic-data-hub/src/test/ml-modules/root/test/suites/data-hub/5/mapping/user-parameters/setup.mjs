@@ -28,4 +28,4 @@ xdmp.invokeFunction(() => {
       "mappingParametersModulePath": "/test/suites/data-hub/5/mapping/user-parameters/test-data/bad-get-parameter-values.mjs",
     }
   ]);
-}, { update: "true" });
+}, {update: "true"});

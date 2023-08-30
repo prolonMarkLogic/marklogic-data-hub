@@ -26,4 +26,4 @@ const databases = [config.STAGINGDATABASE, config.FINALDATABASE];
 models.forEach(model => {
   const name = model.info.name;
   conceptLib.writeConceptModelToDatabases(name, model, databases, false);
-})
+});

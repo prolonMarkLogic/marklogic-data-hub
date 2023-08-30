@@ -21,12 +21,12 @@ import Artifacts from "/data-hub/5/artifacts/core.mjs";
 const stepName = external.stepName;
 
 let dataHubOptions = ["sourceQuery", "sourceQueryLimit", "sourceQueryIsScript", "constrainSourceQueryToJob", "provenanceGranularityLevel", "acceptsBatch",
-  "stepUpdate", "collections" , "additionalCollections", "permissions", "outputFormat", "sourceDatabase", "targetDatabase", "targetEntityType", "headers"];
+  "stepUpdate", "collections", "additionalCollections", "permissions", "outputFormat", "sourceDatabase", "targetDatabase", "targetEntityType", "headers"];
 let additionalSettings = {};
 let step = Artifacts.getArtifact("custom", stepName);
 let options = Artifacts.convertStepReferenceToInlineStep(step.stepId, null).options;
 for (let key of Object.keys(options)) {
-  if(!dataHubOptions.includes(key)){
+  if (!dataHubOptions.includes(key)) {
     additionalSettings[key] = options[key];
     delete step[key];
   }

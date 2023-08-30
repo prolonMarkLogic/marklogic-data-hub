@@ -22,7 +22,7 @@ const ns = {hub: "http://marklogic.com/data-hub"};
 let internalContexts = {
   globalContext: {},
   itemContext: {}
-}
+};
 
 function setGlobalContext(context) {
   internalContexts.globalContext = context;

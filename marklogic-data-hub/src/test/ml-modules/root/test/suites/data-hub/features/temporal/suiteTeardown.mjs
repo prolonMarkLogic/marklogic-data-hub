@@ -5,15 +5,15 @@ const roles = ["admin"];
 
 hubTest.runWithRolesAndPrivileges(roles, [], function () {
   xdmp.invokeFunction(function () {
-    temporal.documentProtect( "koolTest", "/affiliate1.json",
-      {  expireTime: fn.currentDateTime() }
+    temporal.documentProtect("koolTest", "/affiliate1.json",
+      {expireTime: fn.currentDateTime()}
     );
   }, {update: "true"});
 });
 
 hubTest.runWithRolesAndPrivileges(roles, [], function () {
   xdmp.invokeFunction(function () {
-    temporal.documentWipe( "koolTest", "/affiliate1.json" );
+    temporal.documentWipe("koolTest", "/affiliate1.json");
   }, {update: "true"});
 });
 hubTest.runWithRolesAndPrivileges(roles, [], function () {
@@ -29,7 +29,7 @@ hubTest.runWithRolesAndPrivileges(roles, [], function () {
     let config = admin.getConfiguration();
     let elementRangeIndexes = [
       admin.databaseRangeElementIndex("dateTime", "", "systemStart", "", fn.false()),
-      admin.databaseRangeElementIndex("dateTime", "", "systemEnd", "", fn.false())]
+      admin.databaseRangeElementIndex("dateTime", "", "systemEnd", "", fn.false())];
     elementRangeIndexes.forEach((elementRangeIndex) => {
       config = admin.databaseDeleteRangeElementIndex(config, xdmp.database(), elementRangeIndex);
     });

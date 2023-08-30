@@ -16,7 +16,7 @@ const runtimeOptions = {
 };
 
 const contentArray = [
-  { "uri": "/customer1.json", "value": { "customerId": "1" } }
+  {"uri": "/customer1.json", "value": {"customerId": "1"}}
 ];
 
 flowApi.runFlowOnContent(flowName, contentArray, jobId, runtimeOptions);
@@ -32,4 +32,4 @@ const assertions = [
 assertions.concat(
   test.assertEqual(false, hubTest.finalDocumentExists("/customer1.json"),
     "The doc should not exist in final since both steps write to staging")
-)
+);

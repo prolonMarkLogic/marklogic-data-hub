@@ -1,11 +1,11 @@
 function main(content, options) {
-  if(options["sourceNameToAdd"] || options["sourceTypeToAdd"]) {
+  if (options["sourceNameToAdd"] || options["sourceTypeToAdd"]) {
     // See https://docs.marklogic.com/Node.nodeType
-    if(content.value.root && 1 === content.value.root.nodeType) {
+    if (content.value.root && 1 === content.value.root.nodeType) {
       addSourceToXmlDocuments(content, options["sourceNameToAdd"], options["sourceTypeToAdd"]);
     }
 
-    if(content && content.value && 9 == content.value.nodeType && content.value.toObject().envelope) {
+    if (content && content.value && 9 == content.value.nodeType && content.value.toObject().envelope) {
       addSourceToJsonDocuments(content, options["sourceNameToAdd"], options["sourceTypeToAdd"]);
     }
   }
@@ -15,10 +15,10 @@ function main(content, options) {
 function addSourceToXmlDocuments(content, sourceName, sourceType) {
   const builder = new NodeBuilder();
   builder.startElement("sources");
-  if(sourceName) {
+  if (sourceName) {
     builder.addElement('datahubSourceName', sourceName);
   }
-  if(sourceType) {
+  if (sourceType) {
     builder.addElement('datahubSourceType', sourceType);
   }
   builder.endElement();
@@ -46,11 +46,11 @@ function addSourceToJsonDocuments(content, sourceName, sourceType) {
   content.value = content.value.toObject();
   const headers = content.value.envelope.headers;
 
-  if(headers["sources"] && !Array.isArray(headers["sources"])) {
+  if (headers["sources"] && !Array.isArray(headers["sources"])) {
     headers.sources = [headers.sources];
   }
 
-  if(!headers["sources"] || headers["sources"].length == 0) {
+  if (!headers["sources"] || headers["sources"].length == 0) {
     headers["sources"] = [];
   }
 

@@ -5,4 +5,4 @@ xdmp.invokeFunction(() => {
 
   hubTestX.resetHub();
   hubTest.createSimpleMappingProject([{"latestProvenance": true}]);
-}, { update: "true" });
+}, {update: "true"});

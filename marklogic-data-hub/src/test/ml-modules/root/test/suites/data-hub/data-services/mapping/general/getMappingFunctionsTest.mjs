@@ -9,16 +9,16 @@ function invokeService(excludeMLMappingFunctions = false) {
 }
 
 const mapFuncs = invokeService(false);
-function getFunctionInfo(mapFuncs, functionName){
+function getFunctionInfo(mapFuncs, functionName) {
   return mapFuncs.find(func => {
-    return func.functionName == functionName
+    return func.functionName == functionName;
   });
 }
 
 const mapFuncsWithoutMLFunctions = invokeService(true);
 
-let sumFunc = getFunctionInfo(mapFuncs,"sum");
-let currentDatetime = getFunctionInfo(mapFuncs,"current-dateTime");
+let sumFunc = getFunctionInfo(mapFuncs, "sum");
+let currentDatetime = getFunctionInfo(mapFuncs, "current-dateTime");
 const assertions = [];
 assertions.push(
   test.assertTrue(mapFuncs.length >= 100, fn.string(mapFuncs.length)),
@@ -35,11 +35,11 @@ functionsThatDontWork.forEach(functionName => {
   assertions.push(
     test.assertFalse(mapFuncs.hasOwnProperty(functionName), "Expected function to not be available for mapping expressions: " + functionName)
   );
-})
-function isAlphabeticallySorted(){
-  for(let i =0; i< mapFuncs.length; i++){
-    if(!(i == 0 || String(mapFuncs[i].functionName).toLowerCase() > String(mapFuncs[i-1].functionName).toLowerCase())){
-      test.fail( String(mapFuncs[i].functionName).toLowerCase() + "," +
+});
+function isAlphabeticallySorted() {
+  for (let i =0; i< mapFuncs.length; i++) {
+    if (!(i == 0 || String(mapFuncs[i].functionName).toLowerCase() > String(mapFuncs[i-1].functionName).toLowerCase())) {
+      test.fail(String(mapFuncs[i].functionName).toLowerCase() + "," +
         String(mapFuncs[i-1].functionName).toLowerCase() + " are not sorted alphabetically. Complete mapping functions:" + JSON.stringify(mapFuncs));
     }
   }

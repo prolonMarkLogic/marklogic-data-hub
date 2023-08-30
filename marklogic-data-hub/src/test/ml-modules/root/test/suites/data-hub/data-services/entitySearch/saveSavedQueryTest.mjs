@@ -48,25 +48,25 @@ function testSaveAndModifyQuery() {
   const permissions = JSON.parse(xdmp.invokeFunction(() => {
     let permissions = {};
     xdmp.documentGetPermissions(uri).forEach((permission) => {
-      if(permissions[xdmp.roleName(permission.roleId)]) {
+      if (permissions[xdmp.roleName(permission.roleId)]) {
         permissions[xdmp.roleName(permission.roleId)].push(permission.capability);
       } else {
         permissions[xdmp.roleName(permission.roleId)] = [permission.capability];
       }
     });
     return permissions;
-  }, {transactionMode:'update-auto-commit'}));
+  }, {transactionMode: 'update-auto-commit'}));
   assertions.push(
-      test.assertNotEqual(null, insertedQuery),
-      test.assertNotEqual(null, insertedQuery.savedQuery),
-      test.assertNotEqual(null, insertedQuery.savedQuery.systemMetadata),
-      test.assertNotEqual(null, insertedQuery.savedQuery.id),
-      test.assertEqual("some-query", insertedQuery.savedQuery.name),
-      test.assertEqual(4, Object.keys(insertedQuery.savedQuery.systemMetadata).length),
-      test.assertEqual(xdmp.getCurrentUser(), insertedQuery.savedQuery.owner),
-      test.assertTrue((permissions["data-hub-saved-query-user"]).includes("update")),
-      test.assertTrue((permissions["data-hub-saved-query-user"]).includes("read")),
-      test.assertEqual(xdmp.documentGetCollections(uri), ["http://marklogic.com/data-hub/saved-query"])
+    test.assertNotEqual(null, insertedQuery),
+    test.assertNotEqual(null, insertedQuery.savedQuery),
+    test.assertNotEqual(null, insertedQuery.savedQuery.systemMetadata),
+    test.assertNotEqual(null, insertedQuery.savedQuery.id),
+    test.assertEqual("some-query", insertedQuery.savedQuery.name),
+    test.assertEqual(4, Object.keys(insertedQuery.savedQuery.systemMetadata).length),
+    test.assertEqual(xdmp.getCurrentUser(), insertedQuery.savedQuery.owner),
+    test.assertTrue((permissions["data-hub-saved-query-user"]).includes("update")),
+    test.assertTrue((permissions["data-hub-saved-query-user"]).includes("read")),
+    test.assertEqual(xdmp.documentGetCollections(uri), ["http://marklogic.com/data-hub/saved-query"])
   );
 
   // saving query doc with an already existing query name
@@ -76,16 +76,16 @@ function testSaveAndModifyQuery() {
   insertedQuery.savedQuery.name = "modified-query";
   const updatedQuery = entitySearchService.updateSavedQuery(JSON.stringify(insertedQuery));
   assertions.push(
-      test.assertNotEqual(null, updatedQuery),
-      test.assertNotEqual(null, updatedQuery.savedQuery),
-      test.assertNotEqual(null, updatedQuery.savedQuery.systemMetadata),
-      test.assertEqual(id, updatedQuery.savedQuery.id),
-      test.assertEqual("modified-query", updatedQuery.savedQuery.name),
-      test.assertEqual(4, Object.keys(updatedQuery.savedQuery.systemMetadata).length),
-      test.assertEqual(xdmp.getCurrentUser(), updatedQuery.savedQuery.owner),
-      test.assertTrue((permissions["data-hub-saved-query-user"]).includes("update")),
-      test.assertTrue((permissions["data-hub-saved-query-user"]).includes("read")),
-      test.assertEqual(xdmp.documentGetCollections(uri), ["http://marklogic.com/data-hub/saved-query"])
+    test.assertNotEqual(null, updatedQuery),
+    test.assertNotEqual(null, updatedQuery.savedQuery),
+    test.assertNotEqual(null, updatedQuery.savedQuery.systemMetadata),
+    test.assertEqual(id, updatedQuery.savedQuery.id),
+    test.assertEqual("modified-query", updatedQuery.savedQuery.name),
+    test.assertEqual(4, Object.keys(updatedQuery.savedQuery.systemMetadata).length),
+    test.assertEqual(xdmp.getCurrentUser(), updatedQuery.savedQuery.owner),
+    test.assertTrue((permissions["data-hub-saved-query-user"]).includes("update")),
+    test.assertTrue((permissions["data-hub-saved-query-user"]).includes("read")),
+    test.assertEqual(xdmp.documentGetCollections(uri), ["http://marklogic.com/data-hub/saved-query"])
   );
 
   return assertions;

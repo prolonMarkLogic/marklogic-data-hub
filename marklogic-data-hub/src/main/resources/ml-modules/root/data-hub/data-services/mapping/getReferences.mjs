@@ -30,4 +30,4 @@ if (modulePath) {
     throw Error(`Unable to fetch references in module '${modulePath}'; cause: ${error.message}`);
   }
 }
-response
+response;

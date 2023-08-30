@@ -5,4 +5,4 @@ xdmp.invokeFunction(() => {
   xdmp.documentDelete('/entities/NumericEntity.entity.json');
   xdmp.documentDelete('/entities/NumericStringEntity.entity.json');
   xdmp.documentDelete('/entities/EntitySearchEntity.entity.json');
-}, { update: "true" });
+}, {update: "true"});

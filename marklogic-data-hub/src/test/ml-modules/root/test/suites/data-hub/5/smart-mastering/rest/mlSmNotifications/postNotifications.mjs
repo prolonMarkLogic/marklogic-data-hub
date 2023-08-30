@@ -6,7 +6,7 @@ const assertions = [];
 const context = {};
 
 const inputDocument = new NodeBuilder().startDocument();
-inputDocument.addNode({name : "lastname"});
+inputDocument.addNode({name: "lastname"});
 inputDocument.endDocument();
 const nodeInput = inputDocument.toNode();
 

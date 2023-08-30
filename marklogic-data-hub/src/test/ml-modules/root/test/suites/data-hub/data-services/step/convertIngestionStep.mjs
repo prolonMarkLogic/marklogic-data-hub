@@ -100,7 +100,7 @@ assertions.push(
   assertions.push(
     test.assertFalse(flowStep.hasOwnProperty(prop), "Expected step not to have property: " + prop),
     test.assertFalse(options.hasOwnProperty(prop), "Expected options not to have property: " + prop)
-  )
+  );
 });
 
 assertions;

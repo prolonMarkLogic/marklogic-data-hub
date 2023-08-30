@@ -5,7 +5,7 @@ const flowName = "myFlow";
 
 const contentArray = [];
 for (let i = 1; i <= 11; i++) {
-  contentArray.push({ "uri": "/customer" + i + ".json", "value": { "customerId": i } });
+  contentArray.push({"uri": "/customer" + i + ".json", "value": {"customerId": i}});
 }
 
 xdmp.invokeFunction(() => {
@@ -31,4 +31,4 @@ xdmp.invokeFunction(() => {
   ];
 
   assertions;
-}, { update: "true" });
+}, {update: "true"});

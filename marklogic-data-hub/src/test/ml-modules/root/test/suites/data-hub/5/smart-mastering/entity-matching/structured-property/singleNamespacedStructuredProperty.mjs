@@ -43,7 +43,7 @@ const options = {
       "score": 5
     }
   ]
-}
+};
 
 const matchSummary = smTest.matchXml(entityXml, options);
 

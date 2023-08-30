@@ -35,7 +35,7 @@ const response = {
   namespaces: {},
   format: null,
   sourceProperties: []
-}
+};
 
 // Offer the mapping step to define the doc's database.
 const mappingStep = core.getArtifact('mapping', stepName);
@@ -53,11 +53,11 @@ if (originalDoc === null) {
 const inlineMappingStep = Artifacts.convertStepReferenceToInlineStep(mappingStep.stepId, null);
 
 const flow = {
-  "name" : "inMemoryFlow-" + stepName,
-  "steps" : {
+  "name": "inMemoryFlow-" + stepName,
+  "steps": {
     "1": inlineMappingStep
   }
-}
+};
 
 const flowExecutionContext = new FlowExecutionContext(flow, null, null, [1]);
 const stepExecutionContext = StepExecutionContext.newContext(flowExecutionContext, 1);
@@ -68,10 +68,9 @@ content.uri = uri;
 content.value = originalDoc;
 contentArray.push(content);
 
-try{
+try {
   flowRunner.invokeInterceptors(stepExecutionContext, contentArray, "beforeMain");
-}
-catch(e){
+} catch (e) {
   httpUtils.throwBadRequest("Interceptor execution failed;cause: " + Error(e).message);
 }
 
@@ -93,19 +92,19 @@ if (isJson) {
   if (mappingStep.sourceRecordScope === "entireRecord") {
     xmlNode = doc;
   } else {
-    xmlNode = fn.head(doc.xpath("/es:envelope/es:instance/node()", {"es":"http://marklogic.com/entity-services"}))
+    xmlNode = fn.head(doc.xpath("/es:envelope/es:instance/node()", {"es": "http://marklogic.com/entity-services"}));
     if (xmlNode === null) {
       xmlNode = doc;
     }
   }
 }
 
-if(keepSameType && !isJson ){
+if (keepSameType && !isJson) {
   response.data = xmlNode;
-}else if(!isJson){
+} else if (!isJson) {
   const transformResult = xmlToJsonForMapping.transform(xmlNode);
   response.data = transformResult.data;
-  response.namespaces = Object.assign({ "entity-services": "http://marklogic.com/entity-services"}, transformResult.namespaces);
+  response.namespaces = Object.assign({"entity-services": "http://marklogic.com/entity-services"}, transformResult.namespaces);
 }
 
 response.sourceProperties = sourcePropsLib.buildSourceProperties(response.data, isJson);

@@ -5,7 +5,7 @@ const test = require("/test/test-helper.xqy");
 xdmp.invokeFunction(() => {
   hubTestX.resetHub();
   hubTestX.loadNonEntities(test.__CALLER_FILE__);
-}, { update: "true" });
+}, {update: "true"});
 
 xdmp.invokeFunction(() => {
   hubTest.createSimpleMappingProject([
@@ -27,4 +27,4 @@ xdmp.invokeFunction(() => {
       "stepDefinitionType": "mapping"
     }
   ]);
-}, { update: "true" });
+}, {update: "true"});

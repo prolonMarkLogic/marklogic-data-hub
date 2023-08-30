@@ -9,7 +9,7 @@ function verifyReduceMatchSummary(matchSummary) {
   return [
     test.assertTrue(fn.exists(actionDetails), `Notification should exists: ${xdmp.toJsonString(matchSummary)}`),
     test.assertEqual("notify", actionDetails.action,
-      "The action should be a notify because of the exact match on lastName, which assigns a score of 10, " + 
+      "The action should be a notify because of the exact match on lastName, which assigns a score of 10, " +
       "but then the exact match on street reduces the score to 5, thus hitting the Possible Match threshold"
     ),
     test.assertEqual("Possible Match", actionDetails.threshold),
@@ -22,4 +22,4 @@ function verifyReduceMatchSummary(matchSummary) {
 
 export default {
   verifyReduceMatchSummary
-}
+};

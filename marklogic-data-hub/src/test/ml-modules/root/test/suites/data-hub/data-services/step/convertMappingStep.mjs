@@ -18,9 +18,9 @@ let info = {
   sourceQuery: "cts.collectionQuery('customer-input')",
   targetEntityType: "http://example.org/Customer-0.0.1/Customer",
   version: "1",
-  properties : {
-    "customerID" : {
-      "sourcedFrom" : "CustomerID"
+  properties: {
+    "customerID": {
+      "sourcedFrom": "CustomerID"
     }
   },
   someWackyUserProperty: "could be anything"
@@ -67,4 +67,4 @@ assertions.push(
     "Version should have been replaced with options.mapping.version")
 );
 
-assertions
+assertions;

@@ -7,20 +7,20 @@ function invokeModule(module, args, options = {}) {
 
 function findStepResponses(endpointConstants) {
   return fn.head(xdmp.invokeFunction(
-      function() {
-        return invokeModule("findStepResponses.mjs", {endpointConstants});
-      },
-      {database: xdmp.database(config.JOBDATABASE)}
+    function() {
+      return invokeModule("findStepResponses.mjs", {endpointConstants});
+    },
+    {database: xdmp.database(config.JOBDATABASE)}
   ));
 }
 
 function getMatchingPropertyValues(facetValuesSearchQuery) {
-    return fn.head(xdmp.invokeFunction(
-        function() {
-            return invokeModule("getMatchingPropertyValues.mjs", {facetValuesSearchQuery});
-        },
-        {database: xdmp.database(config.JOBDATABASE)}
-    ));
+  return fn.head(xdmp.invokeFunction(
+    function() {
+      return invokeModule("getMatchingPropertyValues.mjs", {facetValuesSearchQuery});
+    },
+    {database: xdmp.database(config.JOBDATABASE)}
+  ));
 }
 
 function startJob(jobId, flowName, stepNumber) {

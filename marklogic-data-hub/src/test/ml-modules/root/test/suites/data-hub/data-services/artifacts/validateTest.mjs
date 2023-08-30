@@ -6,7 +6,7 @@ function invokeService(artifactType, artifactName, artifact) {
 }
 
 function validArtifact() {
-  const result = invokeService('ingestion','validArtifact', { name: 'validArtifact', sourceFormat: 'xml', targetFormat: 'json'});
+  const result = invokeService('ingestion', 'validArtifact', {name: 'validArtifact', sourceFormat: 'xml', targetFormat: 'json'});
   return [
     test.assertEqual("validArtifact", result.name),
     test.assertEqual("xml", result.sourceFormat),
@@ -16,8 +16,8 @@ function validArtifact() {
 
 function invalidArtifact() {
   try {
-    invokeService('ingestion', "invalidArtifact", { name: 'invalidArtifact'});
-    throw Error ("Should have thrown a validation error");
+    invokeService('ingestion', "invalidArtifact", {name: 'invalidArtifact'});
+    throw Error("Should have thrown a validation error");
   } catch (e) {
     let msg = e.data[1];
     return test.assertEqual("Ingestion step 'invalidArtifact' is missing the following required properties: [\"sourceFormat\",\"targetFormat\"]", msg);

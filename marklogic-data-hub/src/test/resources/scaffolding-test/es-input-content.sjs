@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 /*
 * Create Content Plugin
@@ -9,26 +9,22 @@
 * @return - your content
 */
 function createContent(id, rawContent, options) {
-  
+
 
   let source;
 
   // for xml we need to use xpath
-  if(rawContent && xdmp.nodeKind(rawContent) === 'element' && rawContent instanceof XMLDocument) {
-    source = rawContent
-  }
-  // for json we need to return the instance
-  else if(rawContent && rawContent instanceof Document) {
+  if (rawContent && xdmp.nodeKind(rawContent) === 'element' && rawContent instanceof XMLDocument) {
+    source = rawContent;
+  } else if (rawContent && rawContent instanceof Document) { // for json we need to return the instance
     source = fn.head(rawContent.root);
-  }
-  // for everything else
-  else {
+  } else { // for everything else
     source = rawContent;
   }
 
   return extractInstanceMyFunTest(source);
 }
-  
+
 /**
 * Creates an object instance from some source document.
 * @param source  A document or node that contains
@@ -41,36 +37,35 @@ function extractInstanceMyFunTest(source) {
   // now check to see if we have XML or json, then create a node clone to operate of off
   if (source instanceof Element || source instanceof ObjectNode) {
     let instancePath = '/';
-    if(source instanceof Element) {
+    if (source instanceof Element) {
       //make sure we grab content root only
       instancePath = '/node()[not(. instance of processing-instruction() or . instance of comment())]';
     }
     source = new NodeBuilder().addNode(fn.head(source.xpath(instancePath))).toNode();
-  }
-  else{
+  } else {
     source = new NodeBuilder().addNode(fn.head(source)).toNode();
   }
   let name = !fn.empty(fn.head(source.xpath('/name'))) ? xs.string(fn.head(fn.head(source.xpath('/name')))) : null;
   let price = !fn.empty(fn.head(source.xpath('/price'))) ? xs.decimal(fn.head(fn.head(source.xpath('/price')))) : null;
   let ages = !fn.empty(fn.head(source.xpath('/ages'))) ? fn.head(source.xpath('/ages')) : [];
-  
+
   /* The following property is a local reference. */
   let employee = null;
-  if(fn.head(source.xpath('/employee'))) {
+  if (fn.head(source.xpath('/employee'))) {
     // let's create and pass the node
     let employeeSource = new NodeBuilder();
     employeeSource.addNode(fn.head(source.xpath('/employee'))).toNode();
     // either return an instance of a Employee
     employee = extractInstanceEmployee(employeeSource);
-  
+
     // or a reference to a Employee
     // employee = makeReferenceObject('Employee', employeeSource));
-  };
-  
+  }
+
   /* The following property is a local reference. */
   let employees = [];
-  if(fn.head(source.xpath('/employees'))) {
-    for(const item of Sequence.from(source.xpath('/employees'))) {
+  if (fn.head(source.xpath('/employees'))) {
+    for (const item of Sequence.from(source.xpath('/employees'))) {
       // let's create and pass the node
       let itemSource = new NodeBuilder();
       itemSource.addNode(fn.head(item));
@@ -79,7 +74,7 @@ function extractInstanceMyFunTest(source) {
       // or uncomment this to create an external reference to a Employee
       //employees.push(makeReferenceObject('Employee', itemSource.toNode()));
     }
-  };
+  }
 
   // return the instance object
   return {
@@ -91,8 +86,8 @@ function extractInstanceMyFunTest(source) {
     'ages': ages,
     'employee': employee,
     'employees': employees
-  }
-};
+  };
+}
 
 /**
 * Creates an object instance from some source document.
@@ -106,13 +101,12 @@ function extractInstanceEmployee(source) {
   // now check to see if we have XML or json, then create a node clone to operate of off
   if (source instanceof Element || source instanceof ObjectNode) {
     let instancePath = '/';
-    if(source instanceof Element) {
+    if (source instanceof Element) {
       //make sure we grab content root only
       instancePath = '/node()[not(. instance of processing-instruction() or . instance of comment())]';
     }
     source = new NodeBuilder().addNode(fn.head(source.xpath(instancePath))).toNode();
-  }
-  else{
+  } else {
     source = new NodeBuilder().addNode(fn.head(source)).toNode();
   }
   let id = !fn.empty(fn.head(source.xpath('/id'))) ? xs.string(fn.head(fn.head(source.xpath('/id')))) : null;
@@ -121,14 +115,14 @@ function extractInstanceEmployee(source) {
 
   // return the instance object
   return {
-  
+
     '$type': 'Employee',
     '$version': '0.0.1',
     'id': id,
     'name': name,
     'salary': salary
-  }
-};
+  };
+}
 
 
 function makeReferenceObject(type, ref) {

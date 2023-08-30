@@ -53,4 +53,4 @@ assertions.push(
 );
 
 
-assertions
+assertions;

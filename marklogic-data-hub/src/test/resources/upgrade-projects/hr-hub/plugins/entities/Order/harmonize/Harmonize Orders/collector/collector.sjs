@@ -6,7 +6,7 @@
  * @return - an array of ids or uris
  */
 function collect(options) {
-	const jsearch = require('/MarkLogic/jsearch.sjs');
+  const jsearch = require('/MarkLogic/jsearch.sjs');
   return jsearch
     .values('id')
     .where(cts.collectionQuery(options.entity))

@@ -31,4 +31,4 @@ try {
   );
 }
 
-assertions
+assertions;

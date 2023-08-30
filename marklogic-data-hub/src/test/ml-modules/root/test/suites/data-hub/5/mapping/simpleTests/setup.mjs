@@ -170,4 +170,4 @@ xdmp.invokeFunction(() => {
       hubTest.makeSimpleMappingStep("step2", secondMappingStep)
     ],
     customerModel);
-}, { update: "true" });
+}, {update: "true"});

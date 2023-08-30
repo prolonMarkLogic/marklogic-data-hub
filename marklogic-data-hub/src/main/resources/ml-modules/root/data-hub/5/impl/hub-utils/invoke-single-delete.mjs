@@ -20,5 +20,5 @@ declareUpdate();
 const docUri = external.docUri;
 
 if (fn.docAvailable(docUri)) {
-    xdmp.documentDelete(docUri);
+  xdmp.documentDelete(docUri);
 }

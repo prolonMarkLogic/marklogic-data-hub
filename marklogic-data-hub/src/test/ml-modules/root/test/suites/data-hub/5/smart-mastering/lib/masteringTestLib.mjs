@@ -38,7 +38,7 @@ const TEST_DOC_URI = "/zzz/test-doc.json";
  */
 export function match(entityTypeName, entityProperties, options) {
   const content = buildMatchingContent(entityTypeName, entityProperties);
-  const fakeFlow = {"name":"fake", "steps": {"1": {}}};
+  const fakeFlow = {"name": "fake", "steps": {"1": {}}};
   const stepExecutionContext = new StepExecutionContext(fakeFlow, "1", {});
   return matching.main(content, options, stepExecutionContext)[0].value.matchSummary;
 }
@@ -138,4 +138,4 @@ export default {
   match,
   matchXml,
   TEST_DOC_URI
-}
+};

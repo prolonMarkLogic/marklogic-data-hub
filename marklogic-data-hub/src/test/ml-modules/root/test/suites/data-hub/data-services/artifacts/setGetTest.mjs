@@ -9,7 +9,7 @@ function invokeSetService(artifactType, artifactName, artifact) {
 }
 
 function insertValidArtifact() {
-  const result = invokeSetService('ingestion','validArtifact', { name: 'validArtifact', sourceFormat: 'xml', targetFormat: 'json'});
+  const result = invokeSetService('ingestion', 'validArtifact', {name: 'validArtifact', sourceFormat: 'xml', targetFormat: 'json'});
   return [
     test.assertEqual("validArtifact", result.name),
     test.assertEqual("xml", result.sourceFormat),

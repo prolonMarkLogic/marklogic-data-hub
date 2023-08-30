@@ -4,4 +4,4 @@ import verifyProvRecord from "/test/suites/data-hub/data-services/provenance/dat
 
 xdmp.invokeFunction(() => {
   verifyProvRecord.onFinishJob({"latestProvenance": true});
-}, { update: "true" });
+}, {update: "true"});

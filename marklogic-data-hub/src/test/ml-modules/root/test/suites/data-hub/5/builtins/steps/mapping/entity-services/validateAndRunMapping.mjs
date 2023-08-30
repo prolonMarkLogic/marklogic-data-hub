@@ -19,11 +19,11 @@ function validMapping() {
   let sourcedFrom = "memoryLookup(customer/gender, '{\"m\": \"Male\", \"f\": \"Female\", \"nb\": \"Non-Binary\"}')";
   let result = validateAndRunGenderMapping(sourcedFrom);
   return [
-      test.assertEqual("Female", result.properties.gender.output,
-        "'gender' should correctly be mapped to the expected value"),
-      test.assertEqual(null, result.properties.gender.errorMessage,
-        "An errorMessage shouldn't exist since the mapping expression is valid")
-    ];
+    test.assertEqual("Female", result.properties.gender.output,
+      "'gender' should correctly be mapped to the expected value"),
+    test.assertEqual(null, result.properties.gender.errorMessage,
+      "An errorMessage shouldn't exist since the mapping expression is valid")
+  ];
 }
 
 function unrecognizedProperty() {
@@ -71,7 +71,7 @@ function testvalidateAndTestMappingArrayValues(mapURI = "/steps/mapping/OrdersMa
   let result = esMappingLib.validateAndTestMapping(map, uri);
   return [
     test.assertEqual(1, fn.number(result.properties.id.output), `Expected output '1', got '${xdmp.describe(result.properties.id)}'`),
-    test.assertEqualJson(["Voltsillam", "Latlux", "Biodex","Fixflex", "Keylex"], result.properties.items.properties.name.output, `Expected output ["Voltsillam", "Latlux", "Biodex","Fixflex", "Keylex"], got '${xdmp.describe(result.properties.items.properties.name)}'`),
+    test.assertEqualJson(["Voltsillam", "Latlux", "Biodex", "Fixflex", "Keylex"], result.properties.items.properties.name.output, `Expected output ["Voltsillam", "Latlux", "Biodex","Fixflex", "Keylex"], got '${xdmp.describe(result.properties.items.properties.name)}'`),
     test.assertEqualJson(["7", "10", "2", "6", "3"], result.properties.items.properties.quantity.output, `Expected output ["7", "10", "2", "6", "3"], got '${xdmp.describe(result.properties.items.properties.quantity)}'`),
     test.assertEqualJson(["2", "7.17", "5.01", "8.77", "5.57"], result.properties.items.properties.price.output, `Expected output ["2", "7.17", "5.01", "8.77", "5.57"], got '${xdmp.describe(result.properties.items.properties.price)}'`),
   ];
@@ -79,11 +79,11 @@ function testvalidateAndTestMappingArrayValues(mapURI = "/steps/mapping/OrdersMa
 
 function testvalidateAndTestMappingWithErrors() {
   let map = {
-              "targetEntityType": "http://marklogic.com/data-hub/example/Person-1.0.0/Person",
-              "properties": {
-                "id": {"sourcedFrom": "concat(theNickname,'-ID')"}
-              }
-            };
+    "targetEntityType": "http://marklogic.com/data-hub/example/Person-1.0.0/Person",
+    "properties": {
+      "id": {"sourcedFrom": "concat(theNickname,'-ID')"}
+    }
+  };
   let uri = "/content/person2.json";
   let result = esMappingLib.validateAndTestMapping(map, uri);
   return [
@@ -104,16 +104,16 @@ function testValidateAndTestMappingWithDash(mapURI = "/steps/mapping/PersonDashM
 }
 
 []
-.concat(validMapping())
-.concat(unrecognizedProperty())
-.concat(missingFunctionReference())
-.concat(incorrectNumberOfFunctionArguments())
-.concat(testvalidateAndTestMapping())
-.concat(testvalidateAndTestMappingArrayValues())
-.concat(testValidateAndTestMappingWithDash())
-.concat(testvalidateAndTestMapping("/steps/mapping/PersonNsMapping.step.json", "/content/person-ns.xml"))
+  .concat(validMapping())
+  .concat(unrecognizedProperty())
+  .concat(missingFunctionReference())
+  .concat(incorrectNumberOfFunctionArguments())
+  .concat(testvalidateAndTestMapping())
+  .concat(testvalidateAndTestMappingArrayValues())
+  .concat(testValidateAndTestMappingWithDash())
+  .concat(testvalidateAndTestMapping("/steps/mapping/PersonNsMapping.step.json", "/content/person-ns.xml"))
 // Test JSON to XML scenario
-.concat(testvalidateAndTestMapping("/steps/mapping/PersonMapping.step.json", "/content/json-to-xml.xml"))
-.concat(testvalidateAndTestMappingWithErrors())
+  .concat(testvalidateAndTestMapping("/steps/mapping/PersonMapping.step.json", "/content/json-to-xml.xml"))
+  .concat(testvalidateAndTestMappingWithErrors())
 ;
 

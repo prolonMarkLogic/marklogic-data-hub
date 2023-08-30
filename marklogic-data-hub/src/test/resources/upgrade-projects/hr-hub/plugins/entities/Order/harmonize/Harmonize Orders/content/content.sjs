@@ -11,7 +11,7 @@ function createContent(id, options) {
   const jsearch = require('/MarkLogic/jsearch');
 
   // find every order document with id == the passed in id variable
-  var orders = jsearch
+  let orders = jsearch
     .collections('Order')
     .documents()
     .where(
@@ -25,14 +25,14 @@ function createContent(id, options) {
     });
 
   // the original source documents
-  var attachments = orders;
+  let attachments = orders;
 
   /* The following property is a local reference. */
-  var products = [];
-  var price = 0;
+  let products = [];
+  let price = 0;
 
-  for (var i = 0; i < orders.length; i++) {
-    var order = orders[i];
+  for (let i = 0; i < orders.length; i++) {
+    let order = orders[i];
     if (order.sku) {
       // either return an instance of a Product
       // product = extractInstanceProduct(item.Product);
@@ -51,8 +51,8 @@ function createContent(id, options) {
     'id': id,
     'products': products,
     'price': price,
-  }
-};
+  };
+}
 
 function makeReferenceObject(type, ref) {
   return {

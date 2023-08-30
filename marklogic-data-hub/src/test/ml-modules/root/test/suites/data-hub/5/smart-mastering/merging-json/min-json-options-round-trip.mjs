@@ -9,8 +9,8 @@ const con = require('/com.marklogic.smart-mastering/constants.xqy');
  * objects when there is little or data.
  */
 
-  // Using xdmp.toJSON().root so that we have the same type of JSON objects to
-  // compare.
+// Using xdmp.toJSON().root so that we have the same type of JSON objects to
+// compare.
 const small =
     xdmp.toJSON(
       {
@@ -23,15 +23,15 @@ const small =
               "maxValues": "1",
               "maxSources": "1",
               "sourceWeights": [{
-                "source": { "name": "SOURCE2", "weight": "10" }
-              },{
-                "source": { "name": "SOURCE1", "weight": "5" }
+                "source": {"name": "SOURCE2", "weight": "10"}
+              }, {
+                "source": {"name": "SOURCE1", "weight": "5"}
               }]
             }
           ],
           "propertyDefs": {
             "properties": [
-              { "namespace": "", "localname": "Address", "name": "address" }
+              {"namespace": "", "localname": "Address", "name": "address"}
             ]
           },
           "algorithms": {
@@ -64,7 +64,7 @@ const minimal =
         "matchOptions": "basic",
         "propertyDefs": {
           "properties": [
-            { "namespace": "", "localname": "Address", "name": "address" }
+            {"namespace": "", "localname": "Address", "name": "address"}
           ]
         },
         "algorithms": {

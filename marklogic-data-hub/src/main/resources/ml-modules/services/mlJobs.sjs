@@ -34,34 +34,29 @@ function get(context, params) {
 
   let resp = null;
 
-  if(fn.exists(jobId) && fn.exists(status)) {
+  if (fn.exists(jobId) && fn.exists(status)) {
     httpUtils.throwBadRequestWithArray(["Bad Request", "Invalid request"]);
-  }
-  else if(fn.exists(jobId)) {
+  } else if (fn.exists(jobId)) {
     resp = jobs.getJob(jobId);
-  }
-  else if(fn.exists(status)) {
+  } else if (fn.exists(status)) {
     resp = jobs.getJobDocs(status);
-  }
-  else if (fn.exists(flowNames)) {
+  } else if (fn.exists(flowNames)) {
     resp = jobs.getJobDocsForFlows(flowNames);
-  }
-  else if (fn.exists(flow)) {
+  } else if (fn.exists(flow)) {
     resp = jobs.getJobDocsByFlow(flow);
-  }
-  else{
+  } else {
     httpUtils.throwBadRequestWithArray(["Bad Request", "Incorrect options"]);
   }
 
   return resp;
-};
+}
 
 
-function post(context, params, input) {};
+function post(context, params, input) {}
 
-function put(context, params, input) {};
+function put(context, params, input) {}
 
-function deleteFunction(context, params) {};
+function deleteFunction(context, params) {}
 
 exports.GET = get;
 exports.POST =  post;

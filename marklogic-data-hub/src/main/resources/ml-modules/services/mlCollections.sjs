@@ -34,12 +34,11 @@ function get(context, params) {
       let i;
       for (i in docs) {
         let obj;
-        if(urisOnly === 'true') {
+        if (urisOnly === 'true') {
           obj = {
             "uri": xdmp.nodeUri(docs[i])
           };
-        }
-        else {
+        } else {
           obj = {
             "uri": xdmp.nodeUri(docs[i]),
             "docs": docs[i]

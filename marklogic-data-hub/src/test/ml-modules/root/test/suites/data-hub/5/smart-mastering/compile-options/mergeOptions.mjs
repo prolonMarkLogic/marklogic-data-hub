@@ -12,7 +12,7 @@ const compiledOptions = mergeOptions.compileMergeOptions({
 
 const mergeRuleInfo = fn.head(compiledOptions.mergeRulesInfo);
 assertions.push(
-  test.assertEqual( "//Test/title", mergeRuleInfo.propertyName)
+  test.assertEqual("//Test/title", mergeRuleInfo.propertyName)
 );
 
 assertions;

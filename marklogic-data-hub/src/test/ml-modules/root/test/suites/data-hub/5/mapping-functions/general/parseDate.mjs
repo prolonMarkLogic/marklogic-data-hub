@@ -9,8 +9,8 @@ function testParseDate() {
 
   return [
     test.assertEqual(expectedDate, core.parseDate("01/06/2014", "MM/DD/YYYY")),
-    test.assertEqual(expectedDate, core.parseDate("06/01/2014","DD/MM/YYYY")),
-    test.assertEqual(expectedDate, core.parseDate("01.06.2014","MM.DD.YYYY")),
+    test.assertEqual(expectedDate, core.parseDate("06/01/2014", "DD/MM/YYYY")),
+    test.assertEqual(expectedDate, core.parseDate("01.06.2014", "MM.DD.YYYY")),
     test.assertEqual(expectedDate, core.parseDate("06.01.2014", "DD.MM.YYYY")),
     test.assertEqual(expectedDate, core.parseDate("20140106", "YYYYMMDD")),
     test.assertEqual(expectedDate, core.parseDate("Jan 06, 2014", "Mon DD, YYYY")),
@@ -21,8 +21,8 @@ function testParseDate() {
     test.assertEqual(null, core.parseDate(" ", "MM-DD-YYYY")),
 
     test.assertEqual(expectedDate, coreSjs.parseDate("01/06/2014", "MM/DD/YYYY")),
-    test.assertEqual(expectedDate, coreSjs.parseDate("06/01/2014","DD/MM/YYYY")),
-    test.assertEqual(expectedDate, coreSjs.parseDate("01.06.2014","MM.DD.YYYY")),
+    test.assertEqual(expectedDate, coreSjs.parseDate("06/01/2014", "DD/MM/YYYY")),
+    test.assertEqual(expectedDate, coreSjs.parseDate("01.06.2014", "MM.DD.YYYY")),
     test.assertEqual(expectedDate, coreSjs.parseDate("06.01.2014", "DD.MM.YYYY")),
     test.assertEqual(expectedDate, coreSjs.parseDate("20140106", "YYYYMMDD")),
     test.assertEqual(expectedDate, coreSjs.parseDate("Jan 06, 2014", "Mon DD, YYYY")),
@@ -83,7 +83,7 @@ function testInvalidDateFormat() {
 }
 
 []
- .concat(testParseDate())
- .concat(testMoreParseDate())
- .concat(testInvalidDateFormat())
+  .concat(testParseDate())
+  .concat(testMoreParseDate())
+  .concat(testInvalidDateFormat())
 ;

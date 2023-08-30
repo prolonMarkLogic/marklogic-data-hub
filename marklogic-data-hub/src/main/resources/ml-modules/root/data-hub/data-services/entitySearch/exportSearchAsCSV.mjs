@@ -132,4 +132,4 @@ if (limit) {
 // Not using the rows REST API due to https://bugtrack.marklogic.com/55338
 let result = opticPlan.result('object');
 result = hubUtils.normalizeToSequence(result);
-xdmp.quote(result, {method:'sparql-results-csv'});
+xdmp.quote(result, {method: 'sparql-results-csv'});

@@ -1,5 +1,5 @@
-var contentArray;
-var options;
+let contentArray;
+let options;
 
 contentArray.forEach(content => {
   if (fn.string(content.value.envelope.instance.name) == "Jane") {

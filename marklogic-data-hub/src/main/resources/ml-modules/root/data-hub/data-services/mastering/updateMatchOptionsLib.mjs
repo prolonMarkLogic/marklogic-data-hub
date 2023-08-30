@@ -1,12 +1,11 @@
 'use strict';
 
-function updateMatchOptions(opt)
-{
+function updateMatchOptions(opt) {
   let matchRulesets = [];
   let thresholds = [];
   // a lookup object for properties (name -> object)
   let properties = {};
-  let propertyDefsWithIndexes = []
+  let propertyDefsWithIndexes = [];
   if (opt.propertyDefs && opt.propertyDefs.property) {
     opt.propertyDefs.property.forEach((prop) => {
       properties[prop.name] = prop;
@@ -23,7 +22,7 @@ function updateMatchOptions(opt)
   };
 
   if (propertyDefsWithIndexes.length) {
-    newOpt.propertyDefs = { properties: propertyDefsWithIndexes};
+    newOpt.propertyDefs = {properties: propertyDefsWithIndexes};
   }
 
   let maxWeight = maxWeightValue(opt);
@@ -52,28 +51,23 @@ function updateMatchOptions(opt)
       opt.scoring.add.forEach((item) => { matchRulesets.push(exactRuleset(item, properties, maxWeight)); });
     }
     if (opt.scoring.expand) {
-      opt.scoring.expand.forEach((item) =>
-        {
-          if (item.algorithmRef) {
-            let algorithmRef = item.algorithmRef;
-            if (algorithms.hasOwnProperty(algorithmRef) && !algorithms[algorithmRef].at) {
-              algorithmRef = algorithms[algorithmRef].function;
-            }
-            if (algorithmRef === "zip-match") {
-              matchRulesets.push(zipRuleset(item, properties, maxWeight));
-            }
-            else if (algorithmRef === "double-metaphone") {
-              matchRulesets.push(doubleMetaphoneRuleset(item, properties, maxWeight));
-            }
-            else if (algorithmRef === "thesaurus") {
-              matchRulesets.push(synonymRuleset(item, properties, maxWeight));
-            }
-            // custom algorithm
-            else if (algorithms.hasOwnProperty(item.algorithmRef)) {
-              matchRulesets.push(customRuleset(item, properties, algorithms, maxWeight));
-            }
+      opt.scoring.expand.forEach((item) => {
+        if (item.algorithmRef) {
+          let algorithmRef = item.algorithmRef;
+          if (algorithms.hasOwnProperty(algorithmRef) && !algorithms[algorithmRef].at) {
+            algorithmRef = algorithms[algorithmRef].function;
+          }
+          if (algorithmRef === "zip-match") {
+            matchRulesets.push(zipRuleset(item, properties, maxWeight));
+          } else if (algorithmRef === "double-metaphone") {
+            matchRulesets.push(doubleMetaphoneRuleset(item, properties, maxWeight));
+          } else if (algorithmRef === "thesaurus") {
+            matchRulesets.push(synonymRuleset(item, properties, maxWeight));
+          } else if (algorithms.hasOwnProperty(item.algorithmRef)) { // custom algorithm
+            matchRulesets.push(customRuleset(item, properties, algorithms, maxWeight));
           }
         }
+      }
       );
     }
     if (opt.scoring.reduce) {
@@ -104,7 +98,7 @@ function maxWeightValue(opt) {
       opt.scoring.reduce.forEach((item) => { weights.push(Math.abs(Number(item.weight))); });
     }
   }
-  return Math.max.apply(null, weights)
+  return Math.max.apply(null, weights);
 }
 
 function exactRuleset(item, properties, maxWeight) {
@@ -119,14 +113,14 @@ function exactRuleset(item, properties, maxWeight) {
       }
     ]
   };
-  return ruleset
+  return ruleset;
 }
 
 function zipRuleset(item, properties, maxWeight) {
   // find the max of the origin weights
   let weights = [];
   if (item.zip) {
-    item.zip.forEach((z) => { weights.push(z.weight) });
+    item.zip.forEach((z) => { weights.push(z.weight); });
   }
   let zipMaxWeight = Math.max.apply(null, weights);
   let ruleset = {
@@ -140,7 +134,7 @@ function zipRuleset(item, properties, maxWeight) {
       }
     ]
   };
-  return ruleset
+  return ruleset;
 }
 
 function reduceRuleset(item, properties, maxWeight) {
@@ -158,11 +152,10 @@ function reduceRuleset(item, properties, maxWeight) {
           "matchType": "exact",
           "options": {}
         }
-      )
+      );
     });
-    return ruleset
-  }
-  else {
+    return ruleset;
+  } else {
     let ruleset = {
       "name": item.propertyName + " - Reduce",
       "weight": adjustWeight(Math.abs(Number(item.weight)), maxWeight),
@@ -175,12 +168,11 @@ function reduceRuleset(item, properties, maxWeight) {
         }
       ]
     };
-    return ruleset
+    return ruleset;
   }
 }
 
-function doubleMetaphoneRuleset(item, properties, maxWeight)
-{
+function doubleMetaphoneRuleset(item, properties, maxWeight) {
   let ruleset = {
     "name": item.propertyName + " - Double Metaphone",
     "weight": adjustWeight(item.weight, maxWeight),
@@ -195,7 +187,7 @@ function doubleMetaphoneRuleset(item, properties, maxWeight)
       }
     ]
   };
-  return ruleset
+  return ruleset;
 }
 
 function synonymRuleset(item, properties, maxWeight) {
@@ -213,7 +205,7 @@ function synonymRuleset(item, properties, maxWeight) {
       }
     ]
   };
-  return ruleset
+  return ruleset;
 }
 
 function customRuleset(item, properties, algorithms, maxWeight) {
@@ -232,7 +224,7 @@ function customRuleset(item, properties, algorithms, maxWeight) {
       }
     ]
   };
-  return ruleset
+  return ruleset;
 }
 
 function threshold(thr, actions) {
@@ -250,7 +242,7 @@ function threshold(thr, actions) {
     t.actionModuleFunction = action.function;
   }
 
-  return t
+  return t;
 }
 
 // returns a weight between 0 and 100
@@ -265,11 +257,10 @@ function adjustWeight(weight, maxWeight) {
   if (maxWeight > 100) {
     w = (w / (maxWeight / 100));
   }
-  return w
+  return w;
 }
 
-function getEntityPropertyPath(propName, propertyDefinitions = {})
-{
+function getEntityPropertyPath(propName, propertyDefinitions = {}) {
   let propertyDefinition = propertyDefinitions[propName];
   let propPath = propertyDefinition ? propertyDefinition.localname : propName;
   if (Array.isArray(propPath) && propPath.length === 1) {
@@ -278,4 +269,4 @@ function getEntityPropertyPath(propName, propertyDefinitions = {})
   return propPath;
 }
 
-export default { updateMatchOptions };
+export default {updateMatchOptions};

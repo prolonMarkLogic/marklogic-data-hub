@@ -2,7 +2,7 @@
 
 import xmlToJson from "/data-hub/data-services/mapping/xmlToJsonForMapping.mjs";
 const test = require("/test/test-helper.xqy");
-import { DocumentForTestingUtils as utils } from "/test/suites/data-hub/data-services/lib/mappingService.mjs";;
+import {DocumentForTestingUtils as utils} from "/test/suites/data-hub/data-services/lib/mappingService.mjs";
 
 const assertions = [];
 
@@ -14,7 +14,7 @@ if (orderProp) {
 }
 
 const expectedNamespaces = {
-  "entity-services":"http://marklogic.com/entity-services",
+  "entity-services": "http://marklogic.com/entity-services",
   "OD": "https://www.w3schools.com/OD",
   "OtherNS": "https://www.w3schools.com/OtherNS",
   "Wash": "https://www.w3schools.com/Washington",
@@ -172,9 +172,9 @@ for (let p of props) {
   }
 }
 assertions.push(test.assertEqual(expectedCount, props.length,
-  `Expected ${expectedCount} source properties where name=${name} but found ${props.length}`))
+  `Expected ${expectedCount} source properties where name=${name} but found ${props.length}`));
 assertions.push(test.assertEqual(expectedCount, uniqueXPaths.length,
-  `Expected ${expectedCount} unique XPaths on source properties where name=${name} but found ${uniqueXPaths.length}`))
+  `Expected ${expectedCount} unique XPaths on source properties where name=${name} but found ${uniqueXPaths.length}`));
 
 // Verify #text data properties didn't also become source properties.
 const textNodes = utils.getSourcePropertiesByName(sourceProperties, xmlToJson.PROP_NAME_FOR_TEXT);

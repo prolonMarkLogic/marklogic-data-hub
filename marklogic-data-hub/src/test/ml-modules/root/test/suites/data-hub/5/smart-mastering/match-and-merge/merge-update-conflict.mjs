@@ -5,7 +5,7 @@ import merge from '/data-hub/5/builtins/steps/mastering/default/merging.mjs';
 const test = require('/test/test-helper.xqy');
 const lib = require('/test/suites/data-hub/5/smart-mastering/match-and-merge/lib/lib.xqy');
 
-const options = { mergeOptions: {}};
+const options = {mergeOptions: {}};
 const assertions = [];
 const noActionResults = merge.main({uri: lib['MATCH-SUMMARY-URI-1'], value: cts.doc(lib['MATCH-SUMMARY-URI-1'])}, options);
 // One result to delete the match summary
@@ -14,7 +14,7 @@ assertions.push(
 );
 
 assertions.push(
-    test.assertTrue(noActionResults[0]['$delete'], 'The match summary should be marked for deletion.')
+  test.assertTrue(noActionResults[0]['$delete'], 'The match summary should be marked for deletion.')
 );
 
 const results = merge.main({uri: lib['MATCH-SUMMARY-URI-2'], value: cts.doc(lib['MATCH-SUMMARY-URI-2'])}, options).map((contentObj) => contentObj.uri);

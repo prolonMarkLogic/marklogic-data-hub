@@ -7,7 +7,7 @@ const datahub = DataHubSingleton.instance();
 
 let assertions = [];
 
-function runJSONMapping(){
+function runJSONMapping() {
   const content = ["/content/customerInfo.json"].map(uri => {
     return {
       uri: uri,
@@ -15,13 +15,13 @@ function runJSONMapping(){
     };
   });
 
-  let results = datahub.flow.runFlow('customerFlow', 'test-job', content, {outputFormat: 'json', mapping:{name:'mapCustomersJSON'}}, 1);
+  let results = datahub.flow.runFlow('customerFlow', 'test-job', content, {outputFormat: 'json', mapping: {name: 'mapCustomersJSON'}}, 1);
   let customerUris = hubTest.getUrisInCollection("Customer");
   let orderUris = hubTest.getUrisInCollection("Order").sort();
   let userOrderUris = hubTest.getUrisInCollection("UserOrder").sort();
   let productUris = hubTest.getUrisInCollection("Product").sort();
   let orderDocPermissions = hubTest.getRecord(orderUris[0], "data-hub-FINAL");
-  let productDocPermissions = hubTest.getRecord(productUris[0], "data-hub-FINAL")
+  let productDocPermissions = hubTest.getRecord(productUris[0], "data-hub-FINAL");
   let sqlQueryResponse = executeSql();
   assertions = assertions.concat([
     test.assertEqual(1, results.totalCount),
@@ -44,12 +44,12 @@ function runJSONMapping(){
   ]);
 }
 
-function runXMLMapping(){
+function runXMLMapping() {
   const customerUriRegex = new RegExp('^\/Customer\/[0-9a-z\-]*.xml$');
   const content = hubUtils.queryToContentDescriptorArray(cts.documentQuery("/content/customerInfo.xml"), {}, xdmp.databaseName(xdmp.database()));
   const sourceUrisBeforeStepRun = hubTest.getUrisInCollection("raw-content");
 
-  let results = datahub.flow.runFlow('customerFlow', 'test-job', content, {targetCollectionsAdditivity: true, outputFormat: 'xml', mapping:{name:'mapCustomersXML'}}, 2);
+  let results = datahub.flow.runFlow('customerFlow', 'test-job', content, {targetCollectionsAdditivity: true, outputFormat: 'xml', mapping: {name: 'mapCustomersXML'}}, 2);
   let customerUris = hubTest.getUrisInCollection("Customer").sort();
   const sourceUrisAfterStepRun = hubTest.getUrisInCollection("raw-content");
   assertions = assertions.concat([

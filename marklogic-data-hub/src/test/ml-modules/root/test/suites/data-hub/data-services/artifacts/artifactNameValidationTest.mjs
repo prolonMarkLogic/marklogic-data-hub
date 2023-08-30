@@ -5,16 +5,16 @@ const test = require("/test/test-helper.xqy");
 
 function createArtifact(artifactName, artifactType) {
   try {
-      //Some properties (other than 'name') aren't required for an artifact but they are added so as to avoid creating additional methods
-      return ArtifactService.invokeSetService(artifactType, artifactName, {'name': `${artifactName}`, 'targetEntityType': 'TestEntity-NoConfig', 'selectedSource': 'query', 'type':'ingestion'});
+    //Some properties (other than 'name') aren't required for an artifact but they are added so as to avoid creating additional methods
+    return ArtifactService.invokeSetService(artifactType, artifactName, {'name': `${artifactName}`, 'targetEntityType': 'TestEntity-NoConfig', 'selectedSource': 'query', 'type': 'ingestion'});
   } catch (e) {
     let msg = e.data[1];
     return msg;
   }
 }
 
-function getErrorMessage(artifactName){
-  return "Invalid name: '" +  artifactName + "'; it must start with a letter and can contain letters, numbers, hyphens and underscores only."
+function getErrorMessage(artifactName) {
+  return "Invalid name: '" +  artifactName + "'; it must start with a letter and can contain letters, numbers, hyphens and underscores only.";
 }
 
 function testValidateArtifactName() {
@@ -30,7 +30,7 @@ function testValidateArtifactName() {
   ];
 }
 
-function testCreateArtifact(){
+function testCreateArtifact() {
   return [
     test.assertEqual(getErrorMessage(" myMergeStep"), createArtifact(" myMergeStep", "merging")),
     test.assertEqual(getErrorMessage("12abc"), createArtifact("12abc", "mapping")),

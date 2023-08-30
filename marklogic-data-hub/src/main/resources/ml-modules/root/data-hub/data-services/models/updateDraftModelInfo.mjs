@@ -40,7 +40,7 @@ const model = (draftExists) ? cts.doc(draftUri).toObject() : cts.doc(uri).toObje
 // commenting out for entity version rollback DHFPROD-9943
 // if (version) {
 //   model.info.version = version;
-// } 
+// }
 
 if (!model.definitions[name]) {
   httpUtils.throwBadRequest("Could not find model with an entity type with name: " + name);
@@ -48,11 +48,11 @@ if (!model.definitions[name]) {
 
 model.definitions[name].description = description;
 
-if(namespace || namespacePrefix){
-  if(!namespace){
+if (namespace || namespacePrefix) {
+  if (!namespace) {
     httpUtils.throwBadRequest(`You cannot enter a prefix without specifying a namespace URI.`);
   }
-  if(!namespacePrefix){
+  if (!namespacePrefix) {
     httpUtils.throwBadRequest(`Since you entered a namespace, you must specify a prefix.`);
   }
 }
@@ -61,23 +61,21 @@ If payload doesn't contain namespace and namespacePrefix, entity model didn't ha
 user wants to remove the values he had set earlier
  */
 
-if(!namespace){
+if (!namespace) {
   delete model.definitions[name].namespace;
   delete model.definitions[name].namespacePrefix;
-}
-else{
+} else {
   model.definitions[name].namespace = namespace;
   model.definitions[name].namespacePrefix = namespacePrefix;
 }
 
-if(hubCentralConfig){
+if (hubCentralConfig) {
   model.hubCentral = hubCentralConfig;
 }
 
-try{
+try {
   entityLib.writeDraftModel(name, model);
-}
-catch (e){
+} catch (e) {
   httpUtils.throwBadRequest(hubUtils.getErrorMessage(e));
 }
 

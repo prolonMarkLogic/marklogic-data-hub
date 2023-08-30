@@ -8,7 +8,7 @@ const options = {
   "permissions": "data-hub-operator,read,data-hub-operator,update,data-hub-common,read"
 };
 const contentArray = [
-  { "uri": "/customer1.json", "value": { "customerId": "1" }}
+  {"uri": "/customer1.json", "value": {"customerId": "1"}}
 ];
 
 const assertions = [];

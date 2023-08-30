@@ -24,9 +24,9 @@ function transform(context, params, content) {
   const isXml = content != null && 1 === content.root.nodeType;
   const prettyXmlOptions = {indentUntyped: 'yes', omitXmlDeclaration: 'no'};
 
-  if(isJsonArrayOrObject) {
+  if (isJsonArrayOrObject) {
     return JSON.stringify(content.toObject(), null, 2);
-  } else if(isXml) {
+  } else if (isXml) {
     return xdmp.quote(content, prettyXmlOptions);
   } else {
     return content;

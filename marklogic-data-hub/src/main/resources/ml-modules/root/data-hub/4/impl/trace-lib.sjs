@@ -26,7 +26,7 @@ const tracelib = require('/data-hub/4/impl/trace-lib.xqy');
 
 let internalContexts = {
   currentTraceSettings: {}
-}
+};
 
 function isObjectLike(value) {
   return value != null && typeof value == 'object';
@@ -42,7 +42,7 @@ function isXmlNode(value) {
 }
 
 function isObject(value) {
-  var type = typeof value;
+  let type = typeof value;
   return value != null && (type == 'object' || type == 'function');
 }
 
@@ -84,8 +84,7 @@ function getErrorCount() {
   return ts.errorCount || 0;
 }
 
-function addFailedItem(item)
-{
+function addFailedItem(item) {
   getFailedItems().push(item);
 }
 
@@ -94,7 +93,7 @@ function addCompletedItem(item) {
 }
 
 function getCurrentTrace(currentTrace) {
-  if(!isTracingSupported()) {
+  if (!isTracingSupported()) {
     xdmp.log(unSupportedLogMessage, "warning");
     return {};
   }
@@ -112,7 +111,7 @@ function setPluginLabel(label, currentTrace) {
 }
 
 function getPluginLabel(currentTrace) {
-  if(currentTrace) {
+  if (currentTrace) {
     return currentTrace.pluginLabel;
   }
   return null;
@@ -144,8 +143,7 @@ function getPluginInput(currentTrace) {
       if (value) {
         if (isXmlNode(value)) {
           nb.addNode(value);
-        }
-        else {
+        } else {
           nb.addText(value.toString());
         }
       }
@@ -187,7 +185,7 @@ function getFailedItems() {
 }
 
 function writeTrace(itemContext) {
-  if(!isTracingSupported()) {
+  if (!isTracingSupported()) {
     xdmp.log(unSupportedLogMessage.concat("Error Trace is not written"), "warning");
     return;
   }
@@ -199,13 +197,13 @@ function writeTrace(itemContext) {
 }
 
 function writeErrorTrace(itemContext) {
-  if(!isTracingSupported()) {
+  if (!isTracingSupported()) {
     xdmp.log(unSupportedLogMessage.concat("Error Trace is not written"), "warning");
     return;
   }
   if (enabled() || hasErrors()) {
     let currentTrace = rfc.getTrace(itemContext);
-    if(!currentTrace) {
+    if (!currentTrace) {
       return;
     }
     let trace = null;
@@ -233,98 +231,97 @@ function writeErrorTrace(itemContext) {
           }
         }
       }
-    }
-    else {
+    } else {
       const nb = new NodeBuilder();
       nb.startDocument();
-        nb.startElement("trace");
-          nb.startElement("jobId");
-            nb.addText(rfc.getJobId() ? rfc.getJobId().toString() : "");
+      nb.startElement("trace");
+      nb.startElement("jobId");
+      nb.addText(rfc.getJobId() ? rfc.getJobId().toString() : "");
+      nb.endElement();
+      nb.startElement("format");
+      nb.addText(rfc.getDataFormat() ? rfc.getDataFormat().toString() : "");
+      nb.endElement();
+      nb.startElement("traceId");
+      nb.addText(currentTrace.traceId ? currentTrace.traceId.toString() : "");
+      nb.endElement();
+      nb.startElement("created");
+      nb.addText(currentTrace.created ? currentTrace.created.toString() : "");
+      nb.endElement();
+      nb.startElement("identifier");
+      nb.addText(rfc.getId(itemContext) ? rfc.getId(itemContext).toString() : "");
+      nb.endElement();
+      nb.startElement("flowName");
+      nb.addText(rfc.getFlowName() ? rfc.getFlowName().toString() : "");
+      nb.endElement();
+      nb.startElement("flowType");
+      nb.addText(rfc.getFlowType() ? rfc.getFlowType().toString() : "");
+      nb.endElement();
+      let hasErrors = false;
+      nb.startElement("steps");
+      let i;
+      if (currentTrace && currentTrace.traceSteps) {
+        for (i = 0; i < currentTrace.traceSteps.length; i++) {
+          let step = currentTrace.traceSteps[i];
+          nb.startElement("step");
+          nb.startElement("label");
+          nb.addText(step.label.toString());
           nb.endElement();
-          nb.startElement("format");
-            nb.addText(rfc.getDataFormat() ? rfc.getDataFormat().toString() : "");
-          nb.endElement();
-          nb.startElement("traceId");
-            nb.addText(currentTrace.traceId ? currentTrace.traceId.toString() : "");
-          nb.endElement();
-          nb.startElement("created");
-            nb.addText(currentTrace.created ? currentTrace.created.toString() : "");
-          nb.endElement();
-          nb.startElement("identifier");
-            nb.addText(rfc.getId(itemContext) ? rfc.getId(itemContext).toString() : "");
-          nb.endElement();
-          nb.startElement("flowName");
-            nb.addText(rfc.getFlowName() ? rfc.getFlowName().toString() : "");
-          nb.endElement();
-          nb.startElement("flowType");
-            nb.addText(rfc.getFlowType() ? rfc.getFlowType().toString() : "");
-          nb.endElement();
-          let hasErrors = false;
-          nb.startElement("steps");
-            let i;
-            if (currentTrace && currentTrace.traceSteps) {
-              for (i = 0; i < currentTrace.traceSteps.length; i++) {
-                let step = currentTrace.traceSteps[i];
-                nb.startElement("step")
-                nb.startElement("label");
-                nb.addText(step.label.toString());
-                nb.endElement();
-                nb.startElement("input");
-                if (step.input) {
-                  if (step.input instanceof Sequence) {
-                    for (let i of step.input ) {
-                      nb.addNode(i);
-                    }
-                  } else if (isXmlNode(step.input)) {
-                    nb.addNode(step.input);
-                  } else {
-                    nb.addText(JSON.stringify(step.input));
-                  }
-                }
-                nb.endElement();
-                nb.startElement("output");
-                if (step.output) {
-                  if (isXmlNode(step.output)) {
-                    nb.addNode(step.output);
-                  } else if (isString(step.output)) {
-                    nb.addText(step.output.toString());
-                  } else {
-                    nb.addText(step.output.toString());
-                  }
-                }
-                nb.endElement();
-                nb.startElement("error");
-                if (step.error) {
-                  hasErrors = true;
-                  if (isXmlNode(step.error)) {
-                    nb.addNode(step.error);
-                  } else {
-                    nb.addText(JSON.stringify(step.error));
-                  }
-                }
-                nb.endElement();
-                nb.startElement("duration");
-                if (step.duration) {
-                  nb.addText(step.duration.toString());
-                }
-                nb.endElement();
-                nb.startElement("options");
-                if (step.options) {
-                  if (isXmlNode(step.options)) {
-                    nb.addNode(step.options);
-                  } else {
-                    nb.addText(JSON.stringify(step.options));
-                  }
-                }
-                nb.endElement();
-                nb.endElement();
+          nb.startElement("input");
+          if (step.input) {
+            if (step.input instanceof Sequence) {
+              for (let i of step.input) {
+                nb.addNode(i);
               }
+            } else if (isXmlNode(step.input)) {
+              nb.addNode(step.input);
+            } else {
+              nb.addText(JSON.stringify(step.input));
             }
+          }
           nb.endElement();
-          nb.startElement("hasError");
-          nb.addText(hasErrors.toString());
+          nb.startElement("output");
+          if (step.output) {
+            if (isXmlNode(step.output)) {
+              nb.addNode(step.output);
+            } else if (isString(step.output)) {
+              nb.addText(step.output.toString());
+            } else {
+              nb.addText(step.output.toString());
+            }
+          }
           nb.endElement();
-        nb.endElement();
+          nb.startElement("error");
+          if (step.error) {
+            hasErrors = true;
+            if (isXmlNode(step.error)) {
+              nb.addNode(step.error);
+            } else {
+              nb.addText(JSON.stringify(step.error));
+            }
+          }
+          nb.endElement();
+          nb.startElement("duration");
+          if (step.duration) {
+            nb.addText(step.duration.toString());
+          }
+          nb.endElement();
+          nb.startElement("options");
+          if (step.options) {
+            if (isXmlNode(step.options)) {
+              nb.addNode(step.options);
+            } else {
+              nb.addText(JSON.stringify(step.options));
+            }
+          }
+          nb.endElement();
+          nb.endElement();
+        }
+      }
+      nb.endElement();
+      nb.startElement("hasError");
+      nb.addText(hasErrors.toString());
+      nb.endElement();
+      nb.endElement();
       nb.endDocument();
       trace = nb.toNode();
     }
@@ -334,15 +331,15 @@ function writeErrorTrace(itemContext) {
       'trace,' +
       'xdmp.defaultPermissions(),' +
       '["trace", "' + rfc.getFlowType() + '"])',
-    {
-      trace: trace
-    },
-    {
-      database: xdmp.database(config.TRACEDATABASE),
-      commit: 'auto',
-      update: 'true',
-      ignoreAmps: true
-    })
+      {
+        trace: trace
+      },
+      {
+        database: xdmp.database(config.TRACEDATABASE),
+        commit: 'auto',
+        update: 'true',
+        ignoreAmps: true
+      });
   }
 }
 
@@ -354,15 +351,14 @@ function sanitizeData(data) {
   let result = data;
   if (data instanceof BinaryNode) {
     result = xs.hexBinary(data);
-  }
-  else if (!rfc.isJson() && !isXmlNode(data)) {
+  } else if (!rfc.isJson() && !isXmlNode(data)) {
     result = xdmp.quote(data);
   }
   return result;
 }
 
 function pluginTrace(itemContext, output, duration) {
-  if(!isTracingSupported()) {
+  if (!isTracingSupported()) {
     xdmp.log(unSupportedLogMessage.concat("Plugin Trace is not logged"), "warning");
     return;
   }
@@ -387,7 +383,7 @@ function pluginTrace(itemContext, output, duration) {
 }
 
 function errorTrace(itemContext, error, duration) {
-  if(!isTracingSupported()) {
+  if (!isTracingSupported()) {
     xdmp.log(unSupportedLogMessage.concat("Error Trace is not logged"), "warning");
     return;
   }
@@ -415,7 +411,7 @@ function errorTrace(itemContext, error, duration) {
 
 
 function findTraces(q, page, pageLength) {
-  if(!isTracingSupported()) {
+  if (!isTracingSupported()) {
     xdmp.log(unSupportedLogMessage.concat("No traces found"), "warning");
     return {};
   }
@@ -423,7 +419,7 @@ function findTraces(q, page, pageLength) {
 }
 
 function getTraces(page, pageLength) {
-  if(!isTracingSupported()) {
+  if (!isTracingSupported()) {
     xdmp.log(unSupportedLogMessage.concat("No traces found"), "warning");
     return {};
   }
@@ -431,7 +427,7 @@ function getTraces(page, pageLength) {
 }
 
 function getTrace(id) {
-  if(!isTracingSupported()) {
+  if (!isTracingSupported()) {
     xdmp.log(unSupportedLogMessage.concat("No trace found"), "warning");
     return {};
   }

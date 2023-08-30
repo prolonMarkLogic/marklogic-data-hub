@@ -43,4 +43,4 @@ xdmp.invokeFunction(() => {
   };
 
   hubTest.createSimpleMappingProject([firstMappingStep, secondMappingStep]);
-}, { update: "true" });
+}, {update: "true"});

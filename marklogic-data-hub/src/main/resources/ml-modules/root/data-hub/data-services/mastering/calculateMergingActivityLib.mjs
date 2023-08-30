@@ -20,34 +20,32 @@ import entityLib from "/data-hub/5/impl/entity-lib.mjs";
 
 const currentDatabaseName = xdmp.databaseName(xdmp.database());
 
-function calculateMergingActivity(step)
-{
-    let sourceDatabaseName = step.sourceDatabase || currentDatabaseName;
-    if (sourceDatabaseName !== currentDatabaseName) {
-        return hubUtils.invokeFunction(function () {
-            return internalCalculateMergingActivity(step);
-        }, sourceDatabaseName);
-    } else {
-        return internalCalculateMergingActivity(step);
-    }
+function calculateMergingActivity(step) {
+  let sourceDatabaseName = step.sourceDatabase || currentDatabaseName;
+  if (sourceDatabaseName !== currentDatabaseName) {
+    return hubUtils.invokeFunction(function () {
+      return internalCalculateMergingActivity(step);
+    }, sourceDatabaseName);
+  } else {
+    return internalCalculateMergingActivity(step);
+  }
 }
 
-function internalCalculateMergingActivity(step)
-{
-    const targetEntityType = step.targetEntity || step.targetEntityType;
-    let query = null;
-    if (targetEntityType) {
-        let entityTypeTitle = targetEntityType;
-        if (targetEntityType.includes('/')) {
-            entityTypeTitle = entityLib.getEntityTypeIdParts(targetEntityType).entityTypeTitle;
-        }
-        query = cts.collectionQuery(entityTypeTitle);
+function internalCalculateMergingActivity(step) {
+  const targetEntityType = step.targetEntity || step.targetEntityType;
+  let query = null;
+  if (targetEntityType) {
+    let entityTypeTitle = targetEntityType;
+    if (targetEntityType.includes('/')) {
+      entityTypeTitle = entityLib.getEntityTypeIdParts(targetEntityType).entityTypeTitle;
     }
-    const sourceNames = cts.values(cts.fieldReference('datahubSourceName'), null, null, query).toArray();
-    return {
-        sourceNames
-    };
+    query = cts.collectionQuery(entityTypeTitle);
+  }
+  const sourceNames = cts.values(cts.fieldReference('datahubSourceName'), null, null, query).toArray();
+  return {
+    sourceNames
+  };
 }
 export default  {
-    calculateMergingActivity
+  calculateMergingActivity
 };

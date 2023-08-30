@@ -123,7 +123,7 @@ function verifyStructuredProperty() {
     test.assertEqual("string", metadata[0].properties[1].datatype),
     test.assertEqual(false, metadata[0].properties[1].multiple)
   ];
-};
+}
 
 function verifyStructuredArrayProperty() {
   const model = {
@@ -187,7 +187,7 @@ function verifyStructuredArrayProperty() {
     test.assertEqual("integer", metadata[0].properties[0].properties[1].datatype),
     test.assertEqual(false, metadata[0].properties[0].properties[1].multiple)
   ];
-};
+}
 
 function verifySimpleAndRelationshipProperties() {
   const model = {

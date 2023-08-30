@@ -29,7 +29,7 @@ const runTimeOptions = external.runTimeOptions;
 
 function updateProvenance(stepDetails, jobId, runTimeOptions) {
   const latestProvenance = stepDetails["options"]["latestProvenance"] || runTimeOptions["latestProvenance"];
-  if(!latestProvenance) {
+  if (!latestProvenance) {
     return;
   }
 
@@ -40,21 +40,21 @@ function updateProvenance(stepDetails, jobId, runTimeOptions) {
     "stepName": stepName,
     "jobId": jobId,
     "targetEntityType": targetEntityType
-  }
+  };
 
   let provRecordUri = jobs.findProvenanceRecordUriFromJobId(jobId, targetDatabase);
-  if(!provRecordUri) {
+  if (!provRecordUri) {
     const job = jobs.getJob(jobId);
     const startDateTime = job["job"]["timeStarted"];
     const options = {
       "startDateTime": startDateTime,
       "user": xdmp.getCurrentUser()
-    }
+    };
     const record = dhProv.newProvenanceRecord(jobId, options);
     provRecordUri = dhProv.insertProvenanceRecord(record, targetDatabase);
   }
   dhProv.updateStepInProvenanceRecord(provRecordUri, options, targetDatabase);
-  if(targetEntityType) {
+  if (targetEntityType) {
     dhProv.updateEntityInProvenanceRecord(provRecordUri, options, targetDatabase);
   }
 }
@@ -66,4 +66,4 @@ const stepDetails = fn.head(hubUtils.invokeFunction(function () {
 
 const job = Job.getRequiredJob(jobId).startStep(stepNumber, stepDetails).update();
 updateProvenance(stepDetails, jobId, runTimeOptions);
-job
+job;

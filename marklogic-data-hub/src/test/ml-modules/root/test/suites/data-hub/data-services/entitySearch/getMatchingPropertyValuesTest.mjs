@@ -5,16 +5,16 @@ let assertions = [];
 
 function invokeService(entityTypeId, propertyPath, referenceType, pattern, limit) {
   return fn.head(xdmp.invoke(
-      "/data-hub/data-services/entitySearch/getMatchingPropertyValues.mjs",
-      {
-        "facetValuesSearchQuery": JSON.stringify({
-          "entityTypeId": entityTypeId,
-          "propertyPath": propertyPath,
-          "referenceType": referenceType,
-          "pattern": pattern,
-          "limit": limit
-        })
-      }
+    "/data-hub/data-services/entitySearch/getMatchingPropertyValues.mjs",
+    {
+      "facetValuesSearchQuery": JSON.stringify({
+        "entityTypeId": entityTypeId,
+        "propertyPath": propertyPath,
+        "referenceType": referenceType,
+        "pattern": pattern,
+        "limit": limit
+      })
+    }
   ));
 }
 
@@ -103,7 +103,7 @@ function testMatchingValuesOnRangeFieldIndexes() {
 function testMatchingValuesOnCollectionNames() {
   let entityTypeId = "";
   let propertyPath = "";
-  const result = invokeService(entityTypeId, propertyPath,"collection", "doc", 10);
+  const result = invokeService(entityTypeId, propertyPath, "collection", "doc", 10);
   return [
     test.assertEqual(2, result.length),
     test.assertTrue(result.includes("doc1")),
@@ -124,7 +124,7 @@ hubTest.runWithRolesAndPrivileges(['hub-central-entity-model-reader'], [], funct
   .concat(testMatchingValuesWithLimit())
   .concat(testMatchingValuesOnRangeElementIndexes())
   .concat(testMatchingValuesOnRangeFieldIndexes())
-  .concat(testMatchingValuesOnCollectionNames());*/;
+  .concat(testMatchingValuesOnCollectionNames());*/
 });
 
 assertions;

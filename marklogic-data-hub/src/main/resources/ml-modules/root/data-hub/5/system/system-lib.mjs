@@ -23,7 +23,7 @@ function saveHubConfigInDocumentsDatabase() {
   const hubConfig = {
     "mlStagingDbName": config.STAGINGDATABASE,
     "mlStagingPort": config.STAGING_PORT,
-    "mlStagingAuth":config.STAGING_AUTH,
+    "mlStagingAuth": config.STAGING_AUTH,
     "mlStagingSimpleSsl": config.STAGING_SSL,
     "mlStagingCertFile": config.STAGING_CERT_FILE,
     "mlStagingCertPassword": config.STAGING_CERT_PASSWORD,
@@ -70,15 +70,15 @@ function saveHubConfigInDocumentsDatabase() {
     function() {
       declareUpdate();
       xdmp.documentInsert(uri, hubConfig, {
-          permissions: permissions,
-          collections: collections
-        }
-      )
+        permissions: permissions,
+        collections: collections
+      }
+      );
     },
     {database: xdmp.modulesDatabase()}
   );
 }
 
 export default {
-    saveHubConfigInDocumentsDatabase
+  saveHubConfigInDocumentsDatabase
 };

@@ -29,15 +29,15 @@ const jobStatus = external.jobStatus;
 function updateJobProvenance(jobId, jobEndTime) {
   const options = {
     "endTime": jobEndTime
-  }
+  };
   const stagingJobProvRecordUri = jobs.findProvenanceRecordUriFromJobId(jobId, config.STAGINGDATABASE);
   const finalJobProvRecordUri = jobs.findProvenanceRecordUriFromJobId(jobId, config.FINALDATABASE);
 
-  if(stagingJobProvRecordUri) {
+  if (stagingJobProvRecordUri) {
     dhProv.updateEndTimeInProvenanceRecord(stagingJobProvRecordUri, options, config.STAGINGDATABASE);
   }
 
-  if(finalJobProvRecordUri) {
+  if (finalJobProvRecordUri) {
     dhProv.updateEndTimeInProvenanceRecord(finalJobProvRecordUri, options, config.FINALDATABASE);
   }
 }

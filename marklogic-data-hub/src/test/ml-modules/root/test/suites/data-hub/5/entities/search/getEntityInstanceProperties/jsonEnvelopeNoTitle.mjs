@@ -57,4 +57,4 @@ assertions.push(
     "DHF does not know where to find the properties, so null is returned")
 );
 
-assertions
+assertions;

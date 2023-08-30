@@ -205,7 +205,7 @@ const reduceAllMatchInput =
       "reduce": [
         {
           "allMatch": {
-            "property": [ "address", "lastName" ]
+            "property": ["address", "lastName"]
           },
           "algorithmRef": "standard-reduction",
           "weight": "5"
@@ -263,7 +263,7 @@ const reduceAllMatchInputWithArrayProperties =
       "reduce": [
         {
           "allMatch": {
-            "property": [ "address", "lastName" ]
+            "property": ["address", "lastName"]
           },
           "algorithmRef": "standard-reduction",
           "weight": "5"
@@ -287,14 +287,14 @@ const largeInput =
         },
         {
           "name": "indexedSurname",
-          "indexReferences" : [ {
-            "jsonPropertyReference" : {
-              "property" : "personSurName",
-              "scalarType" : "string",
-              "collation" : "http://marklogic.com/collation/",
-              "nullable" : false
+          "indexReferences": [{
+            "jsonPropertyReference": {
+              "property": "personSurName",
+              "scalarType": "string",
+              "collation": "http://marklogic.com/collation/",
+              "nullable": false
             }
-          } ]
+          }]
         }
       ]
     },
@@ -365,9 +365,9 @@ const largeInput =
     },
     "thresholds": {
       "threshold": [
-        { "above": "6.5", "label": "similarThreshold", "action": "notify" },
-        { "above": "8.5", "label": "household", "action": "household-action" },
-        { "above": "12", "label": "sameThreshold", "action": "merge" }
+        {"above": "6.5", "label": "similarThreshold", "action": "notify"},
+        {"above": "8.5", "label": "household", "action": "household-action"},
+        {"above": "12", "label": "sameThreshold", "action": "merge"}
       ]
     },
     "tuning": {
@@ -381,12 +381,12 @@ const largeExpected =
       "properties": [
         {
           "name": "indexedSurname",
-          "indexReferences" : [ {
-            "jsonPropertyReference" : {
-              "property" : "personSurName",
-              "scalarType" : "string",
-              "collation" : "http://marklogic.com/collation/",
-              "nullable" : false
+          "indexReferences": [{
+            "jsonPropertyReference": {
+              "property": "personSurName",
+              "scalarType": "string",
+              "collation": "http://marklogic.com/collation/",
+              "nullable": false
             }
           }]
         }
@@ -490,7 +490,7 @@ const largeExpected =
         "score": 12
       }
     ],
-    "tuning":{"maxScan":200}
+    "tuning": {"maxScan": 200}
   };
 
 [

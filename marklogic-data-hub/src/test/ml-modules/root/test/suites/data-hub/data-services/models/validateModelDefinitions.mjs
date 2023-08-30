@@ -67,12 +67,12 @@ entityLib.validateModelDefinitions({
   "PropsWithGermanCharacters": {
     "properties": {
       "prop1ä": {},
-      "prop2ö":{},
-      "prop3ü":{},
-      "prop4ß":{},
-      "prop5Ä":{},
-      "prop6Ö":{},
-      "prop7Ü":{}
+      "prop2ö": {},
+      "prop3ü": {},
+      "prop4ß": {},
+      "prop5Ä": {},
+      "prop6Ö": {},
+      "prop7Ü": {}
     }
   }
 });

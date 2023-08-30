@@ -42,9 +42,9 @@ const response = flowApi.runFlowOnContent(flowName,
 
 const assertTripleFrequency = (tripleArray, subject, predicate, object) => {
   const cnt = tripleArray.map(tripleObject => tripleObject["triple"])
-      .filter(triple => (triple.subject === subject && triple.predicate === predicate && triple.object === object)).length
+    .filter(triple => (triple.subject === subject && triple.predicate === predicate && triple.object === object)).length;
   return test.assertEqual(1, cnt);
-}
+};
 
 const assertions = [
   test.assertEqual("finished", response.jobStatus, xdmp.toJsonString(response))

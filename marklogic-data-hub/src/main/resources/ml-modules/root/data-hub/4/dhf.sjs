@@ -26,9 +26,8 @@ const _requireCache = {};
  : @param func - the function to run
  : @return - returns whatever your function returns
  */
-function run(context, func)
-{
-  return flowlib.safeRun(func)
+function run(context, func) {
+  return flowlib.safeRun(func);
 }
 
 /**
@@ -84,16 +83,9 @@ function context(label) {
 /**
  : Creates a context for a content plugin
  */
-function contentContext() {
-  return context('content');
-}
-
-/**
- : Creates a context for a content plugin
- */
 function contentContext(rawContent) {
   let ctx = context('content');
-  if(rawContent) {
+  if (rawContent) {
     addTraceInput(ctx, "rawContent", rawContent);
   }
   return ctx;
@@ -160,7 +152,7 @@ function addTraceInput(context, inputLabel, input) {
 }
 
 function logTrace(context) {
-  if(!tracelib.isTracingSupported()) {
+  if (!tracelib.isTracingSupported()) {
     xdmp.log(tracelib.unSupportedLogMessage.concat("Trace is not logged"), "warning");
     return;
   }
@@ -175,7 +167,7 @@ function logTrace(context) {
       tracelib.setPluginInput(key, inputs[key]);
     }
     tracelib.pluginTrace(null, null, "PT0S");
-  } else{
+  } else {
     fn.error(null, "DATAHUB-CONTEXT-MISSING-LABEL", "Your context object is missing a label");
   }
 }

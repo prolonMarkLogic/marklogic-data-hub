@@ -45,7 +45,7 @@ input.forEach(entry => {
 
   const model = (cts.doc(draftUri) || cts.doc(uri)).toObject();
   model.definitions = modelDefinition;
-  if(hubCentralConfig){
+  if (hubCentralConfig) {
     model.hubCentral = hubCentralConfig;
   }
   entityLib.writeDraftModel(entityName, model);

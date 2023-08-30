@@ -49,14 +49,14 @@ const orderModel = {
 };
 
 function generateTdeWithRelatedEntityType() {
-    const input = [ orderModel ];
-    const tde = hent.dumpTde(input);
+  const input = [orderModel];
+  const tde = hent.dumpTde(input);
 
-    const orderTemplate = fn.head(tde.xpath('.//*:templates/*:template[*:context = "includes[xs:string(.) ne """"]"]'));
-    const orderTemplateExists = fn.exists(orderTemplate);
-    const assertions = [
+  const orderTemplate = fn.head(tde.xpath('.//*:templates/*:template[*:context = "includes[xs:string(.) ne """"]"]'));
+  const orderTemplateExists = fn.exists(orderTemplate);
+  const assertions = [
     test.assertTrue(orderTemplateExists, `Order template should exist.`)
-    ];
+  ];
 
   assertions.push(
     test.assertEqual(1, fn.count(orderTemplate.xpath("*:triples/*:triple")), "has to exists one row of triple")
@@ -66,7 +66,7 @@ function generateTdeWithRelatedEntityType() {
   if (orderTemplateExists) {
     for (const columnTriple of orderTemplate.xpath("*:triples/*:triple")) {
       const predicate = fn.head(columnTriple.xpath('*:predicate/*:val'));
-      if(fn.contains(predicate, "LineItem/includes")){
+      if (fn.contains(predicate, "LineItem/includes")) {
         existsTriple = true;
       }
     }

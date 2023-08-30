@@ -186,7 +186,17 @@ function getEntityNodesExpandingConcept(objectConceptIRI, limit) {
   if (graphTraceEnabled) {
     xdmp.trace(graphTraceEvent, `Creating plan for graph nodes and edges for concept '${objectConceptIRI}' with limit of ${limit}`);
   }
-  const store = sem.store(null, cts.andNotQuery(cts.orQuery([cts.tripleRangeQuery(objectConceptIRI, null, null), cts.tripleRangeQuery(null, null, objectConceptIRI)]), cts.collectionQuery(getArchivedCollections())));
+  const store = sem.store(
+    null,
+    cts.andNotQuery(
+      cts.orQuery([
+        cts.tripleRangeQuery(objectConceptIRI, null, null),
+        cts.tripleRangeQuery(null, null, objectConceptIRI)
+      ]),
+      cts.collectionQuery(getArchivedCollections())
+    )
+  );
+
   const results =  sem.sparql(`PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
                  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
                  SELECT ?subjectIRI ?predicateIRI ?firstObjectIRI ?docURI ?firstDocURI  WHERE {
@@ -378,7 +388,7 @@ function graphResultsToNodesAndEdges(result, entityTypeIds = [], isSearch = true
   const removeGroupNodeIfAllEdgesExist =(originDoc, predicateIRI, objectDoc, entityType) => {
     if (nodesByID[originDoc] && nodesByID[objectDoc]) {
       let groupId = originDoc + predicateIRI;
-      if(groupNodeCountByPredicate[groupId]) {
+      if (groupNodeCountByPredicate[groupId]) {
         groupNodeCountByPredicate[groupId].edges = groupNodeCountByPredicate[groupId].edges + 1;
         if (groupNodeCountByPredicate[groupId].edges >= groupNodeCountByPredicate[groupId].nodeCount) {
           const groupObjectId = `${originDoc}-${predicateIRI}-${entityType}`;
@@ -389,7 +399,7 @@ function graphResultsToNodesAndEdges(result, entityTypeIds = [], isSearch = true
         }
       }
       groupId = objectDoc + predicateIRI;
-      if(groupNodeCountByPredicate[groupId]) {
+      if (groupNodeCountByPredicate[groupId]) {
         groupNodeCountByPredicate[groupId].edges = groupNodeCountByPredicate[groupId].edges + 1;
         if (groupNodeCountByPredicate[groupId].edges >= groupNodeCountByPredicate[groupId].nodeCount) {
           const groupObjectId = `${objectDoc}-${predicateIRI}-${entityType}`;
@@ -400,7 +410,7 @@ function graphResultsToNodesAndEdges(result, entityTypeIds = [], isSearch = true
         }
       }
     }
-  }
+  };
 
   let listOfURIs = new Set();
   for (const item of result) {
@@ -434,12 +444,12 @@ function graphResultsToNodesAndEdges(result, entityTypeIds = [], isSearch = true
       groupNodeCount[subjectIri] = (groupNodeCount[subjectIri] || 0) + fn.head(item.nodeCount);
       if (fn.exists(item.docURI)) {
         const subjectUri = fn.string(item.docURI);
-        if(!groupNodeCountByPredicate[subjectUri + predicateIri]) {
+        if (!groupNodeCountByPredicate[subjectUri + predicateIri]) {
           groupNodeCountByPredicate[subjectUri + predicateIri] = {};
           groupNodeCountByPredicate[subjectUri + predicateIri].edges = 0;
           groupNodeCountByPredicate[subjectUri + predicateIri].nodeCount = 0;
         }
-        if(groupNodeCountByPredicate[subjectUri + predicateIri].nodeCount < fn.number(item.nodeCount)) {
+        if (groupNodeCountByPredicate[subjectUri + predicateIri].nodeCount < fn.number(item.nodeCount)) {
           groupNodeCountByPredicate[subjectUri + predicateIri].nodeCount = fn.number(item.nodeCount);
         }
 

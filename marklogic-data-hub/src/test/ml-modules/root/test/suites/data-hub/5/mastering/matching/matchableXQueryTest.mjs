@@ -4,23 +4,23 @@ const test = require("/test/test-helper.xqy");
 const compiledOptions = matchOptions.compileMatchOptions({
   targetEntityType: "http://example.org/Customer-0.0.1/Customer",
   baselineQueryInterceptors: [
-    { path: "/test/suites/data-hub/5/mastering/matching/test-data/matchableInterceptors.sjs", function: "baselineQueryInterceptorA" },
-    { path: "/test/suites/data-hub/5/mastering/matching/test-data/matchableInterceptors.sjs", function: "baselineQueryInterceptorB" }
+    {path: "/test/suites/data-hub/5/mastering/matching/test-data/matchableInterceptors.sjs", function: "baselineQueryInterceptorA"},
+    {path: "/test/suites/data-hub/5/mastering/matching/test-data/matchableInterceptors.sjs", function: "baselineQueryInterceptorB"}
   ],
   filterQueryInterceptors: [
-    { path: "/test/suites/data-hub/5/mastering/matching/test-data/matchableInterceptors.sjs", function: "filterQueryInterceptor" }
+    {path: "/test/suites/data-hub/5/mastering/matching/test-data/matchableInterceptors.sjs", function: "filterQueryInterceptor"}
   ],
   dataFormat: "json",
   matchRulesets: [
     {
       weight: 10,
       name: "name - exact",
-      matchRules: [{ entityPropertyPath: "name", matchType: "exact"}]
+      matchRules: [{entityPropertyPath: "name", matchType: "exact"}]
     },
     {
       weight: 5,
       name: "name - synonym",
-      matchRules: [{ entityPropertyPath: "name", matchType: "synonym",
+      matchRules: [{entityPropertyPath: "name", matchType: "synonym",
         options: {
           thesaurusURI: "/content/nicknames.xml"
         }
@@ -29,7 +29,7 @@ const compiledOptions = matchOptions.compileMatchOptions({
     {
       weight: 5,
       name: "name - double metaphone",
-      matchRules: [{ entityPropertyPath: "name", matchType: "doubleMetaphone",
+      matchRules: [{entityPropertyPath: "name", matchType: "doubleMetaphone",
         options: {
           dictionaryURI: "/content/first-names.xml",
           distanceThreshold: 100
@@ -40,10 +40,10 @@ const compiledOptions = matchOptions.compileMatchOptions({
       weight: 3,
       name: "name - exact",
       matchRules: [
-        { entityPropertyPath: "name",
+        {entityPropertyPath: "name",
           matchType: "exact"
         },
-        { entityPropertyPath: "name",
+        {entityPropertyPath: "name",
           matchType: "custom",
           algorithmModulePath: "/test/suites/data-hub/5/mastering/matching/test-data/matchableInterceptors.sjs",
           algorithmFunction: "customLastNameInterceptor"
@@ -54,10 +54,10 @@ const compiledOptions = matchOptions.compileMatchOptions({
       weight: 2,
       name: "name - exact",
       matchRules: [
-        { entityPropertyPath: "name",
+        {entityPropertyPath: "name",
           matchType: "exact"
         },
-        { entityPropertyPath: "name",
+        {entityPropertyPath: "name",
           matchType: "custom",
           algorithmModulePath: "/test/suites/data-hub/5/mastering/matching/test-data/matchableInterceptors.sjs",
           algorithmFunction: "customFalseLastNameInterceptor"
@@ -65,8 +65,8 @@ const compiledOptions = matchOptions.compileMatchOptions({
       ]
     },
   ],
-  scoreDocumentInterceptors:  [
-    { path: "/test/suites/data-hub/5/mastering/matching/test-data/matchableInterceptors.sjs", function: "scoreDocumentInterceptor" }
+  scoreDocumentInterceptors: [
+    {path: "/test/suites/data-hub/5/mastering/matching/test-data/matchableInterceptors.sjs", function: "scoreDocumentInterceptor"}
   ],
   thresholds: [
     {
@@ -115,7 +115,7 @@ function testFilterQuery() {
 
 function testScoreDocument() {
   const docA = cts.doc("/content/docA.json");
-  const interceptorScore = invokeInterceptor(compiledOptions.scoreDocumentInterceptor, 23, {uri: "doc1.json", value: docA },{uri: "doc2.json", value: docA }, []);
+  const interceptorScore = invokeInterceptor(compiledOptions.scoreDocumentInterceptor, 23, {uri: "doc1.json", value: docA}, {uri: "doc2.json", value: docA}, []);
   return [
     test.assertEqual(10, interceptorScore, "interceptorScore should come back as 10. max(exact:10, doubleMetaphone:5)")
   ];

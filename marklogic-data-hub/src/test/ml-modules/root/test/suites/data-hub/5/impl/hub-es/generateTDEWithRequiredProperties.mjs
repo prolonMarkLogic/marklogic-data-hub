@@ -66,15 +66,15 @@ function generateTdeWithRequiredProperties() {
   let existsRequiredProperties = false;
   let cantRequiredProperties = 0;
   if (orderTemplateExists) {
-    for (const column of tde.xpath('.//*:templates/*:template[*:context = ".//Order[node()]"]/*:rows/*:row/*:columns/*:column')){
+    for (const column of tde.xpath('.//*:templates/*:template[*:context = ".//Order[node()]"]/*:rows/*:row/*:columns/*:column')) {
       const nullableValue = fn.head(column.xpath('*:nullable'));
-      if(nullableValue.toString().includes("false")){
+      if (nullableValue.toString().includes("false")) {
         cantRequiredProperties ++;
         existsRequiredProperties = true;
       }
     }
 
-    assertions.push(2,cantRequiredProperties, `only 2 required properties should exists.`);
+    assertions.push(2, cantRequiredProperties, `only 2 required properties should exists.`);
     assertions.push(test.assertTrue(existsRequiredProperties, `required properties should exist.`));
   }
   return assertions;

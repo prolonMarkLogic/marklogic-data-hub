@@ -8,13 +8,13 @@
  * @return - an object of headers
  */
 function createHeaders(id, content, options) {
-  var latest = xs.date('1900-01-01');
-  var salary;
+  let latest = xs.date('1900-01-01');
+  let salary;
 
   // to grab the current salary we need to find the most recent effective date
-  for (var i = 0; i < content.salaryHistory.length; i++) {
-    var history = content.salaryHistory[i];
-    var date = xs.date(xdmp.parseDateTime('[M01]/[D01]/[Y0001]', history.effectiveDate));
+  for (let i = 0; i < content.salaryHistory.length; i++) {
+    let history = content.salaryHistory[i];
+    let date = xs.date(xdmp.parseDateTime('[M01]/[D01]/[Y0001]', history.effectiveDate));
     if (date.gt(latest)) {
       salary = history.salary;
       latest = date;

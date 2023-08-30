@@ -19,18 +19,18 @@ const mlFunctions = esMappingLib.getMarkLogicMappingFunctions();
     "There are 4 OOTB mapping functions that are being shipped with DHF; there may be more from other tests in the suite, " +
     "but we expect at least those 4 to exist. Found " + mlFunctions.length)
 ];
-function findFunction(functionName){
+function findFunction(functionName) {
   return xpathFunctions.find(func => {
-    return func.functionName == functionName
+    return func.functionName == functionName;
   });
 }
 
-function echoCount(){
+function echoCount() {
   let count = 0;
-  mlFunctions.forEach((func) =>{
-    if(func.functionName == 0){
+  mlFunctions.forEach((func) => {
+    if (func.functionName == 0) {
       count ++;
     }
-  })
+  });
   return count;
 }

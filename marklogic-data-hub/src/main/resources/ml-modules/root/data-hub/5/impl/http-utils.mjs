@@ -27,7 +27,7 @@ function throwBadRequest(message) {
   throwBadRequestWithArray([message]);
 }
 
-function throwBadRequestWithArray(args){
+function throwBadRequestWithArray(args) {
   fn.error(null, ERROR_CODE, Sequence.from([400].concat(args)));
 }
 
@@ -39,7 +39,7 @@ function throwNotFound(message) {
   fn.error(null, ERROR_CODE, Sequence.from([404, message]));
 }
 
-function throwNotFoundWithArray(args){
+function throwNotFoundWithArray(args) {
   fn.error(null, ERROR_CODE, Sequence.from([404].concat(args)));
 }
 

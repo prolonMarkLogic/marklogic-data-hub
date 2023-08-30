@@ -78,7 +78,7 @@ function sharedPropertyWithSameNamespaces() {
     test.assertEqual(1, indexes.length),
     test.assertEqual("example", indexes[0]["namespace-uri"])
   ];
-};
+}
 
 function sharedPropertyWithDifferentCollations() {
   const indexes = generateElementRangeIndexConfig([
@@ -329,7 +329,7 @@ function generateIndexConfigWithSortableProperties() {
           }
         },
         "Address": {
-          "rangeIndex": [ "street" ],
+          "rangeIndex": ["street"],
           "properties": {
             "street": {"datatype": "string", "collation": "http://marklogic.com/collation/codepoint"},
             "city": {"datatype": "string", "collation": "http://marklogic.com/collation/codepoint"}

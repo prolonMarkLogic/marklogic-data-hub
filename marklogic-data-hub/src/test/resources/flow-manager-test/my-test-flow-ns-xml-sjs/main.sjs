@@ -16,22 +16,22 @@ const writerPlugin = require('./writer.sjs');
  *
  */
 function main(id, options) {
-  var contentContext = dhf.contentContext();
-  var content = dhf.run(contentContext, function() {
+  let contentContext = dhf.contentContext();
+  let content = dhf.run(contentContext, function() {
     return contentPlugin.createContent(id, options);
   });
 
-  var headerContext = dhf.headersContext(content);
-  var headers = dhf.run(headerContext, function() {
+  let headerContext = dhf.headersContext(content);
+  let headers = dhf.run(headerContext, function() {
     return headersPlugin.createHeaders(id, content, options);
   });
 
-  var tripleContext = dhf.triplesContext(content, headers);
-  var triples = dhf.run(tripleContext, function() {
+  let tripleContext = dhf.triplesContext(content, headers);
+  let triples = dhf.run(tripleContext, function() {
     return triplesPlugin.createTriples(id, content, headers, options);
   });
 
-  var envelope = dhf.makeEnvelope(content, headers, triples, options.dataFormat);
+  let envelope = dhf.makeEnvelope(content, headers, triples, options.dataFormat);
 
   // writers must be invoked this way.
   // see: https://github.com/marklogic/marklogic-data-hub/wiki/dhf-lib#run-writer

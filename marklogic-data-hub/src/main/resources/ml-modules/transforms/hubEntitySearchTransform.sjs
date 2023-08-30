@@ -21,7 +21,7 @@ const entitySearchLib = mjsProxy.requireMjsModule("/data-hub/5/entities/entity-s
 // Expects JSON content
 function transform(context, params, content) {
   let entityName = null;
-  if(params.entityName) {
+  if (params.entityName) {
     entityName = params.entityName;
   }
   const propertiesToDisplay = params.propertiesToDisplay;
@@ -29,7 +29,7 @@ function transform(context, params, content) {
   const contentObject = content.toObject();
   entitySearchLib.addPropertiesToSearchResponse(entityName, contentObject, propertiesToDisplay);
 
-  if(params.forExport === "true") {
+  if (params.forExport === "true") {
     let exportResults = [];
     contentObject.results.forEach(result => {
       let currObj = {};
@@ -39,7 +39,7 @@ function transform(context, params, content) {
       currObj["CreatedOn"] = result["createdOn"];
       exportResults.push(currObj);
     });
-    return xdmp.quote(Sequence.from(exportResults), {method:'sparql-results-csv'});
+    return xdmp.quote(Sequence.from(exportResults), {method: 'sparql-results-csv'});
   }
   return contentObject;
 }

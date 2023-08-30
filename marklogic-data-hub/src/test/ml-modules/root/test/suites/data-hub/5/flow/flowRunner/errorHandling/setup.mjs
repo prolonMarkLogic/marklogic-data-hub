@@ -15,9 +15,9 @@ xdmp.invokeFunction(() => {
     "sourceDatabase": "data-hub-FINAL",
     "targetDatabase": "data-hub-FINAL",
     "sourceQuery": "cts.collectionQuery('doesnt-matter')",
-    "customHook" : {
-      "module" : "/custom-modules/errorThrowingCustomHook.mjs",
-      "runBefore" : false
+    "customHook": {
+      "module": "/custom-modules/errorThrowingCustomHook.mjs",
+      "runBefore": false
     }
   };
 
@@ -38,4 +38,4 @@ xdmp.invokeFunction(() => {
   };
 
   hubTest.createSimpleProject("myFlow", [customStepOne, customStepTwo]);
-}, { update: "true" });
+}, {update: "true"});

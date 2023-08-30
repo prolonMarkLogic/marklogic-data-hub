@@ -21,7 +21,7 @@ import validateMergeLib from "/data-hub/data-services/mastering/validateMergingS
 
 const stepName = external.stepName;
 const view = external.view;
-const entityPropertyPath = external.entityPropertyPath
+const entityPropertyPath = external.entityPropertyPath;
 
 
 xdmp.securityAssert("http://marklogic.com/data-hub/privileges/read-match-merge", "execute");
@@ -30,35 +30,42 @@ const step = core.getArtifact("merging", stepName);
 
 let warnings = [];
 if (view === "settings") {
-    let targetCollections = Object.assign({onArchive: { add:[], remove: []}, onNoMatch:{ add:[], remove: []}, onMerge:{ add:[], remove: []}, onNotification:{ add:[], remove: []}, onAuditing:{ add:[], remove: []}}, step.targetCollections);
-    let allCollections = []
-        .concat(step.collections)
-        .concat(step.additionalCollections)
-        .concat(targetCollections.onArchive.add)
-        .concat(targetCollections.onNoMatch.add)
-        .concat(targetCollections.onMerge.add)
-        .concat(targetCollections.onNotification.add)
-        .concat(targetCollections.onAuditing.add)
-    if (allCollections.length) {
-        let targetTypeWarning = common.targetEntityCollectionWarning(step.targetEntityType, allCollections);
-        if (targetTypeWarning) {
-            warnings.push(targetTypeWarning);
-        }
-
-        let sourceCollectionWarning = common.sourceCollectionWarning(step.sourceQuery, allCollections);
-        if (sourceCollectionWarning) {
-            warnings.push(sourceCollectionWarning);
-        }
-
-        let temporalCollectionsWarning = common.temporalCollectionsWarning(allCollections);
-        if (temporalCollectionsWarning) {
-            warnings.push(temporalCollectionsWarning);
-        }
+  let targetCollections = Object.assign(
+    {onArchive: {add: [], remove: []},
+      onNoMatch: {add: [], remove: []},
+      onMerge: {add: [], remove: []},
+      onNotification: {add: [], remove: []},
+      onAuditing: {add: [], remove: []}
+    },
+    step.targetCollections);
+  let allCollections = []
+    .concat(step.collections)
+    .concat(step.additionalCollections)
+    .concat(targetCollections.onArchive.add)
+    .concat(targetCollections.onNoMatch.add)
+    .concat(targetCollections.onMerge.add)
+    .concat(targetCollections.onNotification.add)
+    .concat(targetCollections.onAuditing.add);
+  if (allCollections.length) {
+    let targetTypeWarning = common.targetEntityCollectionWarning(step.targetEntityType, allCollections);
+    if (targetTypeWarning) {
+      warnings.push(targetTypeWarning);
     }
+
+    let sourceCollectionWarning = common.sourceCollectionWarning(step.sourceQuery, allCollections);
+    if (sourceCollectionWarning) {
+      warnings.push(sourceCollectionWarning);
+    }
+
+    let temporalCollectionsWarning = common.temporalCollectionsWarning(allCollections);
+    if (temporalCollectionsWarning) {
+      warnings.push(temporalCollectionsWarning);
+    }
+  }
 } else if (view === "rules") {
-    let propertyWarnings = validateMergeLib.propertiesWarning(step, entityPropertyPath);
-    if (propertyWarnings) {
-        warnings.push(propertyWarnings);
-    }
+  let propertyWarnings = validateMergeLib.propertiesWarning(step, entityPropertyPath);
+  if (propertyWarnings) {
+    warnings.push(propertyWarnings);
+  }
 }
 warnings;

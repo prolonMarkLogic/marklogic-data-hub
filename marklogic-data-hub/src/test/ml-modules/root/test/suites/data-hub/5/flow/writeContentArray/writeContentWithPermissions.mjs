@@ -18,25 +18,25 @@ import hubTest from "/test/data-hub-test-helper.mjs";
 const test = require("/test/test-helper.xqy");
 
 const assertions = hubTest.runWithRolesAndPrivileges(['data-hub-developer'], [],
-    function() {
-      const contentWithPermissions = {
-        uri: "/a.json",
-        value: {"a":true},
-        context: {
-          permissions: [xdmp.permission("data-hub-common", "read"), xdmp.permission("data-hub-common", "update")]
-        }
-      };
-      flowUtils.writeContentArray([contentWithPermissions]);
+  function() {
+    const contentWithPermissions = {
+      uri: "/a.json",
+      value: {"a": true},
+      context: {
+        permissions: [xdmp.permission("data-hub-common", "read"), xdmp.permission("data-hub-common", "update")]
+      }
+    };
+    flowUtils.writeContentArray([contentWithPermissions]);
 
-      const record = hubTest.getRecord("/a.json");
-      const message = "Since the content has permissions, the user's default permissions (inherited from tde-admin) " +
+    const record = hubTest.getRecord("/a.json");
+    const message = "Since the content has permissions, the user's default permissions (inherited from tde-admin) " +
         "should not be included; record: " + xdmp.toJsonString(record);
-      return [
-        test.assertEqual("read", record.permissions["data-hub-common"][0], message),
-        test.assertEqual("update", record.permissions["data-hub-common"][1], message),
-        test.assertEqual(1, Object.keys(record.permissions).length, message)
-      ];
-    }
+    return [
+      test.assertEqual("read", record.permissions["data-hub-common"][0], message),
+      test.assertEqual("update", record.permissions["data-hub-common"][1], message),
+      test.assertEqual(1, Object.keys(record.permissions).length, message)
+    ];
+  }
 );
 
-assertions
+assertions;

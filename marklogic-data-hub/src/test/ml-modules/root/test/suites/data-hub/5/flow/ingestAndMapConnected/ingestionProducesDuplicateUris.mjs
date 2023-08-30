@@ -7,8 +7,8 @@ const jobId = sem.uuidString();
 const runtimeOptions = {};
 
 const contentArray = [
-  { "uri": "/duplicateCustomer.json", "value": { "customerId": "1" } },
-  { "uri": "/duplicateCustomer.json", "value": { "customerId": "2" } }
+  {"uri": "/duplicateCustomer.json", "value": {"customerId": "1"}},
+  {"uri": "/duplicateCustomer.json", "value": {"customerId": "2"}}
 ];
 
 const assertions = [];

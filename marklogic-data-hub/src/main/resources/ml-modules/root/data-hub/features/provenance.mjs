@@ -23,63 +23,63 @@ import hubUtils from "/data-hub/5/impl/hub-utils.mjs";
 import consts from "/data-hub/5/impl/consts.mjs";
 
 function onArtifactSave(artifactType, artifactName) {
-    //Complete in upcoming stories
-    return true;
+  //Complete in upcoming stories
+  return true;
 }
 
 function onInstancePassToStep(stepContext, model, contentObject) {
-    //Complete in upcoming stories
-    return true;
+  //Complete in upcoming stories
+  return true;
 }
 
 
 function onInstanceSave(stepExecutionContext, model, contentArray) {
-   if (stepExecutionContext.provenanceIsEnabled()) {
-      const jobId = stepExecutionContext.jobId;
-      const flowName = stepExecutionContext.flow.name;
-      const stepDefinition = stepExecutionContext.stepDefinition;
-      const flowStep = stepExecutionContext.flowStep;
-      // This is a temporary runtime option to enable the updated record provenance until it becomes the default
-      const latestProvenance = stepExecutionContext.combinedOptions.latestProvenance;
+  if (stepExecutionContext.provenanceIsEnabled()) {
+    const jobId = stepExecutionContext.jobId;
+    const flowName = stepExecutionContext.flow.name;
+    const stepDefinition = stepExecutionContext.stepDefinition;
+    const flowStep = stepExecutionContext.flowStep;
+    // This is a temporary runtime option to enable the updated record provenance until it becomes the default
+    const latestProvenance = stepExecutionContext.combinedOptions.latestProvenance;
 
-      if (xdmp.traceEnabled(consts.TRACE_FLOW)) {
-          hubUtils.hubTrace(consts.TRACE_FLOW, `Generating provenance records for ${stepExecutionContext.describe()}`);
+    if (xdmp.traceEnabled(consts.TRACE_FLOW)) {
+      hubUtils.hubTrace(consts.TRACE_FLOW, `Generating provenance records for ${stepExecutionContext.describe()}`);
+    }
+
+    const stepDefTypeLowerCase = (stepDefinition.type) ? stepDefinition.type.toLowerCase() : stepDefinition.type;
+    const stepName = flowStep.name || flowStep.stepDefinitionName;
+    for (let content of contentArray) {
+      // We may want to hide some documents from provenance. e.g., we don't need provenance of mastering PROV documents
+      if (content.provenance !== false) {
+        const previousUris = hubUtils.normalizeToArray(content.previousUri || content.uri);
+        const info = {
+          derivedFrom: previousUris,
+          influencedBy: latestProvenance ? `step:${stepName}` : stepName,
+          status: (stepDefTypeLowerCase === 'ingestion') ? 'created' : 'updated',
+          metadata: {}
+        };
+
+        const isFineGranularity = stepExecutionContext.fineProvenanceIsEnabled();
+        const isMappingStep = flowStep.stepDefinitionName === "entity-services-mapping";
+
+        if (isFineGranularity && isMappingStep) {
+          hubUtils.hubTrace(consts.TRACE_FLOW, `'provenanceGranularityLevel' for step '${flowStep.name}' is set to 'fine'. This is not supported for mapping steps. Coarse provenance data will be generated instead.`);
+        }
+
+        let provResult;
+        if (isFineGranularity && !isMappingStep && content.provenance) {
+          provResult = buildFineProvenanceData(jobId, flowName, stepName, flowStep.stepDefinitionName, stepDefTypeLowerCase, content, info);
+        } else if (latestProvenance) {
+          provResult = provLib.buildRecordEntity(stepExecutionContext, content, [], info);
+        } else {
+          provResult = provLib.createStepRecord(jobId, flowName, stepName, flowStep.stepDefinitionName, stepDefTypeLowerCase, content.uri, info);
+        }
+
+        if (provResult instanceof Error) {
+          hubUtils.error(provResult.message);
+        }
       }
-
-      const stepDefTypeLowerCase = (stepDefinition.type) ? stepDefinition.type.toLowerCase() : stepDefinition.type;
-      const stepName = flowStep.name || flowStep.stepDefinitionName;
-      for (let content of contentArray) {
-          // We may want to hide some documents from provenance. e.g., we don't need provenance of mastering PROV documents
-          if (content.provenance !== false) {
-              const previousUris = hubUtils.normalizeToArray(content.previousUri || content.uri);
-              const info = {
-                  derivedFrom: previousUris,
-                  influencedBy: latestProvenance ? `step:${stepName}` : stepName,
-                  status: (stepDefTypeLowerCase === 'ingestion') ? 'created' : 'updated',
-                  metadata: {}
-              };
-
-              const isFineGranularity = stepExecutionContext.fineProvenanceIsEnabled();
-              const isMappingStep = flowStep.stepDefinitionName === "entity-services-mapping";
-
-              if (isFineGranularity && isMappingStep) {
-                  hubUtils.hubTrace(consts.TRACE_FLOW, `'provenanceGranularityLevel' for step '${flowStep.name}' is set to 'fine'. This is not supported for mapping steps. Coarse provenance data will be generated instead.`);
-              }
-
-              let provResult;
-              if (isFineGranularity && !isMappingStep && content.provenance) {
-                  provResult = buildFineProvenanceData(jobId, flowName, stepName, flowStep.stepDefinitionName, stepDefTypeLowerCase, content, info);
-              } else if (latestProvenance) {
-                  provResult = provLib.buildRecordEntity(stepExecutionContext, content, [], info);
-              } else {
-                  provResult = provLib.createStepRecord(jobId, flowName, stepName, flowStep.stepDefinitionName, stepDefTypeLowerCase, content.uri, info);
-              }
-
-              if (provResult instanceof Error) {
-                  hubUtils.error(provResult.message);
-              }
-          }
-      }
+    }
   }
 }
 
@@ -134,7 +134,7 @@ function buildFineProvenanceData(jobId, flowName, stepName, stepDefName, stepDef
         }
       }
     }
-    let propInfo = Object.assign({}, info, { metadata: docProvPropertyMetadata });
+    let propInfo = Object.assign({}, info, {metadata: docProvPropertyMetadata});
     let newPropertyProvID = provLib.createStepPropertyAlterationRecord(jobId, flowName, stepName, stepDefName, stepDefType, prop, docProvDocumentIDs, docProvPropertyIDs, propInfo);
     newPropertyProvIDs.push(newPropertyProvID);
   }
@@ -144,7 +144,7 @@ function buildFineProvenanceData(jobId, flowName, stepName, stepDefName, stepDef
 }
 
 export default {
-    onArtifactSave,
-    onInstancePassToStep,
-    onInstanceSave
+  onArtifactSave,
+  onInstancePassToStep,
+  onInstanceSave
 };

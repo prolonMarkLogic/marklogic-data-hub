@@ -6,8 +6,8 @@ const flowName = "myFlow";
 xdmp.invokeFunction(() => {
   const response = flowRunner.runFlowOnContent(flowName,
     [
-      { "uri": "/customer1.json", "value": { "customerId": 1 } },
-      { "uri": "/customer2.json", "value": { "customerId": 2 } }
+      {"uri": "/customer1.json", "value": {"customerId": 1}},
+      {"uri": "/customer2.json", "value": {"customerId": 2}}
     ],
     "jobId",
     {
@@ -43,4 +43,4 @@ xdmp.invokeFunction(() => {
   ];
 
   assertions;
-}, { update: "true" });
+}, {update: "true"});

@@ -74,4 +74,4 @@ xdmp.invokeFunction(() => {
   };
 
   hubTest.createSimpleProject("myFlow", [mappingStep, matchingStep, mergingStep, customStepThatThrowsError]);
-}, { update: "true" });
+}, {update: "true"});

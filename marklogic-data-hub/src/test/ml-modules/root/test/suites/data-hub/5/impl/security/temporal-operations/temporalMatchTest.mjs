@@ -22,7 +22,7 @@ const setMatchDocuments = (docs) => {
       });
     }, {database: xdmp.database(config.FINALDATABASE), update: "true",});
   });
-}
+};
 
 const setDocumentProtection = (docs) => {
   hubTest.runWithRolesAndPrivileges(['data-hub-developer'], [], function () {
@@ -35,14 +35,14 @@ const setDocumentProtection = (docs) => {
       });
     }, {update: "true"});
   });
-}
+};
 const wipeDocument = (doc) => {
   hubTest.runWithRolesAndPrivileges(['data-hub-admin'], [], function () {
     xdmp.invokeFunction(function () {
       assertions.push(test.assertEqual(null, temporal.documentWipe("kool", doc)));
     }, {update: "true"});
   });
-}
+};
 
 const matchDocs = [
   {
@@ -119,13 +119,13 @@ const matchDocs = [
         systemEnd: "9999-12-31T11:59:59Z"
       }
   }
-]
+];
 
 setMatchDocuments(matchDocs);
 xdmp.invokeFunction(() => {
   const pma = require("/data-hub/5/mastering/preview-matching-activity-lib.xqy");
 
-  let uris = ["cust0.json", "cust1.json"]
+  let uris = ["cust0.json", "cust1.json"];
 
   const previewOptions = cts.doc("/steps/matching/match-customers.step.json").root;
   const sourceQuery = xdmp.eval(previewOptions.sourceQuery);
@@ -189,10 +189,10 @@ xdmp.invokeFunction(() => {
           systemEnd: "9999-12-31T11:59:59Z"
         }
     }
-  ]
+  ];
   setMatchDocuments([updateDoc]);
 
-  const options2 = {uris: cts.uris(null, null, cts.andQuery([cts.andQuery(cts.collectionQuery('kool')),cts.collectionQuery('latest')])).toArray().map((uri) => fn.string(uri))};
+  const options2 = {uris: cts.uris(null, null, cts.andQuery([cts.andQuery(cts.collectionQuery('kool')), cts.collectionQuery('latest')])).toArray().map((uri) => fn.string(uri))};
   const content2 = datahub.flow.findMatchingContent(flowName, "1", options2);
 
   const results2 = flowApi.runFlowOnContent(flowName, content2, "1", options2);

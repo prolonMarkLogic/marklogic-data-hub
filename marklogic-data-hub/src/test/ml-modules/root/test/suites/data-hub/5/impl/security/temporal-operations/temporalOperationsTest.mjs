@@ -17,7 +17,7 @@ const setUseLsqtUsingAForbiddenUser = (roles) => {
       }
     }, {update: "true"});
   });
-}
+};
 
 const setLsqtAutomationUsingAForbiddenUser = (roles) => {
   hubTest.runWithRolesAndPrivileges(roles, [], function () {
@@ -32,7 +32,7 @@ const setLsqtAutomationUsingAForbiddenUser = (roles) => {
       }
     }, {update: "true"});
   });
-}
+};
 
 const setUseLsqtUsingAPermittedUser = (roles) => {
   hubTest.runWithRolesAndPrivileges(roles, [], function () {
@@ -40,7 +40,7 @@ const setUseLsqtUsingAPermittedUser = (roles) => {
       assertions.push(test.assertEqual(null, temporal.setUseLsqt("kool", true)));
     }, {update: "true"});
   });
-}
+};
 
 const setLsqtAutomationUsingAPermittedUser = (roles) => {
   hubTest.runWithRolesAndPrivileges(roles, [], function () {
@@ -48,7 +48,7 @@ const setLsqtAutomationUsingAPermittedUser = (roles) => {
       assertions.push(test.assertEqual(null, temporal.setLsqtAutomation("kool", true, 5000)));
     }, {update: "true"});
   });
-}
+};
 
 const setSystemTime = (roles, i) => {
   hubTest.runWithRolesAndPrivileges(roles, [], function () {
@@ -72,7 +72,7 @@ const setSystemTime = (roles, i) => {
     assertions.push(test.assertExists(record.document));
     assertions.push(test.assertEqual("1601-01-01T14:00:00Z", record.document.axes.systemStart));
   });
-}
+};
 
 const setDocumentProtection = (roles, i) => {
   hubTest.runWithRolesAndPrivileges(roles, [], function () {
@@ -83,7 +83,7 @@ const setDocumentProtection = (roles, i) => {
       })));
     }, {update: "true"});
   });
-}
+};
 
 const wipeDocumentUsingAForbiddenUser = (roles, i) => {
   hubTest.runWithRolesAndPrivileges(roles, [], function () {
@@ -98,7 +98,7 @@ const wipeDocumentUsingAForbiddenUser = (roles, i) => {
       }
     }, {update: "true"});
   });
-}
+};
 
 const wipeDocumentUsingAPermittedUser = (roles, i) => {
   hubTest.runWithRolesAndPrivileges(roles, [], function () {
@@ -106,7 +106,7 @@ const wipeDocumentUsingAPermittedUser = (roles, i) => {
       assertions.push(test.assertEqual(null, temporal.documentWipe("kool", `doc${i}.json`)));
     }, {update: "true"});
   });
-}
+};
 
 [['data-hub-operator'],
   ['data-hub-temporal-user', 'data-hub-common']].forEach((roles) => {

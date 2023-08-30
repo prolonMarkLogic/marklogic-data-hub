@@ -2,7 +2,7 @@ const test = require("/test/test-helper.xqy");
 
 const pma = require("/data-hub/5/mastering/preview-matching-activity-lib.xqy");
 
-let uris = []
+let uris = [];
 for (let uri of cts.uriMatch("/content/5*.json")) {
   uris.push(uri);
 }
@@ -14,4 +14,4 @@ let results = pma.previewMatchingActivity(options, sourceQuery, uris, false, fal
 
 [
   test.assertEqual(20, results.actionPreview.length, "There should be 20 matching pairs")
-]
+];

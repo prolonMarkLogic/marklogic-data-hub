@@ -26,4 +26,4 @@ assertions.push(
   test.assertNotExists(options.database)
 );
 
-assertions
+assertions;

@@ -39,14 +39,13 @@ if (!model.info.name) {
 
 model.info.description = description;
 
-if(hubCentralConfig){
+if (hubCentralConfig) {
   model.hubCentral = hubCentralConfig;
 }
 
-try{
+try {
   conceptLib.writeDraftConceptModel(name, model);
-}
-catch (e){
+} catch (e) {
   httpUtils.throwBadRequest(hubUtils.getErrorMessage(e));
 }
 

@@ -6,8 +6,8 @@ let error;
 
 const content = [
   {
-    uri:"/customer1.json",
-    value:{"hello": "world"},
+    uri: "/customer1.json",
+    value: {"hello": "world"},
     context: {quality: "bad value"}
   }
 ];
@@ -15,8 +15,7 @@ const dbName = "data-hub-FINAL";
 
 try {
   flowUtils.writeContentArray(content, dbName);
-}
-catch (e) {
+} catch (e) {
   error = e;
 }
 

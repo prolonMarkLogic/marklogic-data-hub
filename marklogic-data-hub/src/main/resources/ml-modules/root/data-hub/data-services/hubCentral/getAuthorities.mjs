@@ -23,4 +23,4 @@ const response = {
   "authorities": Security.getAuthorities()
 };
 
-response
+response;

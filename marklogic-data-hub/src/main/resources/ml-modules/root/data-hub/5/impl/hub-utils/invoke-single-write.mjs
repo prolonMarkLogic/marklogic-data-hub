@@ -22,9 +22,9 @@ const content = external.content;
 const permissions = external.permissions;
 const collections = external.collections;
 
-xdmp.documentInsert(docUri, content, {permissions: permissions, collections: collections });
+xdmp.documentInsert(docUri, content, {permissions: permissions, collections: collections});
 let writeInfo = {
-    transaction: xdmp.transaction(),
-    dateTime: fn.currentDateTime()
+  transaction: xdmp.transaction(),
+  dateTime: fn.currentDateTime()
 };
 writeInfo;

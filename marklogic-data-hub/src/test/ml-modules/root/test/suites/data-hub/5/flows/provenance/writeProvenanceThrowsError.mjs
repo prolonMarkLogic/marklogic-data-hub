@@ -8,14 +8,14 @@ const assertions = [];
 const flowName = "doesntMatter";
 
 const fakeFlow = {
-  name:flowName,
+  name: flowName,
   steps: {
-    "1": {"name":"myStep", "stepDefinitionName": "myCustomStep", "stepDefinitionType": "custom"}
+    "1": {"name": "myStep", "stepDefinitionName": "myCustomStep", "stepDefinitionType": "custom"}
   }
 };
 
 // Try writing with an invalid input
-let stepExecutionContext = new StepExecutionContext(fakeFlow, "1", {"name":"myCustomStep", "type": "unrecognized"});
+let stepExecutionContext = new StepExecutionContext(fakeFlow, "1", {"name": "myCustomStep", "type": "unrecognized"});
 stepExecutionContext.completedItems = ["test.json"];
 
 flowProvenance.writeProvenanceData(stepExecutionContext, [{"uri": "test.json"}]);
@@ -26,15 +26,15 @@ assertions.push(test.assertEqual(null, hubTest.getFirstProvDocument(),
 ));
 
 // Verify that a valid input results in a prov doc being written
-stepExecutionContext = new StepExecutionContext(fakeFlow, "1", {"name":"myCustomStep", "type": "custom"});
+stepExecutionContext = new StepExecutionContext(fakeFlow, "1", {"name": "myCustomStep", "type": "custom"});
 stepExecutionContext.completedItems = ["test.json"];
 
 flowProvenance.writeProvenanceData(stepExecutionContext, [{"uri": "test.json"}]);
 
 assertions.push(
   test.assertEqual("document", hubTest.getFirstProvDocument().xpath("/*/fn:local-name()"),
-  "Since the inputs to writeProvenanceData were valid, and the prov granularity level defaults to " +
+    "Since the inputs to writeProvenanceData were valid, and the prov granularity level defaults to " +
   "coarse, a single prov document (with root element name of 'document') should have been written"
-));
+  ));
 
 assertions;

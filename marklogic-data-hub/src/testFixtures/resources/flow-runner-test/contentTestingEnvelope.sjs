@@ -8,14 +8,14 @@
  */
 function createContent(id, options) {
   return {
-    "an":"instance",
-    "document":"that",
-    "is":"not",
-    "harmononized":"yeah",
-    "$attachments": { "and" : "originaldochere" },
-    "$type":"Person",
-    "$version":"0.0.1"
-  }
+    "an": "instance",
+    "document": "that",
+    "is": "not",
+    "harmononized": "yeah",
+    "$attachments": {"and": "originaldochere"},
+    "$type": "Person",
+    "$version": "0.0.1"
+  };
 }
 
 module.exports = {

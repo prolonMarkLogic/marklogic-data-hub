@@ -38,7 +38,7 @@ function newProvId(jobId, flowId, stepType, docUri) {
  * @param {string} stepDefinitionType - step definition type ['ingestion','mapping','mastering','matching','merging','custom']
  */
 function validStepDefinitionType(stepDefinitionType) {
-  return ['ingestion', 'mapping', 'mastering', 'matching', 'merging', 'custom'].includes(stepDefinitionType)
+  return ['ingestion', 'mapping', 'mastering', 'matching', 'merging', 'custom'].includes(stepDefinitionType);
 }
 
 /**
@@ -145,15 +145,15 @@ function validateCreateStepParams(jobId, flowId, stepName, stepDefinitionName, s
  */
 function createRecords(recordsQueue, latestProvenance = false) {
   xdmp.invokeFunction(() => {
-      declareUpdate();
-      recordsQueue.persist();
-    },
-    {
-      database: xdmp.database(config.JOBDATABASE),
-      commit: 'auto',
-      update: 'true',
-      ignoreAmps: true
-    });
+    declareUpdate();
+    recordsQueue.persist();
+  },
+  {
+    database: xdmp.database(config.JOBDATABASE),
+    commit: 'auto',
+    update: 'true',
+    ignoreAmps: true
+  });
   return recordsQueue.getDatabaseQueue(consts.JOBDATABASE).map((recordDetails) => recordDetails.id);
 }
 
@@ -196,8 +196,7 @@ function queueForCommit(databaseName = config.JOBDATABASE, id, options, metadata
 function createIngestionStepRecord(jobId, flowId, stepName, stepDefinitionName, docURI, info) {
   let provId = newProvId(jobId, flowId, 'ingestion', docURI);
   let provTypes = ['ps:Document', 'ps:Entity', 'dhf:Entity', 'dhf:IngestionStep', 'dhf:IngestionStepEntity'];
-  if (info && info.status)
-    provTypes.push('dhf:Doc' + hubUtils.capitalize(info.status));
+  if (info && info.status) { provTypes.push('dhf:Doc' + hubUtils.capitalize(info.status)); }
 
   let recordOpts = {
     provTypes,
@@ -207,7 +206,7 @@ function createIngestionStepRecord(jobId, flowId, stepName, stepDefinitionName, 
       derivedFrom: info && info.derivedFrom,
       influencedBy: [stepName]
     },
-    attributes: { location: docURI }
+    attributes: {location: docURI}
   };
 
   return queueForCommit(config.JOBDATABASE, provId, recordOpts, info.metadata);
@@ -239,8 +238,7 @@ function createIngestionStepRecord(jobId, flowId, stepName, stepDefinitionName, 
 function createMappingStepRecord(jobId, flowId, stepName, stepDefinitionName, docURI, info) {
   let provId = newProvId(jobId, flowId, 'mapping', docURI);
   let provTypes = ['ps:Entity', 'dhf:Entity', 'dhf:MappingStep', 'dhf:MappingStepEntity'];
-  if (info && info.status)
-    provTypes.push('dhf:Doc' + hubUtils.capitalize(info.status));
+  if (info && info.status) { provTypes.push('dhf:Doc' + hubUtils.capitalize(info.status)); }
 
   let recordOpts = {
     provTypes,
@@ -250,7 +248,7 @@ function createMappingStepRecord(jobId, flowId, stepName, stepDefinitionName, do
       derivedFrom: info && info.derivedFrom,
       influencedBy: info && info.influencedBy,
     },
-    attributes: { location: docURI }
+    attributes: {location: docURI}
   };
 
   return queueForCommit(config.JOBDATABASE, provId, recordOpts, info.metadata);
@@ -282,8 +280,7 @@ function createMappingStepRecord(jobId, flowId, stepName, stepDefinitionName, do
 function createMasteringStepRecord(jobId, flowId, stepName, stepDefinitionName, docURI, info) {
   let provId = newProvId(jobId, flowId, 'mastering', docURI);
   let provTypes = ['ps:Entity', 'dhf:Entity', 'dhf:MasteringStep', 'dhf:MasteringStepEntity'];
-  if (info && info.status)
-    provTypes.push('dhf:Doc' + hubUtils.capitalize(info.status));
+  if (info && info.status) { provTypes.push('dhf:Doc' + hubUtils.capitalize(info.status)); }
 
   let recordOpts = {
     provTypes,
@@ -293,7 +290,7 @@ function createMasteringStepRecord(jobId, flowId, stepName, stepDefinitionName, 
       derivedFrom: info && info.derivedFrom,
       influencedBy: info && info.influencedBy,
     },
-    attributes: { location: docURI }
+    attributes: {location: docURI}
   };
 
   return queueForCommit(config.JOBDATABASE, provId, recordOpts, info.metadata);
@@ -325,8 +322,7 @@ function createMasteringStepRecord(jobId, flowId, stepName, stepDefinitionName, 
 function createMatchingStepRecord(jobId, flowId, stepName, stepDefinitionName, docURI, info) {
   let provId = newProvId(jobId, flowId, 'matching', docURI);
   let provTypes = ['ps:Entity', 'dhf:Entity', 'dhf:MatchingStep', 'dhf:MatchingStepEntity'];
-  if (info && info.status)
-    provTypes.push('dhf:Doc' + hubUtils.capitalize(info.status));
+  if (info && info.status) { provTypes.push('dhf:Doc' + hubUtils.capitalize(info.status)); }
 
   let recordOpts = {
     provTypes,
@@ -336,7 +332,7 @@ function createMatchingStepRecord(jobId, flowId, stepName, stepDefinitionName, d
       derivedFrom: info && info.derivedFrom,
       influencedBy: info && info.influencedBy,
     },
-    attributes: { location: docURI }
+    attributes: {location: docURI}
   };
 
   return queueForCommit(config.JOBDATABASE, provId, recordOpts, info.metadata);
@@ -368,8 +364,7 @@ function createMatchingStepRecord(jobId, flowId, stepName, stepDefinitionName, d
 function createMergingStepRecord(jobId, flowId, stepName, stepDefinitionName, docURI, info) {
   let provId = newProvId(jobId, flowId, 'merging', docURI);
   let provTypes = ['ps:Entity', 'dhf:Entity', 'dhf:MergingStep', 'dhf:MergingStepEntity'];
-  if (info && info.status)
-    provTypes.push('dhf:Doc' + hubUtils.capitalize(info.status));
+  if (info && info.status) { provTypes.push('dhf:Doc' + hubUtils.capitalize(info.status)); }
 
   let recordOpts = {
     provTypes,
@@ -379,7 +374,7 @@ function createMergingStepRecord(jobId, flowId, stepName, stepDefinitionName, do
       derivedFrom: info && info.derivedFrom,
       influencedBy: info && info.influencedBy,
     },
-    attributes: { location: docURI }
+    attributes: {location: docURI}
   };
 
   return queueForCommit(config.JOBDATABASE, provId, recordOpts, info.metadata);
@@ -410,8 +405,7 @@ function createMergingStepRecord(jobId, flowId, stepName, stepDefinitionName, do
 function createCustomStepRecord(jobId, flowId, stepName, stepDefinitionName, docURI, info) {
   let provId = newProvId(jobId, flowId, 'custom', docURI);
   let provTypes = ['ps:Entity', 'dhf:Entity', 'dhf:CustomStep', 'dhf:CustomStepEntity'];
-  if (info && info.status)
-    provTypes.push('dhf:Doc' + hubUtils.capitalize(info.status));
+  if (info && info.status) { provTypes.push('dhf:Doc' + hubUtils.capitalize(info.status)); }
 
   let recordOpts = {
     provTypes,
@@ -421,7 +415,7 @@ function createCustomStepRecord(jobId, flowId, stepName, stepDefinitionName, doc
       derivedFrom: info && info.derivedFrom,
       influencedBy: info && info.influencedBy,
     },
-    attributes: { location: docURI }
+    attributes: {location: docURI}
   };
 
   return queueForCommit(config.JOBDATABASE, provId, recordOpts, info.metadata);
@@ -457,7 +451,7 @@ function createStepRecord(jobId, flowId, stepName, stepDefinitionName, stepDefin
     let capitalizedStepType = hubUtils.capitalize(stepDefinitionType);
     resp = stepRecordCreationFunctions["create" + capitalizedStepType + "StepRecord"](jobId, flowId, stepName, stepDefinitionName, docURI, info);
   } else {
-    resp = isValid
+    resp = isValid;
   }
   return resp;
 }
@@ -493,7 +487,7 @@ function createStepPropertyRecords(jobId, flowId, stepName, stepDefinitionName, 
         if (!xdmp.castableAs("http://www.w3.org/2001/XMLSchema", "QName", encodedPropertyName)) {
           encodedPropertyName = xdmp.encodeForNCName(encodedPropertyName);
         }
-        let docPropProvId = `${jobId + flowId + stepDefinitionType + docURI}_${property}`
+        let docPropProvId = `${jobId + flowId + stepDefinitionType + docURI}_${property}`;
         let docPropProvOptions = {
           provTypes: ['ps:EntityProperty', `dhf:${capitalizedStepType}`, 'dhf:EntityProperty', encodedPropertyName],
           relations: {
@@ -501,7 +495,7 @@ function createStepPropertyRecords(jobId, flowId, stepName, stepDefinitionName, 
             generatedBy: jobId,
             influencedBy: info && info.influencedBy,
           },
-          attributes: { location: docURI }
+          attributes: {location: docURI}
         };
         // append to return Object
         docPropertyProvIds[property] = docPropProvId;
@@ -520,7 +514,7 @@ function createStepPropertyRecords(jobId, flowId, stepName, stepDefinitionName, 
           hadMember: docPropertyProvIdsArray,
           influencedBy: info && info.influencedBy,
         },
-        attributes: { location: docURI }
+        attributes: {location: docURI}
       };
 
       queueForCommit(config.JOBDATABASE, docProvId, recordOpts, info.metadata);
@@ -531,7 +525,7 @@ function createStepPropertyRecords(jobId, flowId, stepName, stepDefinitionName, 
       resp = new Error(`Function requires param 'properties' to be defined.`);
     }
   } else {
-    resp = isValid
+    resp = isValid;
   }
   return resp;
 }
@@ -586,7 +580,7 @@ function createStepPropertyAlterationRecord(jobId, flowId, stepName, stepDefinit
       resp = new Error(`Function requires param 'docURIs' & 'propertyProvIds' to be defined.`);
     }
   } else {
-    resp = isValid
+    resp = isValid;
   }
   return resp;
 }
@@ -623,7 +617,7 @@ function createStepDocumentAlterationRecord(jobId, flowId, stepName, stepDefinit
           hadMember: alteredPropertyProvIds,
           influencedBy: info && info.influencedBy,
         },
-        attributes: { location: newDocURI }
+        attributes: {location: newDocURI}
       };
       queueForCommit(config.JOBDATABASE, provId, recordOpts, info.metadata);
       resp = provId;
@@ -631,7 +625,7 @@ function createStepDocumentAlterationRecord(jobId, flowId, stepName, stepDefinit
       resp = new Error(`Function requires param 'documentProvIds' & 'alteredPropertyProvIds' to be defined.`);
     }
   } else {
-    resp = isValid
+    resp = isValid;
   }
   return resp;
 }
@@ -662,7 +656,7 @@ export function findProvenance(docUri, relations) {
       .select(['provID', 'dateTime', 'attributedTo', op.as('associatedWithDetail', op.jsonString(op.col('associatedWith')))])
       .groupBy(['provID', 'dateTime', 'attributedTo'], op.arrayAggregate('associatedWith', 'associatedWithDetail'))
       .orderBy(op.desc('dateTime')).result();
-  }, { 'database': xdmp.database(config.JOBDATABASE) }).toArray();
+  }, {'database': xdmp.database(config.JOBDATABASE)}).toArray();
 }
 
 function urisToLatestProvIDs(sourceURIs, database) {
@@ -679,7 +673,7 @@ function urisToLatestProvIDs(sourceURIs, database) {
       const kvPattern = ps.opTriplePattern(match, output);
       //get latest dateTime
       const result = fn.head(op.fromTriples(kvPattern)
-        .select(['provID','dateTime'])
+        .select(['provID', 'dateTime'])
         .orderBy(op.desc('dateTime'))
         .limit(1).result());
       return result ? fn.string(result.provID): sourceURI;
@@ -693,7 +687,15 @@ function urisToLatestProvIDs(sourceURIs, database) {
   let stagingProvEntities = [];
   let sourcesToSearchForInStaging = finalProvEntities.length ? sourceURIs.filter((sourceURI) => finalProvEntities.includes(sourceURI)): sourceURIs;
   if (sourcesToSearchForInStaging.length) {
-    stagingProvEntities = config.STAGINGDATABASE === currentDatabase ? sourceMapFunction(sourcesToSearchForInStaging) : fn.head(hubUtils.invokeFunction(() => sourceMapFunction(sourcesToSearchForInStaging), config.STAGINGDATABASE));
+    stagingProvEntities = config.STAGINGDATABASE === currentDatabase
+      ? sourceMapFunction(sourcesToSearchForInStaging)
+      : fn.head(
+        hubUtils.invokeFunction(
+          () => sourceMapFunction(sourcesToSearchForInStaging),
+          config.STAGINGDATABASE
+        )
+      );
+
   }
   finalProvEntities = finalProvEntities.filter((sourceURI) => !sourceURIs.includes(sourceURI));
   return finalProvEntities.concat(stagingProvEntities);
@@ -702,7 +704,7 @@ function urisToLatestProvIDs(sourceURIs, database) {
 function queueSourceProvenance(sourceLabel, stepExecutionContext, sourceProvIDs) {
   const sourceProvID = `external:${sourceLabel}#${fn.currentDateTime().add(xdmp.elapsedTime())}`;
   const sourceRecordOptions = {
-    provTypes: ["dh:Source","ps:Application"],
+    provTypes: ["dh:Source", "ps:Application"],
     label: sourceLabel,
     attributes: {
       file: stepExecutionContext.combinedOptions.file,
@@ -724,9 +726,9 @@ function buildRecordEntity(stepExecutionContext, contentObject, hadMember, info)
   let sourceProvIDs = urisToLatestProvIDs(info.derivedFrom, sourceDatabase);
   let provId = `${targetDatabase}:${contentObject.uri}#%%dateTime%%`;
   let attributes = {
-      documentURI: contentObject.uri,
-      database: targetDatabase,
-      stepName
+    documentURI: contentObject.uri,
+    database: targetDatabase,
+    stepName
   };
   let provTypes = ["ps:Document"];
   if (info && info.status) {

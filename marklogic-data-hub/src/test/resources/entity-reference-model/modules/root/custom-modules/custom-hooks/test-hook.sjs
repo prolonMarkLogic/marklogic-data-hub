@@ -1,11 +1,11 @@
 declareUpdate();
 
-var uris;
-var content;
-var options;
-var flowName;
-var stepNumber;
-var step;
+let uris;
+let content;
+let options;
+let flowName;
+let stepNumber;
+let step;
 
 if (options.throwErrorForStepNumber === stepNumber) {
   throw Error("Throwing error on purpose for step number: " + stepNumber);

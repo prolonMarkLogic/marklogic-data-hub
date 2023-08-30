@@ -11,8 +11,8 @@ function customFunction() {
 }
 
 // "Protected" function not accessible outside of the current module.
-function setupFunction($reference, $options, $options) {
+function setupFunction($reference, $options) {
   return $options;
 }
 
-customFunction.$annotations = { "mdm:setup": { function: 'setupFunction' } };
+customFunction.$annotations = {"mdm:setup": {function: 'setupFunction'}};

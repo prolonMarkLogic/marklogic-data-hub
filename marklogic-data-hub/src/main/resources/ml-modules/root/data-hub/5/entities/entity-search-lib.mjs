@@ -374,7 +374,7 @@ function addEntitySpecificProperties(result, entityName, entityModel, selectedPr
   const entityProperties = getEntityInstanceProperties(doc);
 
   if (!entityProperties) {
-    console.log(`Unable to obtain entity properties from document with URI '${result.uri}' and entity name '${entityName}'; will not add entity properties to its search result`);
+    xdmp.log(`Unable to obtain entity properties from document with URI '${result.uri}' and entity name '${entityName}'; will not add entity properties to its search result`);
     return;
   }
 
@@ -410,13 +410,13 @@ function addGenericEntityProperties(result) {
   const doc = cts.doc(result.uri);
   const entityDetails = ext.getEntityDetails(doc);
   if (!entityDetails) {
-    console.log(`Unable to obtain entity instance from document with URI '${result.uri}'; will not add entity properties to its search result`);
+    xdmp.log(`Unable to obtain entity instance from document with URI '${result.uri}'; will not add entity properties to its search result`);
     return;
   }
 
   const entityName = entityDetails.entityName;
   if (!entityName) {
-    console.log(`Unable to determine the entity type from document with URI '${result.uri}'; will not add entity properties to its search result`);
+    xdmp.log(`Unable to determine the entity type from document with URI '${result.uri}'; will not add entity properties to its search result`);
     return;
   }
 
@@ -424,7 +424,7 @@ function addGenericEntityProperties(result) {
 
   const entityModel = entityLib.findModelByEntityName(entityName);
   if (!entityModel) {
-    console.log(`Unable to find an entity model for entity name: ${entityName}; will not add entity properties to its search result`);
+    xdmp.log(`Unable to find an entity model for entity name: ${entityName}; will not add entity properties to its search result`);
     return;
   }
 
@@ -435,7 +435,7 @@ function addGenericEntityProperties(result) {
     result.createdOn = xdmp.documentGetMetadata(result.uri).datahubCreatedOn;
     result.createdBy = xdmp.documentGetMetadata(result.uri).datahubCreatedBy;
   } catch (error) {
-    console.log(`Unable to obtain document with URI '${result.uri}'; will not add document metadata to its search result`);
+    xdmp.log(`Unable to obtain document with URI '${result.uri}'; will not add document metadata to its search result`);
   }
 
   let identifierValue = result.primaryKey.propertyPath === "uri" ? result.uri : result.primaryKey.propertyValue;

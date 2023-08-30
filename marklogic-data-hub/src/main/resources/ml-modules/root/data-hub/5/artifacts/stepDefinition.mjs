@@ -23,15 +23,15 @@ const databases = [config.STAGINGDATABASE, config.FINALDATABASE];
 const requiredProperties = ['name'];
 
 function getNameProperty() {
-    return 'name';
+  return 'name';
 }
 
 function getCollections() {
-    return collections;
+  return collections;
 }
 
 function getStorageDatabases() {
-    return databases;
+  return databases;
 }
 
 function getPermissions() {
@@ -44,38 +44,37 @@ function getPermissions() {
 }
 
 function getArtifactNode(artifactName, artifactVersion) {
-    const stepDef = new StepDefinition().getStepDefinition(artifactName);
-    return stepDef;
+  const stepDef = new StepDefinition().getStepDefinition(artifactName);
+  return stepDef;
 }
 
 function getDirectory(artifactName, artifact, artifactDirName) {
-    let doc = getArtifactNode(artifactName, null);
-    let dir = "/step-definitions/";
-    if(!doc && artifact && artifactName) {
-        dir = dir + artifact.type.toLowerCase() + "/" + (artifactDirName || artifact.name) +"/";
+  let doc = getArtifactNode(artifactName, null);
+  let dir = "/step-definitions/";
+  if (!doc && artifact && artifactName) {
+    dir = dir + artifact.type.toLowerCase() + "/" + (artifactDirName || artifact.name) +"/";
+  } else if (doc) {
+    let stepDefinition = doc.toObject();
+    if (stepDefinition.type && stepDefinition.name) {
+      dir = dir + stepDefinition.type.toLowerCase() + "/" + stepDefinition.name + "/";
     }
-    else if (doc) {
-        let stepDefinition = doc.toObject();
-        if (stepDefinition.type && stepDefinition.name) {
-            dir = dir + stepDefinition.type.toLowerCase() + "/" + stepDefinition.name + "/";
-        }
-    }
-    return dir;
+  }
+  return dir;
 }
 
 function getFileExtension() {
-    return ".step.json";
+  return ".step.json";
 }
 
 function validateArtifact(artifact) {
-    const missingProperties = requiredProperties.filter((propName) => !artifact[propName]);
-    if (missingProperties.length) {
-        return new Error(`Step definition '${artifact.name}' is missing the following required properties: ${JSON.stringify(missingProperties)}`);
-    }
-    return artifact;
+  const missingProperties = requiredProperties.filter((propName) => !artifact[propName]);
+  if (missingProperties.length) {
+    return new Error(`Step definition '${artifact.name}' is missing the following required properties: ${JSON.stringify(missingProperties)}`);
+  }
+  return artifact;
 }
 
-export default{
+export default {
   getNameProperty,
   getCollections,
   getStorageDatabases,

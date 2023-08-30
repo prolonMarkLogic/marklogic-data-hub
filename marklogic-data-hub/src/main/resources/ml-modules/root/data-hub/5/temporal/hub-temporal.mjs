@@ -29,15 +29,16 @@ function createIndex() {
     let config = admin.getConfiguration();
     let elementRangeIndexes = [
       admin.databaseRangeElementIndex("dateTime", "", "systemStart", "", fn.false()),
-      admin.databaseRangeElementIndex("dateTime", "", "systemEnd", "", fn.false())]
+      admin.databaseRangeElementIndex("dateTime", "", "systemEnd", "", fn.false())];
     elementRangeIndexes.forEach((elementRangeIndex) => {
       try {
         config = admin.databaseAddRangeElementIndex(config, xdmp.database(), elementRangeIndex);
       } catch (e) {
+        xdmp.log(`Error' Reason: ${xdmp.toJsonString(e)}`);
       }
     });
     admin.saveConfiguration(config);
-  },{update: "true"});
+  }, {update: "true"});
 }
 
 function createAxis() {
@@ -45,6 +46,7 @@ function createAxis() {
     try {
       temporal.axisCreate("system", cts.elementReference("systemStart", "type=dateTime"), cts.elementReference("systemEnd", "type=dateTime"));
     } catch (e) {
+      xdmp.log(`Error' Reason: ${xdmp.toJsonString(e)}`);
     }
   }, {update: "true"});
 }
@@ -57,7 +59,7 @@ function createCollection(temporalCollection) {
 
 function prepareTemporalSourceQuery(sourceQuery) {
 
-  let sourceCollections = sourceQuery.match(/(['"]).*?\1/g)
+  let sourceCollections = sourceQuery.match(/(['"]).*?\1/g);
   if (sourceCollections && sourceCollections.length > 0) {
     sourceCollections = sourceCollections.map(c => {
       return c.slice(1, -1);
@@ -86,5 +88,5 @@ export default {
   createAxis: import.meta.amp(createAxis),
   createCollection: import.meta.amp(createCollection),
   prepareTemporalSourceQuery: prepareTemporalSourceQuery
-}
+};
 

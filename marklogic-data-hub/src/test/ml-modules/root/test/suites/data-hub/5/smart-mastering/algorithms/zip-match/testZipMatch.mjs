@@ -50,6 +50,6 @@ assertions.push(
   test.assertEqual("/content/NineDigitMatch.json", actionDetails.uris[1],
     "The URIs are expected to be ordered, so Nine should come after Five"),
   test.assertEqual(smTest.TEST_DOC_URI, actionDetails.uris[2])
-)
+);
 
 assertions;

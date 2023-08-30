@@ -8,7 +8,7 @@
  * @return - an object of headers
  */
 function createHeaders(id, content, options) {
-  return { id: id };
+  return {id: id};
 }
 
 module.exports = {

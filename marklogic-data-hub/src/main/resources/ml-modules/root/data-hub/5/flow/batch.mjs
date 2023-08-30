@@ -40,7 +40,7 @@ export default class Batch {
         reqTimeStamp: timestamp,
         reqTrnxID: xdmp.transaction()
       }
-    }
+    };
   }
 
   /**
@@ -60,7 +60,7 @@ export default class Batch {
     if (xdmp.traceEnabled(consts.TRACE_FLOW)) {
       hubUtils.hubTrace(consts.TRACE_FLOW, `Inserting batch document with URI '${batchUri}'`);
     }
-    hubUtils.writeDocument(batchUri, this.data, jobs.buildJobPermissions(), ['Jobs','Batch'], config.JOBDATABASE);
+    hubUtils.writeDocument(batchUri, this.data, jobs.buildJobPermissions(), ['Jobs', 'Batch'], config.JOBDATABASE);
   }
 
   getBatchObject() {
@@ -107,7 +107,7 @@ export default class Batch {
 
     // Per DHFPROD-2445, ensure that runtime options are included
     const flowStepWithOptions = Object.assign({}, flowStep,
-      { "options": Object.assign({}, flowStep.options, stepExecutionContext.combinedOptions) }
+      {"options": Object.assign({}, flowStep.options, stepExecutionContext.combinedOptions)}
     );
 
     // uris are deleted; they will exist when they're passed from the Java FlowRunner via options
@@ -136,9 +136,7 @@ export default class Batch {
         let stackTraceObj = firstError.stackFrames[0];
         target.fileName = stackTraceObj.uri;
         target.lineNumber = stackTraceObj.line;
-      }
-      // If we don't get stackFrames, see if we can get the stack
-      else if (firstError.stack) {
+      } else if (firstError.stack) { // If we don't get stackFrames, see if we can get the stack
         target.errorStack = firstError.stack;
       }
       target.error = `${firstError.name || firstError.code}: ${firstError.message}`;

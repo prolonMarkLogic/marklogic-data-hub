@@ -51,14 +51,14 @@ const orderModel = {
 };
 
 function generateTdeWithRelatedEntityType() {
-    const input = [ orderModel ];
-    const tde = hent.dumpTde(input);
+  const input = [orderModel];
+  const tde = hent.dumpTde(input);
 
-    const orderTemplate = fn.head(tde.xpath('.//*:templates/*:template[*:context = "orderedBy[xs:string(.) ne """"]"]'));
-    const orderTemplateExists = fn.exists(orderTemplate);
-    const assertions = [
+  const orderTemplate = fn.head(tde.xpath('.//*:templates/*:template[*:context = "orderedBy[xs:string(.) ne """"]"]'));
+  const orderTemplateExists = fn.exists(orderTemplate);
+  const assertions = [
     test.assertTrue(orderTemplateExists, `Order template should exist.`)
-    ];
+  ];
 
   assertions.push(
     test.assertEqual(1, fn.count(orderTemplate.xpath("*:triples/*:triple")), "has to exists one row of triple")
@@ -68,7 +68,7 @@ function generateTdeWithRelatedEntityType() {
   if (orderTemplateExists) {
     for (const columnTriple of orderTemplate.xpath("*:triples/*:triple")) {
       const predicate = fn.head(columnTriple.xpath('*:predicate/*:val'));
-      if(fn.contains(predicate, "orderedBy")){
+      if (fn.contains(predicate, "orderedBy")) {
         existsNewTriple = true;
       }
     }
@@ -79,8 +79,8 @@ function generateTdeWithRelatedEntityType() {
 
 function generateTdeReferencedByRelatedEntityType() {
   xdmp.invokeFunction(() => {
-    xdmp.documentInsert("/entities/Order.entity.json", orderModel, { collections: ["http://marklogic.com/entity-services/models"]});
-  }, { update: "true"});
+    xdmp.documentInsert("/entities/Order.entity.json", orderModel, {collections: ["http://marklogic.com/entity-services/models"]});
+  }, {update: "true"});
   const input =
     [{
       "info": {

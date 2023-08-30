@@ -1,7 +1,7 @@
 'use strict';
 
 const test = require("/test/test-helper.xqy");
-import { DocumentForTestingUtils as utils } from "/test/suites/data-hub/data-services/lib/mappingService.mjs";;
+import {DocumentForTestingUtils as utils} from "/test/suites/data-hub/data-services/lib/mappingService.mjs";
 
 const assertions = [];
 

@@ -18,4 +18,4 @@ let actual = matcher.resultsToJson(actualXML);
   test.assertEqual("6", actual.results.pageLength.toString()),
   test.assertEqual("1", actual.results.start.toString()),
   test.assertEqual(2, actual.results.result.length)
-]
+];

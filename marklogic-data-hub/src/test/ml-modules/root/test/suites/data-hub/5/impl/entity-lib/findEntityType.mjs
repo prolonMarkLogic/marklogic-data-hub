@@ -44,4 +44,4 @@ assertions.push(
 entityType = entityLib.findEntityType("just-totally-invalid");
 assertions.push(test.assertEqual(null, entityType));
 
-assertions
+assertions;

@@ -25,7 +25,7 @@ function main(content, options) {
   let mapping = mappings[mappingKey];
   if (!mapping && options.mapping && options.mapping.name && options.mapping.version) {
     let version = parseInt(options.mapping.version);
-    if(isNaN(version)){
+    if (isNaN(version)) {
       datahub.debug.log({message: 'Mapping version ('+options.mapping.version+') is invalid.', type: 'error'});
       throw Error('Mapping version ('+options.mapping.version+') is invalid.');
     }
@@ -42,7 +42,7 @@ function main(content, options) {
   if (mapping && (mapping.constructor.name === "Document" || mapping.constructor.name === "ObjectNode")) {
     mapping = mapping.toObject();
   }
-  if(!mapping) {
+  if (!mapping) {
     let mapError = 'Could not find mapping: ' + options.mapping.name;
     if (options.mapping.version) {
       mapError += ' with version #' + options.mapping.version;
@@ -56,21 +56,21 @@ function main(content, options) {
   let entityName = targetArr[targetArr.length - 1];
   let tVersion = targetArr[targetArr.length - 2].split('-');
   let modelVersion = tVersion[tVersion.length - 1];
-  if(!entityModel) {
+  if (!entityModel) {
     entityModel = fn.head(lib.getModel(entityName, modelVersion));
   }
   if (entityModel && (entityModel.constructor.name === "Document" || entityModel.constructor.name === "ObjectNode")) {
     entityModel = entityModel.toObject();
   }
-  if(!entityModel) {
+  if (!entityModel) {
     datahub.debug.log({message: 'Could not find a target entity: ' + mapping.targetEntityType, type: 'error'});
     throw Error('Could not find a target entity: ' + mapping.targetEntityType);
   }
-  if(!entityModel.info) {
+  if (!entityModel.info) {
     datahub.debug.log({message: 'Could not find the model info on the target entity: ' + mapping.targetEntityType, type: 'error'});
     throw Error('Could not find the model info on the target entity: ' + mapping.targetEntityType);
   }
-  if(!entityModel.info.title) {
+  if (!entityModel.info.title) {
     datahub.debug.log({message: 'Could not find the model title on the target entity: ' + mapping.targetEntityType, type: 'error'});
     throw Error('Could not find the model title on the target entity: ' + mapping.targetEntityType);
   }
@@ -91,7 +91,7 @@ function main(content, options) {
   content.uri = flowUtils.properExtensionURI(content.uri, outputFormat);
 
   content.value = buildEnvelope(doc, instance, outputFormat, options);
-  content.provenance = { [content.uri]: provenance };
+  content.provenance = {[content.uri]: provenance};
   return content;
 }
 

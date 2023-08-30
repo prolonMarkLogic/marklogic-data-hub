@@ -6,9 +6,9 @@ xdmp.invokeFunction(() => {
   hubTestX.resetHub();
   hubTestX.loadNonEntities(test.__CALLER_FILE__);
 
-  hubTest.createSimpleMappingProject( [
+  hubTest.createSimpleMappingProject([
     {
-      "name":"undefinedFunctionMapping",
+      "name": "undefinedFunctionMapping",
       "properties":
       {
         "customerId": {"sourcedFrom": "parseDate('xyz')"},
@@ -16,68 +16,68 @@ xdmp.invokeFunction(() => {
       }
     },
     {
-      "name":"invalidArgumentMapping",
+      "name": "invalidArgumentMapping",
       "properties":
         {
           "name": {"sourcedFrom": "generate-id(1234)"}
         }
     },
     {
-      "name":"cannotComputeMapping",
+      "name": "cannotComputeMapping",
       "properties":
         {
           "customerId": {"sourcedFrom": "sum((1234,'a'))"}
         }
     },
     {
-      "name":"invalidLexicalValueMapping",
+      "name": "invalidLexicalValueMapping",
       "properties":
         {
           "customerId": {"sourcedFrom": "'abc'"}
         }
     },
     {
-      "name":"unexpectedRparMapping",
+      "name": "unexpectedRparMapping",
       "properties":
         {
           "name": {"sourcedFrom": "string-join(firstName, lastName))"}
         }
     },
     {
-      "name":"expectingRparMapping",
+      "name": "expectingRparMapping",
       "properties":
         {
           "name": {"sourcedFrom": "string-join((firstName, lastName)"}
         }
     },
     {
-      "name":"unexpectedCommaMapping",
+      "name": "unexpectedCommaMapping",
       "properties":
         {
-          "name": {"sourcedFrom": "string-join((firstName,,lastName))" }
+          "name": {"sourcedFrom": "string-join((firstName,,lastName))"}
         }
     },
     {
-      "name":"unexpectedCharacterMapping",
+      "name": "unexpectedCharacterMapping",
       "properties":
         {
-          "name": {"sourcedFrom": "upper-case('a)" }
+          "name": {"sourcedFrom": "upper-case('a)"}
         }
     },
     {
-      "name":"tooFewArgsMapping",
+      "name": "tooFewArgsMapping",
       "properties":
         {
-          "name": {"sourcedFrom": "upper-case()" }
+          "name": {"sourcedFrom": "upper-case()"}
         }
     },
     {
-      "name":"tooManyArgsMapping",
+      "name": "tooManyArgsMapping",
       "properties":
         {
-          "name": {"sourcedFrom": "lower-case('a','b')" }
+          "name": {"sourcedFrom": "lower-case('a','b')"}
         }
     }
   ]
   );
-}, { update: "true" });
+}, {update: "true"});

@@ -6,7 +6,7 @@ const flowName = "simpleMappingFlow";
 const options = {};
 
 const contentArray = [
-  { "uri": "/customer1.json", "value": { "customerId": "1" }}
+  {"uri": "/customer1.json", "value": {"customerId": "1"}}
 ];
 
 const response = flowApi.runFlowStepOnContent(flowName, "2", contentArray, options);

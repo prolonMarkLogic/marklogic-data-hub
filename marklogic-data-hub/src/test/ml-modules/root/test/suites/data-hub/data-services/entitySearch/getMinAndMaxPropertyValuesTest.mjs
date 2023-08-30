@@ -5,14 +5,14 @@ let assertions = [];
 
 function invokeService(entityTypeId, propertyPath, referenceType) {
   return fn.head(xdmp.invoke(
-      "/data-hub/data-services/entitySearch/getMinAndMaxPropertyValues.mjs",
-      {
-        "facetRangeSearchQuery": JSON.stringify({
-          "entityTypeId": entityTypeId,
-          "propertyPath": propertyPath,
-          "referenceType": referenceType
-        })
-      }
+    "/data-hub/data-services/entitySearch/getMinAndMaxPropertyValues.mjs",
+    {
+      "facetRangeSearchQuery": JSON.stringify({
+        "entityTypeId": entityTypeId,
+        "propertyPath": propertyPath,
+        "referenceType": referenceType
+      })
+    }
   ));
 }
 

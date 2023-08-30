@@ -23,4 +23,4 @@ const options = fn.head(xdmp.fromJSON(external.options));
 
 let newOpts = updateMergeOptionsLib.updateMergeOptions(options);
 
-newOpts
+newOpts;

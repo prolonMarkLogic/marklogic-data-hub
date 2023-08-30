@@ -7,7 +7,7 @@ function make(flow, stepDefOptions, stepNumber, runtimeOptions) {
 }
 
 function flowOverridesStepDef() {
-  const result = make({ "options": {"winner": "flow" }}, { "winner": "stepDef" }, null, null);
+  const result = make({"options": {"winner": "flow"}}, {"winner": "stepDef"}, null, null);
   return [
     test.assertEqual("flow", result.winner, "flow takes precedence over step def")
   ];
@@ -16,7 +16,7 @@ function flowOverridesStepDef() {
 function stepOverridesFlow() {
   const step = {"options": {"winner": "step"}};
   const flow = {"options": {"winner": "flow"}, "steps": {"1": step}};
-  const result = make(flow, { "winner": "stepDef" }, "1", null);
+  const result = make(flow, {"winner": "stepDef"}, "1", null);
   return [
     test.assertEqual("step", result.winner, "step takes precedence over step def")
   ];
@@ -26,7 +26,7 @@ function runtimeOverridesStep() {
   const runtime = {"winner": "runtime"};
   const step = {"options": {"winner": "step"}};
   const flow = {"options": {"winner": "flow"}, "steps": {"1": step}};
-  const result = make(flow, { "winner": "stepDef" }, "1", runtime);
+  const result = make(flow, {"winner": "stepDef"}, "1", runtime);
   return [
     test.assertEqual("runtime", result.winner, "runtime takes precedence over step")
   ];
@@ -46,7 +46,7 @@ function stepSpecificOverridesRuntime() {
   };
   const step = {"options": {"winner": "step"}};
   const flow = {"options": {"winner": "flow"}, "steps": {"1": step}};
-  const result = make(flow, { "winner": "stepDef" }, "1", runtime);
+  const result = make(flow, {"winner": "stepDef"}, "1", runtime);
   return [
     test.assertEqual("stepSpecific1", result.winner, "stepOptions takes precedence over everything")
   ];
@@ -55,4 +55,4 @@ function stepSpecificOverridesRuntime() {
 []
   .concat(flowOverridesStepDef())
   .concat(stepOverridesFlow())
-  .concat(runtimeOverridesStep())
+  .concat(runtimeOverridesStep());

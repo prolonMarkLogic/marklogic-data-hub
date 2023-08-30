@@ -56,7 +56,7 @@ function testAllFlowsLatestJobInfo() {
     test.assertEqual("350da405-c1e9-4fa7-8269-d9aefe3b4bzz", flowWithStepDetails2.steps[0].jobId),
     test.assertTrue(flowWithStepDetails.steps[0].stepEndTime != null),
     test.assertTrue(flowWithStepDetails2.steps[0].stepEndTime != null)
-  ]
+  ];
 }
 
 const assertions = []

@@ -25,8 +25,8 @@ const jobQueryLib = mjsProxy.requireMjsModule("/data-hub/5/flow/job-query-lib.mj
  * @returns {null}
  */
 function get(context, params) {
-    xdmp.securityAssert("http://marklogic.com/data-hub/privileges/monitor-jobs", "execute");
-    return jobQueryLib.findJobs(params);
-};
+  xdmp.securityAssert("http://marklogic.com/data-hub/privileges/monitor-jobs", "execute");
+  return jobQueryLib.findJobs(params);
+}
 
 exports.GET = get;

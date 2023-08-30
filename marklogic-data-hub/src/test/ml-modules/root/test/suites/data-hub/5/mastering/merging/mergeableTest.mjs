@@ -18,7 +18,7 @@ function testApplyContext() {
   const mergeableInstance = new Mergeable(mergeStep, options);
 
   const contentObject =
-      { uri: "/content/CustNoMatch.json",
+      {uri: "/content/CustNoMatch.json",
         value: cts.doc("/content/CustNoMatch.json"),
         context: {
           collections: ["raw-content", "Customer"],
@@ -28,11 +28,11 @@ function testApplyContext() {
   const actionDetails = {
     "/merge-with-doc1.json": {
       action: "merge",
-      uris: ["/match1.json","/match2.json"]
+      uris: ["/match1.json", "/match2.json"]
     },
     "/content/CustNoMatch.json": {
       action: "notify",
-      uris: ["/match3.json","/match4.json"]}
+      uris: ["/match3.json", "/match4.json"]}
   };
   let applyDocumentContext = mergeableInstance.applyDocumentContext(contentObject, actionDetails["/content/CustNoMatch.json"]);
   return [
@@ -124,7 +124,7 @@ const mergeRuleStep = {
           }
         ]
       }
-    },{
+    }, {
       "strategyName": "Default Strategy",
       "maxSources": 1,
       "maxValues": 1,
@@ -248,7 +248,7 @@ const customTripleMerge = {
           }
         ]
       }
-    },{
+    }, {
       "strategyName": "Default Strategy",
       "maxSources": 1,
       "maxValues": 1,
@@ -324,8 +324,8 @@ function testMergeRuleDefinitions() {
   const assertions = [
     test.assertEqual(mergeStep.mergeRules.length, mergeRuleDefinitions.length, "Should have the correct number of Merge Rule Definitions."),
   ];
-  const mergeDocuments = hubUtils.normalizeToArray(fn.doc(["/content/CustMatchMerge1.json","/content/CustMatchMerge2.json","/content/CustMatchMerge3.json"]))
-    .map(doc => ({ uri: xdmp.nodeUri(doc), value: doc}));
+  const mergeDocuments = hubUtils.normalizeToArray(fn.doc(["/content/CustMatchMerge1.json", "/content/CustMatchMerge2.json", "/content/CustMatchMerge3.json"]))
+    .map(doc => ({uri: xdmp.nodeUri(doc), value: doc}));
   const missingDefinitions = ["name", "birthDate", "active", "withdrawals"].filter(prop => !mergeRuleDefinitions.some(mrd => mrd.name() === prop));
   assertions.push(
     test.assertTrue(missingDefinitions.length === 0, `There are missing definitions: ${JSON.stringify(missingDefinitions)}`)
@@ -360,7 +360,7 @@ function testBuildMergeDocumentJson() {
   let mergeStep = copyStep(mergeRuleStep);
   let options = {};
   const mergeableInstance = new Mergeable(mergeStep, options);
-  const mergeContentObjects = ["/content/CustMatchMerge1.json","/content/CustMatchMerge2.json","/content/CustMatchMerge3.json"].map(uri => ({
+  const mergeContentObjects = ["/content/CustMatchMerge1.json", "/content/CustMatchMerge2.json", "/content/CustMatchMerge3.json"].map(uri => ({
     uri,
     value: cts.doc(uri)
   }));
@@ -400,7 +400,7 @@ function testBuildMergeDocumentJson() {
     test.assertEqual(15, fn.count(mergedDocument.xpath("/envelope/triples")), `Should have 15 triples (1 from raw + 14 from TDEs). Merge document: ${xdmp.toJsonString(mergedDocument)}`)
   );
   const mergeContentObject = {context: {collections: [], permissions: []}};
-  mergeableInstance.applyDocumentContext(mergeContentObject, {action:"merge"});
+  mergeableInstance.applyDocumentContext(mergeContentObject, {action: "merge"});
   assertions.push(
     test.assertEqual(3, mergeContentObject.context.collections.length),
     test.assertTrue(mergeContentObject.context.collections.includes("sm-Customer-merged")),
@@ -408,20 +408,20 @@ function testBuildMergeDocumentJson() {
     test.assertTrue(mergeContentObject.context.collections.includes("Customer"))
   );
   const noMatchContentObject = {context: {collections: [], permissions: []}};
-  mergeableInstance.applyDocumentContext(noMatchContentObject, {action:"no-action"});
+  mergeableInstance.applyDocumentContext(noMatchContentObject, {action: "no-action"});
   assertions.push(
     test.assertEqual(2, noMatchContentObject.context.collections.length),
     test.assertTrue(noMatchContentObject.context.collections.includes("sm-Customer-mastered")),
     test.assertTrue(noMatchContentObject.context.collections.includes("Customer"))
   );
   const archivedContentObject = {context: {collections: [], permissions: []}};
-  mergeableInstance.applyDocumentContext(archivedContentObject, {action:"archive"});
+  mergeableInstance.applyDocumentContext(archivedContentObject, {action: "archive"});
   assertions.push(
     test.assertEqual(1, archivedContentObject.context.collections.length),
     test.assertTrue(archivedContentObject.context.collections.includes("sm-Customer-archived"))
   );
   const notifyContentObject = {context: {collections: [], permissions: []}};
-  mergeableInstance.applyDocumentContext(notifyContentObject, {action:"notify"});
+  mergeableInstance.applyDocumentContext(notifyContentObject, {action: "notify"});
   assertions.push(
     test.assertEqual(1, notifyContentObject.context.collections.length),
     test.assertTrue(notifyContentObject.context.collections.includes("sm-Customer-notification"))
@@ -433,7 +433,7 @@ function testBuildMergeDocumentXml() {
   let mergeStep = Object.assign(copyStep(mergeRuleStep), {targetEntityType: "http://example.org/NamespacedCustomer-0.0.1/NamespacedCustomer"});
   let options = {};
   const mergeableInstance = new Mergeable(mergeStep, options);
-  const mergeContentObjects = ["/content/NsCustMatchMerge1.xml","/content/NsCustMatchMerge2.xml","/content/NsCustMatchMerge3.xml"].map(uri => ({
+  const mergeContentObjects = ["/content/NsCustMatchMerge1.xml", "/content/NsCustMatchMerge2.xml", "/content/NsCustMatchMerge3.xml"].map(uri => ({
     uri,
     value: cts.doc(uri)
   }));
@@ -471,7 +471,7 @@ function testCustomTripleMerge() {
   let mergeStep = copyStep(customTripleMerge);
   let options = {};
   const mergeableInstance = new Mergeable(mergeStep, options);
-  const mergeContentObjects = ["/content/CustMatchMerge1.json","/content/CustMatchMerge2.json","/content/CustMatchMerge3.json"].map(uri => ({
+  const mergeContentObjects = ["/content/CustMatchMerge1.json", "/content/CustMatchMerge2.json", "/content/CustMatchMerge3.json"].map(uri => ({
     uri,
     value: cts.doc(uri)
   }));

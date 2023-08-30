@@ -16,8 +16,8 @@ const runtimeOptions = {
 };
 
 const contentArray = [
-  { "uri": "/customer1.json", "value": { "customerId": "1" } },
-  { "uri": "/customer2.json", "value": { "customerId": "2" } }
+  {"uri": "/customer1.json", "value": {"customerId": "1"}},
+  {"uri": "/customer2.json", "value": {"customerId": "2"}}
 ];
 
 const response = flowApi.runFlowOnContent(flowName, contentArray, jobId, runtimeOptions);
@@ -32,12 +32,12 @@ const assertions = [
 const provIds = xdmp.invokeFunction(function() {
   return sem.sparql(
     "SELECT ?s WHERE {?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://marklogic.com/dhf#MappingStep>}");
-  },
-  {database:xdmp.database("data-hub-JOBS")}
-).toArray()
+},
+{database: xdmp.database("data-hub-JOBS")}
+).toArray();
 
 assertions.push(
   test.assertEqual(2, provIds.length, "Verifying that both of the prov IDs are associated with a mapping step")
 );
 
-assertions
+assertions;

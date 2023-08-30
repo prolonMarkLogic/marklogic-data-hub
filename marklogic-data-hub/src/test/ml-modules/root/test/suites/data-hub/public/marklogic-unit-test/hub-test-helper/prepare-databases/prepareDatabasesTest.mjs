@@ -45,7 +45,7 @@ assertions.push(
 // for this test involves first loading some user artifacts so we can verify they're not deleted.
 // Note also that if a user were to use setup.sjs, they'll need to include declareUpdate. If they use
 // setup.xqy, they of course do not need to.
-xdmp.invokeFunction(function(){declareUpdate();dhmut.prepareDatabases();});
+xdmp.invokeFunction(function() { declareUpdate();dhmut.prepareDatabases(); });
 
 assertions.push(
   // Data that should have been deleted
@@ -69,4 +69,4 @@ assertions.push(
   test.assertEqual(1, hubTest.getFinalCollectionSize(consts.STEP_COLLECTION))
 );
 
-assertions
+assertions;

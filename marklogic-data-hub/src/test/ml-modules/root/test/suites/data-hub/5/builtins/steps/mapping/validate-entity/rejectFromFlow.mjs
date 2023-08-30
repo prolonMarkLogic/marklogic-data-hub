@@ -26,7 +26,7 @@ if (lib.canTestJsonSchemaValidation()) {
   let batchData = fn.head(xdmp.invokeFunction(function () {
     let uri = cts.uris(null, ["limit=1"], cts.collectionQuery("Batch"));
     return {
-      "uri" : uri,
+      "uri": uri,
       "doc": cts.doc(uri).toObject(),
       "perms": xdmp.documentGetPermissions(uri)
     };

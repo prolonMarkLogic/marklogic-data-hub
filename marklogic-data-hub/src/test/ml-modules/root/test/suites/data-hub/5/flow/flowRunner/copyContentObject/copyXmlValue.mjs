@@ -19,4 +19,4 @@ const assertions = [
   test.assertEqual("world", copy.value.xpath("/hello/fn:string()"))
 ];
 
-assertions
+assertions;

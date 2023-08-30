@@ -17,22 +17,22 @@ const triplesPlugin = require('./triples/triples.sjs');
  */
 function main(id, rawContent, options) {
   xdmp.log("Inside main");
-  var contentContext = dhf.contentContext(rawContent);
-  var content = dhf.run(contentContext, function() {
+  let contentContext = dhf.contentContext(rawContent);
+  let content = dhf.run(contentContext, function() {
     return contentPlugin.createContent(id, rawContent, options);
   });
 
-  var headerContext = dhf.headersContext(content);
-  var headers = dhf.run(headerContext, function() {
+  let headerContext = dhf.headersContext(content);
+  let headers = dhf.run(headerContext, function() {
     return headersPlugin.createHeaders(id, content, options);
   });
 
-  var tripleContext = dhf.triplesContext(content, headers);
-  var triples = dhf.run(tripleContext, function() {
+  let tripleContext = dhf.triplesContext(content, headers);
+  let triples = dhf.run(tripleContext, function() {
     return triplesPlugin.createTriples(id, content, headers, options);
   });
 
-  var envelope = dhf.makeEnvelope(content, headers, triples, options.dataFormat);
+  let envelope = dhf.makeEnvelope(content, headers, triples, options.dataFormat);
 
   // log the final envelope as a trace
   // only fires if tracing is enabled

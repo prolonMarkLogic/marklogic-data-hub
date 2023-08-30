@@ -29,4 +29,4 @@ const versions = {
   supportConcepts: xdmp.effectiveVersion() >= 10000900
 };
 
-versions
+versions;

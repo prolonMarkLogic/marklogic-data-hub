@@ -39,4 +39,4 @@ hubTest.runWithRolesAndPrivileges(['data-hub-user-reader', 'data-hub-module-read
   test.assertEqual("read", response.defaultPermissions[0].capability),
   test.assertEqual("qconsole-user", response.defaultPermissions[1].roleName),
   test.assertEqual("update", response.defaultPermissions[1].capability)
-]
+];

@@ -277,6 +277,7 @@ function instanceToCanonicalJson(entityInstance) {
     o = {};
     for (let key in entityInstance) {
       if (key === '$attachments' || key === '$type' || key === '$version') {
+        xdmp.trace();
       } else {
         let instanceProperty = entityInstance[key];
         if (instanceProperty instanceof Array) {

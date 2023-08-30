@@ -7,7 +7,7 @@
 const mjsProxy = require("/data-hub/core/util/mjsProxy.sjs");
 const flowApi = mjsProxy.requireMjsModule('/data-hub/public/flow/flow-api.mjs');
 
- /**
+/**
   * Performs the main step processing on the given content, returning zero or many content objects. DHF will run this function
   * in query (read-only) mode, as the intent of a step is for it to return content objects that DHF will then handle persisting.
   *
@@ -22,32 +22,32 @@ const flowApi = mjsProxy.requireMjsModule('/data-hub/public/flow/flow-api.mjs');
   *  and the step definition options
   * @returns a content object, or an array of content objects, depending on the tool ingesting data
   */
- function main(content, options) {
-   const inputDocument = content.value;
+function main(content, options) {
+  const inputDocument = content.value;
 
-   // DHF recommends wrapping documents in an envelope, particularly for curated documents based on an entity model.
-   // The below code is a starting point for constructing the 3 parts of an envelope.
-   // If your input document is XML and you need to modify it, it is recommended to generate an XQuery custom step instead.´
-   const instance = inputDocument.toObject();
-   const headers = {};
-   const triples = [];
+  // DHF recommends wrapping documents in an envelope, particularly for curated documents based on an entity model.
+  // The below code is a starting point for constructing the 3 parts of an envelope.
+  // If your input document is XML and you need to modify it, it is recommended to generate an XQuery custom step instead.´
+  const instance = inputDocument.toObject();
+  const headers = {};
+  const triples = [];
 
-   // makeEnvelope is a convenience function for building an envelope with the inputs that were defined above.
-   // You may wish to specify the output format in your step configuration. But for a custom step, which is typically coded
-   // based on an expected output format, it's usually simpler to define the output format in the code.
-   const outputFormat = 'json';
-   content.value = flowApi.makeEnvelope(instance, headers, triples, outputFormat);
+  // makeEnvelope is a convenience function for building an envelope with the inputs that were defined above.
+  // You may wish to specify the output format in your step configuration. But for a custom step, which is typically coded
+  // based on an expected output format, it's usually simpler to define the output format in the code.
+  const outputFormat = 'json';
+  content.value = flowApi.makeEnvelope(instance, headers, triples, outputFormat);
 
-   // If this ingestion step is being referenced via the DHF transform for MLCP, you may also modify the 'uri' and
-   // 'context' properties. This is not allowed though when referencing the step via the DHF mlRunIngest REST transform,
-   // as a REST transform does not allow for these properties to be modified.
-   // content.uri = "/test" + content.uri;
-   // content.context.collections = ["my-collection"];
-   // content.context.permissions = [xdmp.permission("data-hub-common", "read"), xdmp.permission("data-hub-common", "update")];
+  // If this ingestion step is being referenced via the DHF transform for MLCP, you may also modify the 'uri' and
+  // 'context' properties. This is not allowed though when referencing the step via the DHF mlRunIngest REST transform,
+  // as a REST transform does not allow for these properties to be modified.
+  // content.uri = "/test" + content.uri;
+  // content.context.collections = ["my-collection"];
+  // content.context.permissions = [xdmp.permission("data-hub-common", "read"), xdmp.permission("data-hub-common", "update")];
 
-   return content;
- }
+  return content;
+}
 
- module.exports = {
-   main
- };
+module.exports = {
+  main
+};

@@ -16,7 +16,7 @@ function flowWorksWithNull() {
       value: cts.doc('/customer1.json'),
       context: {}
     }
-  ], { provenanceGranularityLevel: 'off'}, 1);
+  ], {provenanceGranularityLevel: 'off'}, 1);
   return [
     test.assertTrue(resp.errors.length === 0, `Errors were thrown on null output from step: ${describe(resp.errors)}`)
   ];

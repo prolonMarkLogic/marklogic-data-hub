@@ -12,8 +12,8 @@ const options = {
   outputFormat: 'json'
 };
 
-const content = [{uri:"/customer1.json",
-  value:{"hello": "world"},
+const content = [{uri: "/customer1.json",
+  value: {"hello": "world"},
   context: {originalCollections: ["source"]}
 }];
 

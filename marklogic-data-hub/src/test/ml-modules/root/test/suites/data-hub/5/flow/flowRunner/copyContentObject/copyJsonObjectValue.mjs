@@ -3,7 +3,7 @@ const test = require("/test/test-helper.xqy");
 
 const content = {
   "uri": "my-uri",
-  "value": {"hello":"world"},
+  "value": {"hello": "world"},
   "context": {
     "collections": ["coll1", "coll2"],
     "originalCollections": ["orig1", "orig2"],
@@ -55,4 +55,4 @@ const assertions = [
     "where it's not known if a deep copy can be reliably performed. So a shallow copy is expected.")
 ];
 
-assertions
+assertions;

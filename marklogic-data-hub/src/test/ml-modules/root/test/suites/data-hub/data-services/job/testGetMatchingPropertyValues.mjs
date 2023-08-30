@@ -18,58 +18,58 @@ import jobQueryService from "/test/suites/data-hub/data-services/lib/jobService.
 const test = require("/test/test-helper.xqy");
 
 function verifyMatchingStepNameValues() {
-    const assertions = [];
-    const query = {
-        "facetName": "stepName",
-        "searchTerm": "ingest"
-    };
+  const assertions = [];
+  const query = {
+    "facetName": "stepName",
+    "searchTerm": "ingest"
+  };
 
-    const response1 = jobQueryService.getMatchingPropertyValues(query);
-    assertions.push(
-        test.assertEqual(3, response1.length, "stepName containing 'ingest' in the middle is also returned as the limit is " +
+  const response1 = jobQueryService.getMatchingPropertyValues(query);
+  assertions.push(
+    test.assertEqual(3, response1.length, "stepName containing 'ingest' in the middle is also returned as the limit is " +
             "defaulted to 10 since its missing in request and there are only 2 stepName values starting with 'ingest'"),
-        test.assertTrue(response1.includes("ingest-step-json")),
-        test.assertTrue(response1.includes("ingest-ste'p-ing%est-jso'n")),
-        test.assertTrue(response1.includes("step-ingest-xml"))
-    );
+    test.assertTrue(response1.includes("ingest-step-json")),
+    test.assertTrue(response1.includes("ingest-ste'p-ing%est-jso'n")),
+    test.assertTrue(response1.includes("step-ingest-xml"))
+  );
 
-    query["limit"] = 2;
-    const response2 = jobQueryService.getMatchingPropertyValues(query);
-    assertions.push(
-      test.assertEqual(2, response2.length, "stepNames starting with 'ingest' to a max of 2 values are returned"),
-      test.assertTrue(response2.includes("ingest-step-json")),
-      test.assertTrue(response2.includes("ingest-ste'p-ing%est-jso'n"))
-    );
-    return assertions;
+  query["limit"] = 2;
+  const response2 = jobQueryService.getMatchingPropertyValues(query);
+  assertions.push(
+    test.assertEqual(2, response2.length, "stepNames starting with 'ingest' to a max of 2 values are returned"),
+    test.assertTrue(response2.includes("ingest-step-json")),
+    test.assertTrue(response2.includes("ingest-ste'p-ing%est-jso'n"))
+  );
+  return assertions;
 }
 
 function verifyMatchingFlowNameValues() {
-    const assertions = [];
-    const query = {
-        "facetName": "flowName",
-        "searchTerm": "ingest"
-    };
+  const assertions = [];
+  const query = {
+    "facetName": "flowName",
+    "searchTerm": "ingest"
+  };
 
-    const response1 = jobQueryService.getMatchingPropertyValues(query);
-    assertions.push(
-        test.assertEqual(3, response1.length, "flowName containing 'ingest' in the middle is also returned as the limit is " +
+  const response1 = jobQueryService.getMatchingPropertyValues(query);
+  assertions.push(
+    test.assertEqual(3, response1.length, "flowName containing 'ingest' in the middle is also returned as the limit is " +
             "defaulted to 10 since its missing in request and there are only 2 flowName values starting with 'ingest'"),
-        test.assertTrue(response1.includes("ingestion_mapping-flow")),
-        test.assertTrue(response1.includes("ingestion_mapping_mastering-flow")),
-        test.assertTrue(response1.includes("mapping_ingestion_mastering-flow"))
-    );
+    test.assertTrue(response1.includes("ingestion_mapping-flow")),
+    test.assertTrue(response1.includes("ingestion_mapping_mastering-flow")),
+    test.assertTrue(response1.includes("mapping_ingestion_mastering-flow"))
+  );
 
-    query["limit"] = 2;
-    const response2 = jobQueryService.getMatchingPropertyValues(query);
-    assertions.push(
-      test.assertEqual(2, response2.length, "flowNames starting with 'ingest' to a max of 2 values are returned"),
-      test.assertTrue(response2.includes("ingestion_mapping-flow")),
-      test.assertTrue(response2.includes("ingestion_mapping_mastering-flow"))
-    );
+  query["limit"] = 2;
+  const response2 = jobQueryService.getMatchingPropertyValues(query);
+  assertions.push(
+    test.assertEqual(2, response2.length, "flowNames starting with 'ingest' to a max of 2 values are returned"),
+    test.assertTrue(response2.includes("ingestion_mapping-flow")),
+    test.assertTrue(response2.includes("ingestion_mapping_mastering-flow"))
+  );
 
-    return assertions;
+  return assertions;
 }
 
 []
-    .concat(verifyMatchingStepNameValues())
-    .concat(verifyMatchingFlowNameValues());
+  .concat(verifyMatchingStepNameValues())
+  .concat(verifyMatchingFlowNameValues());

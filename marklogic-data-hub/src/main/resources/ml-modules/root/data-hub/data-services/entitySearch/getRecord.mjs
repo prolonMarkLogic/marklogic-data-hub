@@ -36,7 +36,7 @@ if (!doc) {
 
 let permissions = xdmp.documentGetPermissions(docUri);
 if (permissions) {
-  permissions.forEach(permission => { permission.roleName = xdmp.roleName(permission.roleId)})
+  permissions.forEach(permission => { permission.roleName = xdmp.roleName(permission.roleId); });
 }
 const recordType = getDocumentType(xdmp.nodeKind(doc.root));
 const entityInstanceDetails = entitySearchLib.getEntityInstanceDetails(doc);
@@ -58,7 +58,7 @@ const record = {
   "documentSize": entitySearchLib.getDocumentSize(doc)
 };
 
-if(entityName) {
+if (entityName) {
   const unmergeDetails = entitySearchLib.fetchUnmergeDetails(doc, entityName);
   record["unmerge"] = unmergeDetails["unmerge"];
   record["unmergeUris"] = unmergeDetails["unmergeUris"];

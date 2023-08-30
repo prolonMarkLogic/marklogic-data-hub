@@ -11,8 +11,7 @@ import entityLib from "/data-hub/5/impl/entity-lib.mjs";
 const hubTest = require("/test/data-hub-test-helper.xqy");
 const test = require("/test/test-helper.xqy");
 
-function runWithRolesAndPrivileges(roles, privileges, funOrModule, variables)
-{
+function runWithRolesAndPrivileges(roles, privileges, funOrModule, variables) {
   const userId = hubTest.createTestUser(Sequence.from(roles), Sequence.from(privileges));
   return hubTest.runWithUserId(userId, funOrModule, variables) ;
 }
@@ -47,12 +46,12 @@ function getRecord(uri, databaseName = null) {
     // If the doc is an XML document, toObject results in undefined
     const document = doc.toObject() ? doc.toObject() : doc;
     return {
-      uri : uri.toString(),
-      document : document,
-      collections : xdmp.documentGetCollections(uri).sort(),
-      permissions : buildPermissionsMap(xdmp.documentGetPermissions(uri)),
-      metadata : xdmp.documentGetMetadata(uri)
-    }
+      uri: uri.toString(),
+      document: document,
+      collections: xdmp.documentGetCollections(uri).sort(),
+      permissions: buildPermissionsMap(xdmp.documentGetPermissions(uri)),
+      metadata: xdmp.documentGetMetadata(uri)
+    };
   }, {database: xdmp.database(databaseName)}));
 }
 
@@ -111,7 +110,7 @@ function finalDocumentExists(uri) {
 }
 
 function documentExists(uri, databaseName) {
-  return fn.head(xdmp.eval(`fn.docAvailable('${uri}')`, {}, { database: xdmp.database(databaseName) }));
+  return fn.head(xdmp.eval(`fn.docAvailable('${uri}')`, {}, {database: xdmp.database(databaseName)}));
 }
 
 /**
@@ -140,7 +139,7 @@ function buildPermissionsMap(permissions) {
     } else {
       map[roleName] = [perm.capability];
     }
-  })
+  });
   Object.keys(map).forEach(key => map[key].sort());
   return map;
 }
@@ -166,9 +165,9 @@ function createSimpleProject(flowName, arrayOfStepProperties, customerModel) {
           "properties": {
             "customerId": {"datatype": "integer"},
             "name": {"datatype": "string"},
-            "nicknames":{"datatype": "array", "items":{"datatype": "string"}},
+            "nicknames": {"datatype": "array", "items": {"datatype": "string"}},
             "status": {"datatype": "string"},
-            "integers":{"datatype": "array", "items":{"datatype": "integer"}}
+            "integers": {"datatype": "array", "items": {"datatype": "integer"}}
           }
         }
       }
@@ -202,10 +201,10 @@ function createSimpleProject(flowName, arrayOfStepProperties, customerModel) {
     // Create a new step definition for custom steps so test projects don't have to
     if (stepProps.testStepModulePath && !generatedStepDefinitionNames.includes(stepProps.stepDefinitionName)) {
       const stepDef = {
-        "name" : stepProps.stepDefinitionName,
-        "type" : "custom", "lang" : "zxx",
-        "modulePath" : stepProps.testStepModulePath
-      }
+        "name": stepProps.stepDefinitionName,
+        "type": "custom", "lang": "zxx",
+        "modulePath": stepProps.testStepModulePath
+      };
       xdmp.invokeFunction(function() {
         declareUpdate();
         Artifacts.setArtifact("stepDefinition", stepDef.name, stepDef);

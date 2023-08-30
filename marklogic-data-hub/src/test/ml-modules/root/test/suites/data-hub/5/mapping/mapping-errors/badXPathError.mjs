@@ -29,7 +29,6 @@ assertions = assertions.concat([
 
 const runUnexpectedCommaMappingOutput = lib.runMappingStep("unexpectedCommaMapping", 6);
 const testUnexpectedCommaMappingOutput = lib.validateAndTestMapping("unexpectedCommaMapping");
-console.log(testUnexpectedCommaMappingOutput.properties.name.errorMessage);
 assertions = assertions.concat([
   test.assertEqual("Invalid XPath expression: 'string-join((firstName,,lastName))'. Cause: Unexpected comma."
     , testUnexpectedCommaMappingOutput.properties.name.errorMessage),

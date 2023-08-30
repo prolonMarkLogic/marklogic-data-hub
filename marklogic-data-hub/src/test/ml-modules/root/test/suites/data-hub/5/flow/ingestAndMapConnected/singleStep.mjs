@@ -6,7 +6,7 @@ const flowName = "ingestAndMap";
 const jobId = sem.uuidString();
 const runtimeOptions = {};
 const contentArray = [
-  { "uri": "/customer1.json", "value": { "customerId": "1" } }
+  {"uri": "/customer1.json", "value": {"customerId": "1"}}
 ];
 const stepNumbers = ["1"];
 

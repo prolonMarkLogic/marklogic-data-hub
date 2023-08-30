@@ -419,12 +419,12 @@ function validateAndTestMapping(mapping, uri) {
         sourceDocument = xdmp.toJSON(sourceDocument);
         newDocumentIsLoad = true;
       }
-    }else if (updatedDocument && updatedDocument.format === "XML") {
-        const updatedData = updatedDocument.data;
-           sourceDocument = updatedData;
-           newDocumentIsLoad = true;
-      }
+    } else if (updatedDocument && updatedDocument.format === "XML") {
+      const updatedData = updatedDocument.data;
+      sourceDocument = updatedData;
+      newDocumentIsLoad = true;
     }
+  }
   if (!newDocumentIsLoad) {
     sourceDocument = cts.doc(uri);
   }

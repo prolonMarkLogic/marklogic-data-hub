@@ -47,4 +47,4 @@ xdmp.invokeFunction(() => {
   );
 
   assertions;
-}, { update: "true" });
+}, {update: "true"});

@@ -14,7 +14,7 @@ function testMemoryLookup() {
     test.assertEqual("world", core.memoryLookup('AnObject', dictionary).hello),
 
     // invalid JSON
-    test.assertThrowsError(xdmp.function(xs.QName('core.memoryLookup')), 'val',"{'not valid': ''}", null),
+    test.assertThrowsError(xdmp.function(xs.QName('core.memoryLookup')), 'val', "{'not valid': ''}", null),
 
     test.assertEqual('Non-Binary', coreSjs.memoryLookup('NB', dictionary)),
     test.assertEqual('Woman', coreSjs.memoryLookup('W', dictionary)),
@@ -24,7 +24,7 @@ function testMemoryLookup() {
     test.assertEqual("world", coreSjs.memoryLookup('AnObject', dictionary).hello),
 
     // invalid JSON
-    test.assertThrowsError(xdmp.function(xs.QName('coreSjs.memoryLookup')), 'val',"{'not valid': ''}", null)
+    test.assertThrowsError(xdmp.function(xs.QName('coreSjs.memoryLookup')), 'val', "{'not valid': ''}", null)
   ];
 }
 

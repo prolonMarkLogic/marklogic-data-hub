@@ -13,4 +13,4 @@ function getParameterValues(contentSequence) {
 export default {
   getParameterDefinitions,
   getParameterValues
-}
+};

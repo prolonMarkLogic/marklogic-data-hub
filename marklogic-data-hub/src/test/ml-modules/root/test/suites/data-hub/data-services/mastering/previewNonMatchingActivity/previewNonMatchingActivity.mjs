@@ -33,13 +33,13 @@ let allUrisResults = pma.previewMatchingActivity(options, sourceQuery, allUris, 
 verifyPrimaryKeys(allUrisResults);
 results.push(test.assertEqual(6, allUrisResults.actionPreview.length, "There should be 6 non-matching pairs where at least one rule is true."));
 
-let uris0_1 = [allUris[0] , allUris[1]];
+let uris0_1 = [allUris[0], allUris[1]];
 let uris_0_1_Results = pma.previewMatchingActivity(options, sourceQuery, uris0_1, false, true, 0);
 verifyPrimaryKeys(uris_0_1_Results);
 results.push(test.assertEqual(2, uris_0_1_Results.uris.length, "There should be 2 URIs in the response's URIs array for non-match on docs 0 and 1"));
 results.push(test.assertEqual(0, uris_0_1_Results.actionPreview.length, "There should be only zero non-matching pairs for non-match on docs 0 and 1"));
 
-let uris2_3 = [allUris[2] , allUris[3]];
+let uris2_3 = [allUris[2], allUris[3]];
 let uris_2_3_Results = pma.previewMatchingActivity(options, sourceQuery, uris2_3, false, true, 0);
 verifyPrimaryKeys(uris_2_3_Results);
 results.push(test.assertEqual(2, uris_2_3_Results.uris.length, "There should be 2 URIs in the response's URIs array for match on docs 2 and 3"));

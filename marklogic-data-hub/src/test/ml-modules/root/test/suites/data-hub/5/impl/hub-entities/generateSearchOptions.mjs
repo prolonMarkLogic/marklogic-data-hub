@@ -4,7 +4,7 @@ const test = require("/test/test-helper.xqy");
 function generateOptionsWithElementRangeIndex() {
   const input =
       [{
-        "info" : {
+        "info": {
           "title": "Book"
         },
         "definitions": {
@@ -18,19 +18,19 @@ function generateOptionsWithElementRangeIndex() {
 
   return [
     test.assertEqual("limit=25", xs.string(fn.head(options.xpath("/*:constraint[@name = 'title']/*:range/*:facet-option/text()"))),
-        "To avoid displaying large numbers of values in facets in QuickStart, range constraints default to a max of 25 values"
+      "To avoid displaying large numbers of values in facets in QuickStart, range constraints default to a max of 25 values"
     ),
     test.assertExists(options.xpath("/*:values[@name = 'Book']/*:range/*:element[@name = 'title']")),
     test.assertExists(options.xpath("/*:transform-results[@apply = 'empty-snippet']")),
     test.assertNotExists(options.xpath("/*:values[@name = 'Book']/*:range/*:facet-option"),
-        "A facet option does not need to be set on the values element")
+      "A facet option does not need to be set on the values element")
   ];
 }
 
 function generateExplorerOptionsWithElementRangeIndex() {
   const input =
       [{
-        "info" : {
+        "info": {
           "title": "Book"
         },
         "definitions": {
@@ -44,45 +44,45 @@ function generateExplorerOptionsWithElementRangeIndex() {
   const expOptions = hent.dumpSearchOptions(input, true);
   return [
     test.assertEqual("limit=25", xs.string(fn.head(expOptions.xpath("/*:constraint[@name = 'title']/*:range/*:facet-option[1]/text()"))),
-        "To avoid displaying large numbers of values in facets in Explorer, range constraints default to a max of 25 values"
+      "To avoid displaying large numbers of values in facets in Explorer, range constraints default to a max of 25 values"
     ),
     test.assertEqual("frequency-order", xs.string(fn.head(expOptions.xpath("/*:constraint[@name = 'title']/*:range/*:facet-option[2]/text()"))),
-        "To sort the facets based on frequency order"
+      "To sort the facets based on frequency order"
     ),
     test.assertEqual("descending", xs.string(fn.head(expOptions.xpath("/*:constraint[@name = 'Collection']/*:collection/*:facet-option[3]/text()"))),
-        "To sort the facets in decreasing order of frequency on search"
+      "To sort the facets in decreasing order of frequency on search"
     ),
     test.assertEqual("limit=25", xs.string(fn.head(expOptions.xpath("/*:constraint[@name = 'createdByStep']/*:range/*:facet-option[1]/text()"))),
-        "To avoid displaying large numbers of values in facets in Explorer, range constraints default to a max of 25 values"
+      "To avoid displaying large numbers of values in facets in Explorer, range constraints default to a max of 25 values"
     ),
     test.assertEqual("frequency-order", xs.string(fn.head(expOptions.xpath("/*:constraint[@name = 'createdByStep']/*:range/*:facet-option[2]/text()"))),
-        "To sort the facets based on frequency order"
+      "To sort the facets based on frequency order"
     ),
     test.assertEqual("descending", xs.string(fn.head(expOptions.xpath("/*:constraint[@name = 'createdByStep']/*:range/*:facet-option[3]/text()"))),
-        "To sort the facets in decreasing order of frequency on search"
+      "To sort the facets in decreasing order of frequency on search"
     ),
     test.assertEqual("limit=25", xs.string(fn.head(expOptions.xpath("/*:constraint[@name = 'createdInFlowRange']/*:range/*:facet-option[1]/text()"))),
-        "To avoid displaying large numbers of values in facets in Explorer, range constraints default to a max of 25 values"
+      "To avoid displaying large numbers of values in facets in Explorer, range constraints default to a max of 25 values"
     ),
     test.assertEqual("frequency-order", xs.string(fn.head(expOptions.xpath("/*:constraint[@name = 'createdInFlowRange']/*:range/*:facet-option[2]/text()"))),
-        "To sort the facets based on frequency order"
+      "To sort the facets based on frequency order"
     ),
     test.assertEqual("descending", xs.string(fn.head(expOptions.xpath("/*:constraint[@name = 'createdInFlowRange']/*:range/*:facet-option[3]/text()"))),
-        "To sort the facets in decreasing order of frequency on search"
+      "To sort the facets in decreasing order of frequency on search"
     ),
     test.assertExists(expOptions.xpath("/*:constraint[@name = 'createdByJob', @facet = 'false']")),
     test.assertExists(expOptions.xpath("/*:constraint[@name = 'createdByJobWord']")),
     test.assertExists(expOptions.xpath("/*:constraint[@name = 'createdOnRange', @facet = 'false']")),
     test.assertExists(expOptions.xpath("/*:values[@name = 'Book']/*:range/*:element[@name = 'title']")),
     test.assertNotExists(expOptions.xpath("/*:values[@name = 'Book']/*:range/*:facet-option"),
-        "A facet option does not need to be set on the values element"),
+      "A facet option does not need to be set on the values element"),
     test.assertExists(expOptions.xpath("/*:transform-results"), "Enabling the snippet information by applying snippet")
   ];
 }
 
 function generateExplorerWithFacetableAndSortableProperties() {
   const input = [{
-    "info" : {
+    "info": {
       "title": "Book"
     },
     "definitions": {
@@ -99,8 +99,8 @@ function generateExplorerWithFacetableAndSortableProperties() {
         }
       },
       "Address": {
-        "elementRangeIndex": [ "city" ],
-        "rangeIndex": [ "street" ],
+        "elementRangeIndex": ["city"],
+        "rangeIndex": ["street"],
         "properties": {
           "street": {"datatype": "string", "collation": "http://marklogic.com/collation/codepoint"},
           "city": {"datatype": "string", "collation": "http://marklogic.com/collation/codepoint"},
@@ -123,7 +123,7 @@ function generateExplorerWithFacetableAndSortableProperties() {
    */
   return [
     test.assertEqual("limit=25", xs.string(fn.head(expOptions.xpath("/*:constraint[contains(@name, 'title')]/*:range/*:facet-option/text()"))),
-        "To avoid displaying large numbers of values in facets in QuickStart, range constraints default to a max of 25 values"
+      "To avoid displaying large numbers of values in facets in QuickStart, range constraints default to a max of 25 values"
     ),
     test.assertEqual("/(es:envelope|envelope)/(es:instance|instance)/Book/title", xs.string(fn.head(expOptions.xpath("/*:constraint[contains(@name, 'title')]/*:range/*:path-index/text()")))),
     test.assertEqual("/(es:envelope|envelope)/(es:instance|instance)/Book/authors", xs.string(fn.head(expOptions.xpath("/*:constraint[contains(@name, 'authors')]/*:range/*:path-index/text()")))),
@@ -148,7 +148,7 @@ function generateExplorerWithFacetableAndSortableProperties() {
 
 function entityDefWithNamespace() {
   const input = [{
-    "info" : {
+    "info": {
       "title": "Book"
     },
     "definitions": {
@@ -201,7 +201,7 @@ function entityDefWithNamespace() {
 
 function verifySortOperatorsForSortableProperties() {
   const input = [{
-    "info" : {
+    "info": {
       "title": "Book"
     },
     "definitions": {
@@ -278,13 +278,13 @@ function twoEntitiesHaveSameSortablePropertyName() {
     test.assertExists(options.xpath("/*:operator/*:state[@name = 'Book_titleDescending']")),
     test.assertExists(options.xpath("/*:operator/*:state[@name = 'Author_titleAscending']")),
     test.assertExists(options.xpath("/*:operator/*:state[@name = 'Author_titleDescending']"))
-  ]
+  ];
 }
 
 function verifySortOptionDatatypeWhenEntityPropertyIsUpdated() {
   const assertions = [];
   let input = [{
-    "info" : {
+    "info": {
       "title": "Book"
     },
     "definitions": {
@@ -303,7 +303,7 @@ function verifySortOptionDatatypeWhenEntityPropertyIsUpdated() {
   );
 
   input = [{
-    "info" : {
+    "info": {
       "title": "Book"
     },
     "definitions": {
@@ -316,10 +316,10 @@ function verifySortOptionDatatypeWhenEntityPropertyIsUpdated() {
   }];
   expOptions = hent.dumpSearchOptions(input, true);
   assertions.push(
-      test.assertEqual("xs:int", xs.string(fn.head(expOptions.xpath("/*:operator[@name = 'sort']/*:state[@name = 'Book_bookIdDescending']/*:sort-order/@type")))),
-      test.assertEqual("xs:int", xs.string(fn.head(expOptions.xpath("/*:operator[@name = 'sort']/*:state[@name = 'Book_bookIdAscending']/*:sort-order/@type")))),
-      test.assertNotExists(expOptions.xpath("/*:operator/*:state[@name = 'Book_bookIdDescending']/*:sort-order[@type = 'xs:decimal']")),
-      test.assertNotExists(expOptions.xpath("/*:operator/*:state[@name = 'Book_bookIdAscending']/*:sort-order[@type = 'xs:decimal']"))
+    test.assertEqual("xs:int", xs.string(fn.head(expOptions.xpath("/*:operator[@name = 'sort']/*:state[@name = 'Book_bookIdDescending']/*:sort-order/@type")))),
+    test.assertEqual("xs:int", xs.string(fn.head(expOptions.xpath("/*:operator[@name = 'sort']/*:state[@name = 'Book_bookIdAscending']/*:sort-order/@type")))),
+    test.assertNotExists(expOptions.xpath("/*:operator/*:state[@name = 'Book_bookIdDescending']/*:sort-order[@type = 'xs:decimal']")),
+    test.assertNotExists(expOptions.xpath("/*:operator/*:state[@name = 'Book_bookIdAscending']/*:sort-order[@type = 'xs:decimal']"))
   );
   return assertions;
 }
@@ -394,7 +394,7 @@ function generateExplorerOptionsWithoutContainerConstraint() {
 
 function verifySnippetOptions() {
   let input = [{
-    "info" : {
+    "info": {
       "title": "Book"
     },
     "definitions": {
@@ -412,12 +412,12 @@ function verifySnippetOptions() {
     test.assertEqual("30", xs.string(fn.head(expOptions.xpath("/*:transform-results/*:per-match-tokens")))),
     test.assertEqual("4", xs.string(fn.head(expOptions.xpath("/*:transform-results/*:max-matches")))),
     test.assertEqual("200", xs.string(fn.head(expOptions.xpath("/*:transform-results/*:max-snippet-chars"))))
-  ]
+  ];
 }
 
 function verifySourceNameAndSourceTypeOptions() {
   const input = [{
-    "info" : {
+    "info": {
       "title": "Book"
     },
     "definitions": {
@@ -435,17 +435,17 @@ function verifySourceNameAndSourceTypeOptions() {
     test.assertExists(expOptions.xpath("/*:constraint[@name = 'sourceName', @facet = 'true']")),
     test.assertExists(expOptions.xpath("/*:constraint[contains(@name, 'sourceName')]/*:range/*:field[contains(@name, 'datahubSourceName')]")),
     test.assertEqual("limit=25", xs.string(fn.head(expOptions.xpath("/*:constraint[contains(@name, 'sourceName')]/*:range/*:facet-option[1]/text()"))),
-        "To avoid displaying large numbers of values in facets in Explorer, range constraints default to a max of 25 values"),
+      "To avoid displaying large numbers of values in facets in Explorer, range constraints default to a max of 25 values"),
     test.assertEqual("frequency-order", xs.string(fn.head(expOptions.xpath("/*:constraint[contains(@name, 'sourceName')]/*:range/*:facet-option[2]/text()")))),
     test.assertEqual("descending", xs.string(fn.head(expOptions.xpath("/*:constraint[contains(@name, 'sourceName')]/*:range/*:facet-option[3]/text()")))),
     test.assertExists(expOptions.xpath("/*:constraint[@name = 'sourceType']")),
     test.assertExists(expOptions.xpath("/*:constraint[@name = 'sourceType', @facet = 'true']")),
     test.assertExists(expOptions.xpath("/*:constraint[contains(@name, 'sourceType')]/*:range/*:field[contains(@name, 'datahubSourceType')]")),
     test.assertEqual("limit=25", xs.string(fn.head(expOptions.xpath("/*:constraint[contains(@name, 'sourceType')]/*:range/*:facet-option[1]/text()"))),
-        "To avoid displaying large numbers of values in facets in Explorer, range constraints default to a max of 25 values"),
+      "To avoid displaying large numbers of values in facets in Explorer, range constraints default to a max of 25 values"),
     test.assertEqual("frequency-order", xs.string(fn.head(expOptions.xpath("/*:constraint[contains(@name, 'sourceType')]/*:range/*:facet-option[2]/text()")))),
     test.assertEqual("descending", xs.string(fn.head(expOptions.xpath("/*:constraint[contains(@name, 'sourceType')]/*:range/*:facet-option[3]/text()")))),
-  ]
+  ];
 }
 
 []

@@ -7,19 +7,15 @@
  * @return - your content
  */
 function createContent(id, options) {
-  var doc = cts.doc(id);
-  var root = doc.root;
+  let doc = cts.doc(id);
+  let root = doc.root;
 
   // for xml we need to use xpath
   if (root && xdmp.nodeKind(root) === 'element') {
     return root.xpath('/*:envelope/*:instance/node()');
-  }
-  // for json we need to return the instance
-  else if (root && root.envelope && root.envelope.instance) {
+  } else if (root && root.envelope && root.envelope.instance) {  // for json we need to return the instance
     return root.envelope.instance;
-  }
-  // for everything else
-  else {
+  } else { // for everything else
     return doc;
   }
 }

@@ -24,16 +24,16 @@ function invalidProperty() {
               }
             }
           },
-          middle : {
-            sourcedFrom : "theMiddle"
+          middle: {
+            sourcedFrom: "theMiddle"
           },
           last: {
             sourcedFrom: "concat(lastName, "
           }
         }
       },
-      nickname : {
-        sourcedFrom : "theNickname"
+      nickname: {
+        sourcedFrom: "theNickname"
       }
     }
   };

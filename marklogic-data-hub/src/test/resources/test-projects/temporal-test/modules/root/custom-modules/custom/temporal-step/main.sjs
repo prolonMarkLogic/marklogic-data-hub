@@ -28,9 +28,9 @@ function main(content, options) {
   let envelope = {
     envelope: {
       headers: {},
-      triple:{},
+      triple: {},
       instance: doc,
-      attachments:null
+      attachments: null
     }
   };
 

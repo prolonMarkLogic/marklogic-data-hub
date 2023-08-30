@@ -35,7 +35,7 @@ if (!description && flow.description) {
 if (stepIds) {
   stepIds = JSON.parse(stepIds);
   stepIds.forEach(function (stepId, i) {
-    newSteps[(i+1)] = {"stepId": stepId}
+    newSteps[(i+1)] = {"stepId": stepId};
   });
   flow.steps = newSteps;
 }

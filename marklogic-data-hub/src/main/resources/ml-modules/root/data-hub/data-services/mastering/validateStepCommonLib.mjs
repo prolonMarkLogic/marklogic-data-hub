@@ -21,52 +21,52 @@ const levelWarn = "warn";
 
 
 const temporalCollections = temporalLib.getTemporalCollections().toArray().reduce((acc, col) => {
-    acc[col] = true;
-    return acc;
+  acc[col] = true;
+  return acc;
 }, {});
 
 function warningObject(level, message) {
-    return {
-        "level": level,
-        "message": message
-    };
+  return {
+    "level": level,
+    "message": message
+  };
 }
 
 function targetEntityCollectionWarning(targetEntityType, allCollections = []) {
-    const entityTypeTitle = parseEntityTypeTitle(targetEntityType);
-    if (entityTypeTitle && allCollections.includes(entityTypeTitle)) {
-        return warningObject(levelWarn, "Warning: Target Collections includes the target entity type " + entityTypeTitle);
-    }
+  const entityTypeTitle = parseEntityTypeTitle(targetEntityType);
+  if (entityTypeTitle && allCollections.includes(entityTypeTitle)) {
+    return warningObject(levelWarn, "Warning: Target Collections includes the target entity type " + entityTypeTitle);
+  }
 }
 
 function sourceCollectionWarning(sourceQuery, allCollections = []) {
-    const collectionQueryRegex = /^\s*cts\.collectionQuery\(\s*\[?\s*['"]([^'"]+)['"]\s*\]?\s*\)\s*$/;
-    if (sourceQuery && collectionQueryRegex.test(sourceQuery)) {
-        let sourceCollection = sourceQuery.replace(collectionQueryRegex, '$1');
-        if (allCollections.includes(sourceCollection)) {
-            return warningObject(levelWarn, "Warning: Target Collections includes the source collection " + sourceCollection);
-        }
+  const collectionQueryRegex = /^\s*cts\.collectionQuery\(\s*\[?\s*['"]([^'"]+)['"]\s*\]?\s*\)\s*$/;
+  if (sourceQuery && collectionQueryRegex.test(sourceQuery)) {
+    let sourceCollection = sourceQuery.replace(collectionQueryRegex, '$1');
+    if (allCollections.includes(sourceCollection)) {
+      return warningObject(levelWarn, "Warning: Target Collections includes the source collection " + sourceCollection);
     }
+  }
 }
 
 function temporalCollectionsWarning(allCollections = []) {
-    let temporalCollectionOverlap = allCollections.filter((coll) => {
-        return temporalCollections[coll];
-    });
-    if (temporalCollectionOverlap.length) {
-        return warningObject(levelWarn, "Warning: Target Collections includes temporal collection(s): " + temporalCollectionOverlap.join(', '));
-    }
+  let temporalCollectionOverlap = allCollections.filter((coll) => {
+    return temporalCollections[coll];
+  });
+  if (temporalCollectionOverlap.length) {
+    return warningObject(levelWarn, "Warning: Target Collections includes temporal collection(s): " + temporalCollectionOverlap.join(', '));
+  }
 }
 
 function parseEntityTypeTitle(targetEntityType) {
-    targetEntityType = String(targetEntityType);
-    return targetEntityType.substring(targetEntityType.lastIndexOf("/") + 1);
+  targetEntityType = String(targetEntityType);
+  return targetEntityType.substring(targetEntityType.lastIndexOf("/") + 1);
 }
 
 export default  {
-    targetEntityCollectionWarning,
-    sourceCollectionWarning,
-    temporalCollectionsWarning,
-    warningObject,
-    parseEntityTypeTitle
+  targetEntityCollectionWarning,
+  sourceCollectionWarning,
+  temporalCollectionsWarning,
+  warningObject,
+  parseEntityTypeTitle
 };

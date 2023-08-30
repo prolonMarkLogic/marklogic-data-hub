@@ -2,9 +2,9 @@ import mappableEntityLib from "/data-hub/data-services/mapping/mappable-entity-l
 const test = require("/test/test-helper.xqy");
 const assertions = [];
 
-function testFindEntityModelsWithPropertyThatRefersToTargetEntity(){
-  const result1 = mappableEntityLib.findEntityModelsWithPropertyThatRefersToTargetEntity(cts.doc("/entities/Customer.entity.json").toObject(),"Customer");
-  const result2 = mappableEntityLib.findEntityModelsWithPropertyThatRefersToTargetEntity(cts.doc("/entities/Order.entity.json").toObject(),"Order");
+function testFindEntityModelsWithPropertyThatRefersToTargetEntity() {
+  const result1 = mappableEntityLib.findEntityModelsWithPropertyThatRefersToTargetEntity(cts.doc("/entities/Customer.entity.json").toObject(), "Customer");
+  const result2 = mappableEntityLib.findEntityModelsWithPropertyThatRefersToTargetEntity(cts.doc("/entities/Order.entity.json").toObject(), "Order");
 
   assertions.push(
 
@@ -15,7 +15,7 @@ function testFindEntityModelsWithPropertyThatRefersToTargetEntity(){
   );
 }
 
-function testExpandStructuredProperties(result){
+function testExpandStructuredProperties(result) {
   assertions.push(
     test.assertEqual("integer", result.customerId.datatype),
     test.assertEqual("array", result.nicknames.datatype),
@@ -38,7 +38,7 @@ function testExpandStructuredProperties(result){
   );
 }
 
-function testGetAllRelatedEntities(){
+function testGetAllRelatedEntities() {
   const response1 = mappableEntityLib.getEntitiesForUI("Customer");
   const customerResponse = getEntityResponseByName(response1, "Customer");
   const orderResponse = getEntityResponseByName(response1, "Order");
@@ -111,11 +111,11 @@ function testGetAllRelatedEntities(){
   );
 }
 
-function getEntityResponseByName(response, entityName){
+function getEntityResponseByName(response, entityName) {
   return response.find(entityResponse => entityResponse.entityType == entityName);
 }
 
-function getEntityResponseById(response, entityMappingId){
+function getEntityResponseById(response, entityMappingId) {
   return response.find(entityResponse => entityResponse.entityMappingId == entityMappingId);
 }
 
@@ -124,4 +124,4 @@ testFindEntityModelsWithPropertyThatRefersToTargetEntity();
 testExpandStructuredProperties(mappableEntityLib.expandStructuredProperties(cts.doc("/entities/Customer.entity.json").toObject(), "Customer"));
 testGetAllRelatedEntities();
 
-assertions
+assertions;

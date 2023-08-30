@@ -43,7 +43,7 @@ xdmp.invokeFunction(() => {
   assertions.push(
     test.assertTrue(inputResults.success, "Merge should be successful")
   );
-}, { update: "true" });
+}, {update: "true"});
 assertions;
 
 

@@ -6,16 +6,16 @@ const flowName = "myFlow";
 xdmp.invokeFunction(() => {
   const response = flowRunner.runFlowOnContent(flowName,
     [
-      { "uri": "/customer1.json", "value": { "customerId": 1 } },
-      { "uri": "/customer2.json", "value": { "customerId": 2 } }
+      {"uri": "/customer1.json", "value": {"customerId": 1}},
+      {"uri": "/customer2.json", "value": {"customerId": 2}}
     ], "jobId", {
-    "stepOptions": {
-      "1": {
-        "throwErrorOnPurpose": true,
-        "stopOnError": true
+      "stepOptions": {
+        "1": {
+          "throwErrorOnPurpose": true,
+          "stopOnError": true
+        }
       }
     }
-  }
   );
 
   const stepResponse = response.stepResponses["1"];
@@ -40,4 +40,4 @@ xdmp.invokeFunction(() => {
   ];
 
   assertions;
-}, { update: "true" });
+}, {update: "true"});

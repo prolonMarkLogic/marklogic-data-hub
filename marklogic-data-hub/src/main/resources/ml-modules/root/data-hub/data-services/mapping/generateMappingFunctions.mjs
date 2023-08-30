@@ -56,7 +56,7 @@ function mlGenerateFunctionMetadata(uri) {
           }
           const javaScriptModule = `${importLine}
           const call = {${functionCalls.join(", ")}};
-          
+
           call[external.functionName](external.args);`;
           const invokeUri = fn.replace(uri, "\\.[sm]js$", ".invoke.mjs");
           hubUtils.writeDocument(
@@ -82,10 +82,7 @@ function generateMetadata(uri) {
   let metadataXml;
   if (uri === "/data-hub/5/mapping-functions/core-functions.xqy") {
     metadataXml = xqueryLib.functionMetadataGenerateWithNamespace("http://marklogic.com/data-hub/mapping/functions", uri);
-  }
-  // Custom XQuery mapping functions are required to have a URI starting with /custom-modules/mapping-functions and
-  // a namespace of http://marklogic.com/mapping-functions/custom
-  else if (fn.endsWith(uri, ".xqy")) {
+  } else if (fn.endsWith(uri, ".xqy")) { // Custom XQuery mapping functions are required to have a URI starting with /custom-modules/mapping-functions and a namespace of http://marklogic.com/mapping-functions/custom
     metadataXml = xqueryLib.functionMetadataGenerateWithNamespace("http://marklogic.com/mapping-functions/custom", uri);
   } else {
     metadataXml = xqueryLib.functionMetadataGenerate(uri);

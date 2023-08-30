@@ -89,7 +89,7 @@ if (uris.length == 0) {
 
           // If no luck with wasInfluencedBy, try wasAssociatedWith
           if (stepName === null) {
-            console.log("trying associated");
+            xsmp.log("trying associated");
             const associatedWithTriples = xdmp.eval("var subject, predicate; cts.triples(subject, predicate, null)",
               {subject: sem.iri(subject), predicate: sem.iri("http://www.w3.org/ns/prov#wasAssociatedWith")},
               {database: xdmp.database(config.JOBDATABASE)}
@@ -98,7 +98,7 @@ if (uris.length == 0) {
               for (let triple of associatedWithTriples) {
                 const object = sem.tripleObject(triple);
                 if (object != flowName && object != stepDefinitionName) {
-                  console.log("Using associatedWith!");
+                  xdmp.log("Using associatedWith!");
                   stepName = object;
                   break;
                 }

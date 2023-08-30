@@ -27,7 +27,7 @@ const nodeInfo = external.nodeInfo;
 const limitParam = external.limit;
 let limit = limitParam;
 
-if(nodeInfo == null) {
+if (nodeInfo == null) {
   httpUtils.throwBadRequest("Request cannot be empty");
 }
 
@@ -37,19 +37,19 @@ let queryObj = JSON.parse(nodeInfo);
 const nodeToExpand = queryObj.parentIRI;
 
 let isConcept = false;
-if(queryObj.isConcept != null && queryObj.isConcept === true){
+if (queryObj.isConcept != null && queryObj.isConcept === true) {
   isConcept = true;
 }
 
 if (nodeToExpand == null && !(queryObj.isConcept && queryObj.objectConcept)) {
-  httpUtils.throwBadRequest("Missing parentIRI. Required to expand a node.")
+  httpUtils.throwBadRequest("Missing parentIRI. Required to expand a node.");
 }
 const hasPredicateFilter = queryObj.predicateFilter !== undefined && queryObj.predicateFilter.length > 0;
 let excludeNode = nodeToExpand;
 let result;
 let totalEstimate = 0;
-if(!isConcept) {
-  if(hasPredicateFilter) {
+if (!isConcept) {
+  if (hasPredicateFilter) {
     const predicateIRI = sem.iri(queryObj.predicateFilter);
     totalEstimate = fn.count(cts.triples(null, predicateIRI, null, "=", [], cts.documentQuery(nodeToExpand)));
     // We don't want a group node of 1
@@ -63,7 +63,7 @@ if(!isConcept) {
     for (const triple of cts.triples(null, sem.curieExpand("rdfs:isDefinedBy"), null, "=", [], cts.documentQuery(nodeToExpand))) {
       subjectIRIs.push(sem.tripleSubject(triple));
     }
-    totalEstimate = fn.count(cts.triples(subjectIRIs, graphUtils.getAllPredicates(), null, ["=","=","="])) + fn.count(cts.triples(null, graphUtils.getAllPredicates(), subjectIRIs, ["=","=","="]));
+    totalEstimate = fn.count(cts.triples(subjectIRIs, graphUtils.getAllPredicates(), null, ["=", "=", "="])) + fn.count(cts.triples(null, graphUtils.getAllPredicates(), subjectIRIs, ["=", "=", "="]));
   }
 } else {
   //is concept

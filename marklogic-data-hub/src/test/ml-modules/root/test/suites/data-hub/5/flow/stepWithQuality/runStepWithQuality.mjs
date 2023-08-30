@@ -5,13 +5,13 @@ let assertions = [];
 
 const content = [
   {
-    uri:"/customer1.json",
-    value:{"hello": "world"},
+    uri: "/customer1.json",
+    value: {"hello": "world"},
     context: {}
   },
   {
-    uri:"/customer2.json",
-    value:{"hello": "world"},
+    uri: "/customer2.json",
+    value: {"hello": "world"},
     context: {quality: 1}
   }
 ];

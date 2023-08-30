@@ -14,7 +14,7 @@ function filterQueryInterceptor(filterQuery, docNode) {
 
 function scoreDocumentInterceptor(defaultScore, contentObjectA, contentObjectB, matchingRulesetDefinitions) {
   let score = 10;
-/*  for (const matchRuleset of matchingRulesetDefinitions) {
+  /*  for (const matchRuleset of matchingRulesetDefinitions) {
     const matchRulesetScore = matchRuleset.score(contentObjectA, contentObjectB);
     if (matchRulesetScore > score) {
       score = matchRulesetScore;
@@ -30,7 +30,7 @@ function customMatchStringInterceptor() {
 
 function customMatchSequenceInterceptor() {
   //return any sequence
-  let seq = Sequence.from([-1,"abc",3]);
+  let seq = Sequence.from([-1, "abc", 3]);
   return seq;
 }
 
@@ -43,20 +43,20 @@ function customMatchEmptySequenceInterceptor() {
 function customMatchArrayInterceptor(values, matchRule) {
   test.assertTrue(fn.exists(matchRule.xpath("ancestor::matchRulesets/weight")), "Should pass node as match rule.");
   //return any array
-  let arr = [-1,"abc",3];
+  let arr = [-1, "abc", 3];
   return arr;
 }
 
 function customLastNameInterceptor(values) {
   return (documentB) => {
     return cts.contains(documentB, values);
-  }
+  };
 }
 
 function customFalseLastNameInterceptor(values) {
-    return (documentB) => {
-      return !cts.contains(documentB, values);
-    }
+  return (documentB) => {
+    return !cts.contains(documentB, values);
+  };
 }
 
 module.exports = {
@@ -70,4 +70,4 @@ module.exports = {
   customMatchArrayInterceptor,
   customLastNameInterceptor,
   customFalseLastNameInterceptor
-}
+};

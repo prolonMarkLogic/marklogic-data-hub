@@ -9,4 +9,4 @@ assertions.push(test.assertEqual("world", output.toObject().hello));
 output = flowUtils.parseText('<hello>world</hello>', 'xml');
 assertions.push(test.assertEqual("world", output.xpath("/hello/fn:string()")));
 
-assertions
+assertions;

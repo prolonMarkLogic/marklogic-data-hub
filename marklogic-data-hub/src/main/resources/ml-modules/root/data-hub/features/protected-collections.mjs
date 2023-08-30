@@ -43,49 +43,49 @@ function protectCollections(collections, permissions, targetDb) {
           }
           sec.protectCollection(coll, permissionsSec);
         }
-      } catch(e) {
+      } catch (e) {
         hubUtils.hubTrace(INFO_EVENT, `Could not protect collection ${coll}; Reason: ${e.message}`);
       }
-    },{
+    }, {
       database: xdmp.securityDatabase(xdmp.database(targetDb))
     });
-  })
+  });
 }
 
 function onArtifactPublish (artifactType, artifactName) {
-    const artifact = core.getArtifact(artifactType, artifactName);
-    if(artifact && featureEnabled(artifact)) {
-        //we need to get the permissions from somewhere else later
-        const permissions = "data-hub-common,read,data-hub-common,update";
-        const collection = artifactName;
-        if (artifact.collections && !artifact.collections.includes(collection)) {
-            artifact.collections.push(collection);
-        }
-
-        //confirm that the collection is protected
-        protectCollections([collection], permissions);
-        hubUtils.hubTrace(INFO_EVENT, `Finished processing protected collections feature for ${artifactName}`);
+  const artifact = core.getArtifact(artifactType, artifactName);
+  if (artifact && featureEnabled(artifact)) {
+    //we need to get the permissions from somewhere else later
+    const permissions = "data-hub-common,read,data-hub-common,update";
+    const collection = artifactName;
+    if (artifact.collections && !artifact.collections.includes(collection)) {
+      artifact.collections.push(collection);
     }
+
+    //confirm that the collection is protected
+    protectCollections([collection], permissions);
+    hubUtils.hubTrace(INFO_EVENT, `Finished processing protected collections feature for ${artifactName}`);
+  }
 }
 
 function onInstanceSave(context, model, contentArray) {
   let permissions = [];
-  let collections = []
+  let collections = [];
   const stepContext = context.flowStep;
   if (!model) {
-      return contentArray;
+    return contentArray;
   }
 
   const modelName = model.info.title;
   const feature = featuresUtils.getFeatureFromContext(stepContext, model, 'protectedCollections');
-  if(feature) {
+  if (feature) {
     hubUtils.hubTrace(INFO_EVENT, `Processing protected collections feature for an instance of ${modelName} while running ${stepContext.name}`);
 
     if (feature.permissions) {
-        permissions = feature.permissions;
+      permissions = feature.permissions;
     }
     if (feature.collections) {
-        collections = feature.collections;
+      collections = feature.collections;
     }
     addCollectionsToObject(collections, permissions, contentArray, stepContext.options.targetDatabase);
   }
@@ -98,30 +98,30 @@ function onInstanceSave(context, model, contentArray) {
 
 function featureEnabled(artifact) {
   if (artifact.features && artifact.features["protectedCollections"]) {
-      return artifact.features["protectedCollections"].enabled ? artifact.features["protectedCollections"].enabled : false
+    return artifact.features["protectedCollections"].enabled ? artifact.features["protectedCollections"].enabled : false;
   }
   return false;
 }
 
 function addCollectionsToObject(collections, permissions, contentArray, targetDb) {
-  if(Array.isArray(collections) && collections.length > 0) {
+  if (Array.isArray(collections) && collections.length > 0) {
 
-      // add collections to the contentObject if it doesn't have them
-      contentArray.forEach(contentObject => {
-          const contentCollections = contentObject.context.collections || [];
-          let newCollections = [];
-          if (Array.isArray(contentCollections)) {
-              collections.forEach(coll => {
-                  if (!contentObject.context.collections.includes(coll)) {
-                      newCollections.push(coll);
-                  }
-              })
-              contentObject.context.collections = contentCollections.concat(newCollections);
-          } else {
-              contentObject.context.collections = collections;
+    // add collections to the contentObject if it doesn't have them
+    contentArray.forEach(contentObject => {
+      const contentCollections = contentObject.context.collections || [];
+      let newCollections = [];
+      if (Array.isArray(contentCollections)) {
+        collections.forEach(coll => {
+          if (!contentObject.context.collections.includes(coll)) {
+            newCollections.push(coll);
           }
-      });
-      //confirm that the collections are protected
+        });
+        contentObject.context.collections = contentCollections.concat(newCollections);
+      } else {
+        contentObject.context.collections = collections;
+      }
+    });
+    //confirm that the collections are protected
     let protectCollectionsFunc = getProtectedCollection();
     protectCollectionsFunc(collections, permissions, targetDb);
   }

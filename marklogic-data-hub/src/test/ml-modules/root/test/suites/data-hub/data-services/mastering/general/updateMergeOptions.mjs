@@ -197,7 +197,7 @@ const xpathExpected =
     ],
     "mergeRules": [
       {
-        "namespaces": { "es": "http://marklogic.com/entity-services" },
+        "namespaces": {"es": "http://marklogic.com/entity-services"},
         "documentXPath": "/es:envelope/es:headers/timestamp",
         "mergeStrategyName": "myFavoriteSource"
       }
@@ -279,26 +279,26 @@ const collInput =
       "collections": {
         "onMerge": {
           "remove": {
-            "collection": [ "sm-Customer-archived" ]
+            "collection": ["sm-Customer-archived"]
           },
           "add": {
-            "collection": [ "sm-Customer-mastered" ]
+            "collection": ["sm-Customer-mastered"]
           }
         },
         "onArchive": {
           "remove": {
-            "collection": [ "sm-Customer-mastered" ]
+            "collection": ["sm-Customer-mastered"]
           },
           "add": {
-            "collection": [ "sm-Customer-archived" ]
+            "collection": ["sm-Customer-archived"]
           }
         },
         "onNoMatch": {
           "remove": {
-            "collection": [ "sm-Customer-archived" ]
+            "collection": ["sm-Customer-archived"]
           },
           "add": {
-            "collection": [ "sm-Customer-mastered" ]
+            "collection": ["sm-Customer-mastered"]
           }
         },
         "onNotification": {
@@ -306,7 +306,7 @@ const collInput =
             "collection": []
           },
           "add": {
-            "collection": [ "sm-Customer-notification" ]
+            "collection": ["sm-Customer-notification"]
           }
         }
       }
@@ -318,19 +318,19 @@ const collExpected =
     "mergeRules": [],
     "targetCollections": {
       "onMerge": {
-        "add": [ "sm-Customer-mastered" ],
-        "remove": [ "sm-Customer-archived" ]
+        "add": ["sm-Customer-mastered"],
+        "remove": ["sm-Customer-archived"]
       },
       "onArchive": {
-        "add": [ "sm-Customer-archived" ],
-        "remove": [ "sm-Customer-mastered" ]
+        "add": ["sm-Customer-archived"],
+        "remove": ["sm-Customer-mastered"]
       },
       "onNoMatch": {
-        "add": [ "sm-Customer-mastered" ],
-        "remove": [ "sm-Customer-archived" ]
+        "add": ["sm-Customer-mastered"],
+        "remove": ["sm-Customer-archived"]
       },
       "onNotification": {
-        "add": [ "sm-Customer-notification" ],
+        "add": ["sm-Customer-notification"],
         "remove": []
       }
     }

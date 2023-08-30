@@ -2,7 +2,7 @@ const hent = require("/data-hub/5/impl/hub-entities.xqy");
 const test = require("/test/test-helper.xqy");
 
 function generateTdeWithRelatedEntityType() {
-    const input =
+  const input =
         [{
           "info": {
             "title": "Product",
@@ -44,15 +44,15 @@ function generateTdeWithRelatedEntityType() {
         }
         ];
 
-    const tde = hent.dumpTde(input);
+  const tde = hent.dumpTde(input);
   const contextTemplate = fn.head(tde.xpath('.//*:templates/*:template[*:context = "category[  xs:string(.) ne """"]"]'));
   const contextTemplateWithDot = fn.head(tde.xpath(`.//*:templates/*:template[*:context = ".//Product[node()]"]/*:templates/*:template[*:context = '.']`));
   const contextTemplateExists = fn.exists(contextTemplate);
   const contextTemplatewithDotExists = fn.exists(contextTemplateWithDot);
-    const assertions = [
+  const assertions = [
     test.assertTrue(contextTemplateExists, `Context template should exist.`),
     test.assertTrue(contextTemplatewithDotExists, `Context template with dot should exist. ${xdmp.describe(tde, Sequence.from([]), Sequence.from([]))}`)
-    ];
+  ];
 
   assertions.push(
     test.assertEqual(3, fn.count(contextTemplate.xpath("*:triples/*:triple")), "has to exists two triples")
@@ -62,7 +62,7 @@ function generateTdeWithRelatedEntityType() {
   if (contextTemplateExists) {
     for (const columnTriple of contextTemplate.xpath("*:triples/*:triple")) {
       const predicate = fn.head(columnTriple.xpath('*:predicate/*:val'));
-      if(fn.contains(predicate, "isCategory")){
+      if (fn.contains(predicate, "isCategory")) {
         existsConceptTriple = true;
       }
     }
@@ -71,4 +71,4 @@ function generateTdeWithRelatedEntityType() {
   return assertions;
 }
 []
-    .concat(generateTdeWithRelatedEntityType());
+  .concat(generateTdeWithRelatedEntityType());

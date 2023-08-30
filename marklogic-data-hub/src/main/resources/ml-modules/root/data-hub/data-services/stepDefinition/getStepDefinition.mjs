@@ -27,7 +27,7 @@ const type = external.type;
 const stepDef = new StepDefinition().getStepDefinitionByNameAndType(name, type);
 
 if (stepDef != undefined) {
-  stepDef
+  stepDef;
 } else {
   httpUtils.throwBadRequest(`Could not find a step definition with name '${name}' and type '${type}'`);
 }

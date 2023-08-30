@@ -16,7 +16,7 @@ let info = {
   stepDefinitionType: "custom",
   stepDefinitionName: "custom-step",
   dummy: "value1",
-  targetEntityType : "http://example.org/Person-0.0.1/Person",
+  targetEntityType: "http://example.org/Person-0.0.1/Person",
   collections: ["default-custom"],
   batchSize: 52
 };
@@ -24,13 +24,12 @@ let info = {
 
 stepService.saveStep(stepDefinitionType, info);
 //This will fail due to an incorrect stepDefinitionType
-try{
-  stepService.saveStep("anotherCustom", Object.assign({}, info, {name:"anotherCustom"}))
+try {
+  stepService.saveStep("anotherCustom", Object.assign({}, info, {name: "anotherCustom"}));
+} catch (ex) {
+  assertions.concat(test);
 }
-catch(ex) {
-  assertions.concat(test)
-}
-stepService.saveStep(stepDefinitionType, Object.assign({}, info, {name:"anotherCustom", username:"joe", targetEntityType :""}))
+stepService.saveStep(stepDefinitionType, Object.assign({}, info, {name: "anotherCustom", username: "joe", targetEntityType: ""}));
 
 const expectedUri = "/steps/custom/myCustom.step.json";
 assertions = assertions
@@ -58,11 +57,11 @@ delete customStep.additionalSettings;
 delete expectedStep.dummy;
 hubJsTest.verifyJson(expectedStep, customStep, assertions);
 
-expectedStep = Object.assign(info, { name:"anotherCustom", targetEntityType :""});
+expectedStep = Object.assign(info, {name: "anotherCustom", targetEntityType: ""});
 expectedStep.stepId = "anotherCustom" + "-" + "custom";
 
 let anotherStep = customService.getCustomStep("anotherCustom");
-hubJsTest.verifyJson({dummy: "value1", username:"joe"}, anotherStep.additionalSettings, assertions);
+hubJsTest.verifyJson({dummy: "value1", username: "joe"}, anotherStep.additionalSettings, assertions);
 delete anotherStep.lastUpdated;
 delete anotherStep.additionalSettings;
 delete expectedStep.dummy;

@@ -172,7 +172,9 @@ function setArtifact(artifactType, artifactName, artifact, dirFileName) {
   let existingArtifact = null;
   try {
     existingArtifact = getArtifactNode(artifactType, artifactName);
-  } catch (e) {}
+  } catch (e) {
+    xdmp.log(`Error' Reason: ${xdmp.toJsonString(e)}`);
+  }
   let lastUpdated = fn.string(fn.currentDateTime());
   let artifactExists = false;
   if (existingArtifact !== null && fn.exists(existingArtifact)) {

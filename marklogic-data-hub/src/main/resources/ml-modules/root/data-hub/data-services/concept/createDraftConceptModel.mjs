@@ -29,9 +29,9 @@ if (name == null) {
   httpUtils.throwBadRequest("The model must have an info object with a name property");
 }
 
-const conceptModel = conceptLib.findDraftModelByConceptName(name)
+const conceptModel = conceptLib.findDraftModelByConceptName(name);
 if (conceptModel) {
-  if(!conceptModel.info.draftDeleted) {
+  if (!conceptModel.info.draftDeleted) {
     httpUtils.throwBadRequest(`Concept class is already using the name ${name}. Concept class cannot use the same name as an existing concept class.`);
   }
 } else if (fn.docAvailable(conceptLib.getConceptModelUri(name))) {
@@ -50,14 +50,13 @@ if (input.description) {
   model.info.description = description;
 }
 
-if(hubCentralConfig){
+if (hubCentralConfig) {
   model.hubCentral = hubCentralConfig;
 }
 
-try{
+try {
   conceptLib.writeDraftConceptModel(name, model);
-}
-catch (e){
+} catch (e) {
   httpUtils.throwBadRequest(hubUtils.getErrorMessage(e));
 }
 

@@ -18,4 +18,4 @@ xdmp.invokeFunction(() => {
       "datahubCreatedByJob": "job1 job2 job3"
     }
   });
-}, { update: "true" });
+}, {update: "true"});

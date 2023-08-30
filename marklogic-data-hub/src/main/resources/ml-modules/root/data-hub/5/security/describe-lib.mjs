@@ -117,6 +117,6 @@ function sortPermissions(permissionsArray) {
 
 
 export default {
-    describeRole,
-    describeUser
-}
+  describeRole,
+  describeUser
+};

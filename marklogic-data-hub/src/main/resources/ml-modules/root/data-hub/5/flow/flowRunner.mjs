@@ -324,7 +324,7 @@ function copyContentObject(contentObject) {
             copy.context[key] = JSON.parse(quoted);
           }
         } catch (error) {
-          console.log("Copy error: " + error + "; uri: " + contentObject.uri + "; key: " + key);
+          xdmp.log("Copy error: " + error + "; uri: " + contentObject.uri + "; key: " + key);
         }
       } else {
         // For anything DHF does not know about it, just do a simple copy, as it's not know for certain if

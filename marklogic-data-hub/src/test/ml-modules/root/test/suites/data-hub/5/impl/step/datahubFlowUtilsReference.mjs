@@ -27,4 +27,4 @@ const dataHub = DataHubSingleton.instance();
     "flow-utils was converted into a regular library module in 5.5, but because the " +
     "scaffolded custom step code refers to datahub.flow.flowUtils, we need to ensure " +
     "that reference is still valid.")
-]
+];

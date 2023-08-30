@@ -37,7 +37,7 @@ function flowWorksWithLatestProvenance() {
     assertions.push(
       test.assertEqual(1, fn.count(hubTestXqy.getProvDocuments(config.FINALDATABASE)), "There should be one provenance record in FINAL")
     );
-    return assertions
+    return assertions;
   }));
 }
 

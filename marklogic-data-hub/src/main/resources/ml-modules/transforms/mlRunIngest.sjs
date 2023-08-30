@@ -8,7 +8,7 @@ function transform(context, params, content) {
   Object.assign(context, results.context);
   return Sequence.from(results.content.map(r => {
     try {
-      return xdmp.unquote(xdmp.quote(r))
+      return xdmp.unquote(xdmp.quote(r));
     } catch (e) {
       return r;
     }

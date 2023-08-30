@@ -6,14 +6,14 @@ function verifySourceNameAndTypeWithEmptyHeaders() {
   const assertions = [];
 
   // sourceName and sourceType is empty
-  let options = {"headers":{}, "sourceName":"", "sourceType":""};
+  let options = {"headers": {}, "sourceName": "", "sourceType": ""};
   let headers = flowUtils.createHeaders(options);
   assertions.push(
     test.assertEqual(null, headers["sources"])
   );
 
   // sourceName and sourceType exists
-  options = {"headers":{}, "sourceName":"someDB", "sourceType":"customer"};
+  options = {"headers": {}, "sourceName": "someDB", "sourceType": "customer"};
   headers = flowUtils.createHeaders(options);
   assertions.push(
     test.assertEqual(1, headers["sources"].length),
@@ -27,14 +27,14 @@ function verifySourceNameAndTypeWithEmptySources() {
   const assertions = [];
 
   // sourceName and sourceType is empty
-  let options = {"headers":{"sources":[]}, "sourceName":"", "sourceType":""};
+  let options = {"headers": {"sources": []}, "sourceName": "", "sourceType": ""};
   let headers = flowUtils.createHeaders(options);
   assertions.push(
     test.assertEqual(0, headers["sources"].length)
   );
 
   // sourceName and sourceType exists
-  options = {"headers":{"sources":[]}, "sourceName":"someDB", "sourceType":"customer"};
+  options = {"headers": {"sources": []}, "sourceName": "someDB", "sourceType": "customer"};
   headers = flowUtils.createHeaders(options);
   assertions.push(
     test.assertEqual(1, headers["sources"].length),
@@ -48,7 +48,7 @@ function verifySourceNameAndTypeWithSourcesObject() {
   const assertions = [];
 
   // sourceName and sourceType is empty
-  let options = {"headers":{"sources":{}}, "sourceName":"", "sourceType":""};
+  let options = {"headers": {"sources": {}}, "sourceName": "", "sourceType": ""};
   let headers = flowUtils.createHeaders(options);
   assertions.push(
     test.assertEqual(1, headers["sources"].length),
@@ -57,7 +57,7 @@ function verifySourceNameAndTypeWithSourcesObject() {
   );
 
   // sourceName and sourceType exists
-  options = {"headers":{"sources":{"name": "someName"}}, "sourceName":"someDB", "sourceType":"customer"};
+  options = {"headers": {"sources": {"name": "someName"}}, "sourceName": "someDB", "sourceType": "customer"};
   headers = flowUtils.createHeaders(options);
   assertions.push(
     test.assertEqual(2, headers["sources"].length),
@@ -71,8 +71,8 @@ function verifySourceNameAndTypeWithSourcesArray() {
   const assertions = [];
 
   // sourceName and sourceType is empty
-  let options = {"headers":{"sources":[{"name":"someDB", "datahubSourceType":"customer"}, {"name":"someDB", "datahubSourceType":"order"}]},
-    "sourceName":"", "sourceType":""};
+  let options = {"headers": {"sources": [{"name": "someDB", "datahubSourceType": "customer"}, {"name": "someDB", "datahubSourceType": "order"}]},
+    "sourceName": "", "sourceType": ""};
   let headers = flowUtils.createHeaders(options);
   assertions.push(
     test.assertEqual(2, headers["sources"].length),
@@ -83,8 +83,8 @@ function verifySourceNameAndTypeWithSourcesArray() {
   );
 
   // sourceName and sourceType exists
-  options = {"headers":{"sources":[{"datahubSourceName":"someDB"}, {"datahubSourceName":"someDB", "datahubSourceType":"order"}]},
-    "sourceName":"someNewDB", "sourceType":"employee"};
+  options = {"headers": {"sources": [{"datahubSourceName": "someDB"}, {"datahubSourceName": "someDB", "datahubSourceType": "order"}]},
+    "sourceName": "someNewDB", "sourceType": "employee"};
   headers = flowUtils.createHeaders(options);
   assertions.push(
     test.assertEqual(3, headers["sources"].length),
@@ -97,8 +97,8 @@ function verifySourceNameAndTypeWithSourcesArray() {
   );
 
   // SourceName exists and SourceType doesn't exist
-  options = {"headers":{"sources":[{"datahubSourceName":"someDB"}, {"datahubSourceName":"someDB", "datahubSourceType":"order"}]},
-    "sourceName":"someNewDB"};
+  options = {"headers": {"sources": [{"datahubSourceName": "someDB"}, {"datahubSourceName": "someDB", "datahubSourceType": "order"}]},
+    "sourceName": "someNewDB"};
   headers = flowUtils.createHeaders(options);
   assertions.push(
     test.assertEqual(3, headers["sources"].length),
@@ -107,8 +107,8 @@ function verifySourceNameAndTypeWithSourcesArray() {
   );
 
   // SourceName doesn't exist and sourceType exists
-  options = {"headers":{"sources":[{"datahubSourceName":"someDB"}, {"datahubSourceName":"someDB", "datahubSourceType":"order"}]},
-    "sourceType":"employee"};
+  options = {"headers": {"sources": [{"datahubSourceName": "someDB"}, {"datahubSourceName": "someDB", "datahubSourceType": "order"}]},
+    "sourceType": "employee"};
   headers = flowUtils.createHeaders(options);
   assertions.push(
     test.assertEqual(3, headers["sources"].length),
@@ -120,7 +120,7 @@ function verifySourceNameAndTypeWithSourcesArray() {
 
 
 []
-    .concat(verifySourceNameAndTypeWithEmptyHeaders())
-    .concat(verifySourceNameAndTypeWithEmptySources())
-    .concat(verifySourceNameAndTypeWithSourcesObject())
-    .concat(verifySourceNameAndTypeWithSourcesArray());
+  .concat(verifySourceNameAndTypeWithEmptyHeaders())
+  .concat(verifySourceNameAndTypeWithEmptySources())
+  .concat(verifySourceNameAndTypeWithSourcesObject())
+  .concat(verifySourceNameAndTypeWithSourcesArray());

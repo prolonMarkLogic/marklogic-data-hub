@@ -26,7 +26,7 @@ hubTest.runWithRolesAndPrivileges(roles, [], function () {
     let config = admin.getConfiguration();
     let elementRangeIndexes = [
       admin.databaseRangeElementIndex("dateTime", "", "systemStart", "", fn.false()),
-      admin.databaseRangeElementIndex("dateTime", "", "systemEnd", "", fn.false())]
+      admin.databaseRangeElementIndex("dateTime", "", "systemEnd", "", fn.false())];
     elementRangeIndexes.forEach((elementRangeIndex) => {
       config = admin.databaseDeleteRangeElementIndex(config, xdmp.database(), elementRangeIndex);
     });

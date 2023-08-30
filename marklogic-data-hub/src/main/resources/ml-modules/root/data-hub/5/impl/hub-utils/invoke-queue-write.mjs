@@ -60,10 +60,10 @@ const temporalCollectionMap = temporalLib.getTemporalCollections().toArray().red
   return collectionMap;
 }, {});
 
-if(writerQueue != null && Object.keys(writerQueue).length !== 0) {
+if (writerQueue != null && Object.keys(writerQueue).length !== 0) {
   const identifiers = contentArray.map(content => content["uri"]);
   legFlowLib.runWriters(identifiers, databaseName);
-} else if(writerQueueXqy != null && Object.keys(writerQueueXqy).length !== 0) {
+} else if (writerQueueXqy != null && Object.keys(writerQueueXqy).length !== 0) {
   const identifiers = contentArray.map(content => content["uri"]);
   legFlowLibXqy.populateQueue(writerQueueXqy);
   legFlowLibXqy.setDatabase(databaseName);

@@ -3,7 +3,7 @@ const test = require("/test/test-helper.xqy");
 
 let assertions = [];
 
-function invokeMapCustomersJSON(){
+function invokeMapCustomersJSON() {
   let doc = fn.head(cts.doc('/content/customerInfo.json'));
   let result = mapping.main({uri: '/content/customerInfo.json', value: doc}, {
     mapping: {name: 'mapCustomersJSON'},
@@ -12,7 +12,7 @@ function invokeMapCustomersJSON(){
   checkAssertions(result);
 }
 
-function invokeMapCustomersXML(){
+function invokeMapCustomersXML() {
   let doc = fn.head(cts.doc('/content/customerInfo.xml'));
   let result = mapping.main({uri: '/content/customerInfo.xml', value: doc}, {
     mapping: {name: 'mapCustomersXML'},
@@ -21,7 +21,7 @@ function invokeMapCustomersXML(){
   checkAssertions(result);
 }
 
-function checkAssertions(result){
+function checkAssertions(result) {
   let instance0 = result[0].value.root.envelope.instance;
   let instance1 = result[1].value.root.envelope.instance;
   let instance2 = result[2].value.root.envelope.instance;

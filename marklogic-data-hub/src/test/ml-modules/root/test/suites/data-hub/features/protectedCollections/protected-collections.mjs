@@ -17,7 +17,7 @@ const stepContext1 = {
       "sourceDatabase": "data-hub-FINAL",
       "targetDatabase": "data-hub-FINAL",
     },
-    "targetEntityType":"Person",
+    "targetEntityType": "Person",
     "sourceQuery": "cts.collectionQuery('doesnt-matter')"
   }
 };
@@ -56,7 +56,7 @@ let result1 = protectedCollections.onInstanceSave(stepContext1, modelCustomer, c
 hubTest.runWithRolesAndPrivileges(['data-hub-developer'], ['http://marklogic.com/xdmp/privileges/unprotect-collection'], function () {
   const protectedCollection = xdmp.invokeFunction(() => {
     const sec = require("/MarkLogic/security.xqy");
-    let collectionDetails = sec.getCollection("myCustomerCollection")
+    let collectionDetails = sec.getCollection("myCustomerCollection");
     return collectionDetails.xpath("/*:collection/*:uri/text()").toString();
   }, {database: xdmp.securityDatabase(xdmp.database("data-hub-FINAL"))});
   assertions.push(test.assertEqual("myCustomerCollection", protectedCollection));
@@ -68,13 +68,13 @@ assertions.push(test.assertTrue(result1.context.collections.includes("myCustomer
 //Instance with protected collections in false
 const stepContext2 = {
   "flowStep": {
-      "stepDefinitionName": "my-protected",
-      "stepDefinitionType": "MAPPING",
-      "collections": ["noProtected"],
-      "sourceDatabase": "data-hub-FINAL",
-      "targetDatabase": "data-hub-FINAL",
-      "targetEntityType": "Person",
-      "sourceQuery": "cts.collectionQuery('doesnt-matter')"
+    "stepDefinitionName": "my-protected",
+    "stepDefinitionType": "MAPPING",
+    "collections": ["noProtected"],
+    "sourceDatabase": "data-hub-FINAL",
+    "targetDatabase": "data-hub-FINAL",
+    "targetEntityType": "Person",
+    "sourceQuery": "cts.collectionQuery('doesnt-matter')"
   }
 };
 const modelPerson = {

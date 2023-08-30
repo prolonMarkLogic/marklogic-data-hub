@@ -41,9 +41,9 @@ function verifyBatchOutputIsDisabled(options, message) {
 
 verifyBatchOutputIsEnabled({}, "Batch output is enabled by default");
 
-verifyBatchOutputIsEnabled({ "disableJobOutput": false });
+verifyBatchOutputIsEnabled({"disableJobOutput": false});
 
-verifyBatchOutputIsDisabled({ "disableJobOutput": true }, "When job output is disabled, so is batch output");
+verifyBatchOutputIsDisabled({"disableJobOutput": true}, "When job output is disabled, so is batch output");
 
 verifyBatchOutputIsDisabled({"enableBatchOutput": "never"});
 

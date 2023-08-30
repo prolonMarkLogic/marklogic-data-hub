@@ -25,9 +25,9 @@ function testFunctionInMapping(functionSignature) {
  */
 const functions = esMappingLib.getXpathMappingFunctions();
 const actualFunctionsThatDontWork = [];
-for(let i=0; i< functions.length; i++){
+for (let i=0; i< functions.length; i++) {
   const result = testFunctionInMapping(functions[i].signature);
-  if (result.properties.gender.errorMessage && result.properties.gender.errorMessage.startsWith("Unable to find function")){
+  if (result.properties.gender.errorMessage && result.properties.gender.errorMessage.startsWith("Unable to find function")) {
     actualFunctionsThatDontWork.push(String(functions[i].functionName));
   }
 }

@@ -23,4 +23,4 @@ const options = fn.head(xdmp.fromJSON(external.options));
 
 let newOpts = updateMatchOptionsLib.updateMatchOptions(options);
 
-newOpts
+newOpts;

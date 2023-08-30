@@ -39,4 +39,4 @@ const updatedSteps = flowService.getFlow(flowName).steps;
   test.assertEqual("first-mapping", updatedSteps["4"].stepId),
   test.assertEqual("second-mapping", updatedSteps["17"].stepId),
   test.assertEqual("third-mapping", updatedSteps["6"].stepId)
-]
+];

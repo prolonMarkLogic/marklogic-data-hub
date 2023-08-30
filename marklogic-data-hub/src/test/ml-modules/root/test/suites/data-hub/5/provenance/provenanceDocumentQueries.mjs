@@ -16,25 +16,25 @@ const assertions = [];
 const flowName = "endToEndFlow";
 
 const endToEndFlow = {
-  name:flowName,
+  name: flowName,
   steps: {
     "1": {
-      name:"ingestionStep",
+      name: "ingestionStep",
       stepDefinitionName: "default-ingest",
       stepDefinitionType: "ingestion"
     },
     "2": {
-      name:"mappingStep",
+      name: "mappingStep",
       stepDefinitionName: "entity-services-mapping",
       stepDefinitionType: "mapping"
     },
     "3": {
-      name:"matchingStep",
+      name: "matchingStep",
       stepDefinitionName: "default-matching",
       stepDefinitionType: "matching"
     },
     "4": {
-      name:"mergingStep",
+      name: "mergingStep",
       stepDefinitionName: "default-merging",
       stepDefinitionType: "merging"
     }
@@ -46,23 +46,23 @@ let provDocument;
 const ingestionStepExecutionContext = new StepExecutionContext(
   endToEndFlow,
   "1",
-  {name:"ingestionStep", type: "ingestion"},
+  {name: "ingestionStep", type: "ingestion"},
   "my-ingestion-job",
-  { latestProvenance: true, sourceName: "External Table", sourceType: "SQL", targetDatabase: stagingDB }
+  {latestProvenance: true, sourceName: "External Table", sourceType: "SQL", targetDatabase: stagingDB}
 );
 const mappingStepExecutionContext = new StepExecutionContext(
   endToEndFlow,
   "2",
-  {name:"mappingStep", type: "mapping"},
+  {name: "mappingStep", type: "mapping"},
   "my-mapping-job",
-  { latestProvenance: true, sourceDatabase: stagingDB, targetDatabase: finalDB }
+  {latestProvenance: true, sourceDatabase: stagingDB, targetDatabase: finalDB}
 );
 const mergingStepExecutionContext = new StepExecutionContext(
   endToEndFlow,
   "4",
-  {name:"mergingStep", type: "merging"},
+  {name: "mergingStep", type: "merging"},
   "my-merging-job",
-  { latestProvenance: true, sourceDatabase: finalDB, targetDatabase: finalDB }
+  {latestProvenance: true, sourceDatabase: finalDB, targetDatabase: finalDB}
 );
 const provenanceWriteQueue = provLib.getProvenanceWriteQueue();
 const getOptions = () => {
@@ -77,26 +77,26 @@ const getOptions = () => {
 xdmp.invokeFunction(() => {
   const record = dhProv.newProvenanceRecord("my-ingestion-job", getOptions());
   dhProv.insertProvenanceRecord(record, ingestionStepExecutionContext.getTargetDatabase());
-  ingestionStepExecutionContext.completedItems = ["testJSONObjectInstance1.json","testJSONObjectInstance2.json"];
+  ingestionStepExecutionContext.completedItems = ["testJSONObjectInstance1.json", "testJSONObjectInstance2.json"];
   flowProvenance.writeProvenanceData(ingestionStepExecutionContext, [
     {uri: "testJSONObjectInstance1.json", value: {}},
     {uri: "testJSONObjectInstance2.json", value: {}}
   ]);
 
   provenanceWriteQueue.persist(stagingDB);
-}, { database: xdmp.database(stagingDB), update: "true", commit: "auto"});
+}, {database: xdmp.database(stagingDB), update: "true", commit: "auto"});
 
 // create mapping provenance
 xdmp.invokeFunction(() => {
   const record = dhProv.newProvenanceRecord("my-mapping-job", getOptions());
   dhProv.insertProvenanceRecord(record, mappingStepExecutionContext.getTargetDatabase());
-  mappingStepExecutionContext.completedItems = ["testJSONObjectInstance1.json","testJSONObjectInstance2.json"];
+  mappingStepExecutionContext.completedItems = ["testJSONObjectInstance1.json", "testJSONObjectInstance2.json"];
   flowProvenance.writeProvenanceData(mappingStepExecutionContext, [
-    {previousUri: ["testJSONObjectInstance1.json"], uri: "testJSONObjectInstance1.json", value: { envelope:{ instance: { info: { title: "Customer", version: "0.0.1"}}}}},
-    {previousUri: ["testJSONObjectInstance2.json"], uri: "testJSONObjectInstance2.json", value: { envelope:{ instance: { info: { title: "Customer", version: "0.0.1"}}}}}
+    {previousUri: ["testJSONObjectInstance1.json"], uri: "testJSONObjectInstance1.json", value: {envelope: {instance: {info: {title: "Customer", version: "0.0.1"}}}}},
+    {previousUri: ["testJSONObjectInstance2.json"], uri: "testJSONObjectInstance2.json", value: {envelope: {instance: {info: {title: "Customer", version: "0.0.1"}}}}}
   ]);
   provenanceWriteQueue.persist(finalDB);
-}, { update: "true", commit: "auto"});
+}, {update: "true", commit: "auto"});
 
 // create merging provenance
 xdmp.invokeFunction(() => {
@@ -113,7 +113,7 @@ xdmp.invokeFunction(() => {
     }
   ]);
   provenanceWriteQueue.persist(finalDB);
-}, { update: "true", commit: "auto"});
+}, {update: "true", commit: "auto"});
 
 const sourceInformationForMerged = fn.head(hubUtil.invokeFunction(function() { return provQueryLib.sourceInformationForDocument("testJSONObjectInstanceMerged.json"); }, finalDB));
 assertions.push(

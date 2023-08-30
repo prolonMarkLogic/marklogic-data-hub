@@ -77,7 +77,7 @@ function verifySimpleSelectedPropertiesResults() {
   ];
 
   entitySearchLib.addPropertiesToSearchResponse(entityName, response, selectedProperties);
-  return[
+  return [
     test.assertEqual(janeExpectedResult, response.results[0].entityProperties),
     test.assertEqual(sallyExpectedResult, response.results[1].entityProperties),
     test.assertEqual(sallyExpectedResult, response.results[2].entityProperties),
@@ -207,7 +207,7 @@ function verifyStructuredFirstLevelSelectedPropertiesResults() {
   ];
 
   entitySearchLib.addPropertiesToSearchResponse(entityName, response, selectedProperties);
-  return[
+  return [
     test.assertEqual(sallyExpectedResult, response.results[1].entityProperties),
     test.assertEqual(sallyExpectedResult, response.results[2].entityProperties),
     test.assertEqual(2, response.selectedPropertyDefinitions.length),
@@ -297,7 +297,7 @@ function verifyStructuredSelectedPropertiesResults() {
       ]
     }
   ];
-  const assertions = []
+  const assertions = [];
   const selectedProperties = ["shipping.street", "shipping.zip.fiveDigit", "billing.zip.fiveDigit", "billing.street"];
   entitySearchLib.addPropertiesToSearchResponse(entityName, response, selectedProperties);
   assertions.push([
@@ -565,8 +565,8 @@ function verifyOrderOfSelectedProperties() {
   entitySearchLib.addPropertiesToSearchResponse(entityName, response, selectedProperties);
   const orderedProperties = response.results[0].entityProperties.map(entityProperty => entityProperty.propertyPath);
   return [
-      test.assertEqual(selectedProperties, orderedProperties)
-  ]
+    test.assertEqual(selectedProperties, orderedProperties)
+  ];
 }
 
 function verifyPrimaryKeyWithDefinedEntities() {
@@ -671,7 +671,7 @@ function verifyPropertiesForAllEntitiesOption() {
 
   entitySearchLib.addPropertiesToSearchResponse(entityName, response);
   const allEntitiesProps = response.results[0];
-  return([
+  return ([
     test.assertEqual(true, allEntitiesProps.hasOwnProperty('identifier')),
     test.assertEqual(true, allEntitiesProps.hasOwnProperty('primaryKey')),
     test.assertEqual(true, allEntitiesProps.hasOwnProperty('entityName')),
@@ -700,7 +700,7 @@ function verifyIdentifierWithoutDefinedPrimaryKey() {
   };
   const entityName = null;  //Indicates that user has chosen 'All Entities' option
   entitySearchLib.addPropertiesToSearchResponse(entityName, response);
-  return([
+  return ([
     test.assertEqual("/content/sallyAddress.json", response.results[0].identifier.propertyValue),
     test.assertEqual("identifier", response.results[0].identifier.propertyPath),
     test.assertEqual("uri", response.results[0].primaryKey.propertyPath),
@@ -948,7 +948,7 @@ function verifyEntityNameNotInCollectionFacet() {
     }
   ];
   entitySearchLib.addPropertiesToSearchResponse(entityName, response);
-  let facetValues = response.facets.Collection.facetValues
+  let facetValues = response.facets.Collection.facetValues;
   return ([
     test.assertEqual(2, facetValues.length),
     test.assertEqual(expectedFacetValues, facetValues),
@@ -985,10 +985,10 @@ function testEntitySourcesInSearchResponse() {
   };
   entitySearchLib.addPropertiesToSearchResponse(entityName, response);
   return [
-    test.assertEqual([{"datahubSourceName":"loadData"},{"datahubSourceName":"someOtherName"}], response.results[0].sources),
-    test.assertEqual([{"datahubSourceName":["loadCustomers","loadCustomersXml"]}], response.results[1].sources),
-    test.assertEqual([{"datahubSourceName":"loadCustomersJSON"}], response.results[2].sources),
-    test.assertEqual([{"datahubSourceName":"persons"}], response.results[3].sources),
+    test.assertEqual([{"datahubSourceName": "loadData"}, {"datahubSourceName": "someOtherName"}], response.results[0].sources),
+    test.assertEqual([{"datahubSourceName": ["loadCustomers", "loadCustomersXml"]}], response.results[1].sources),
+    test.assertEqual([{"datahubSourceName": "loadCustomersJSON"}], response.results[2].sources),
+    test.assertEqual([{"datahubSourceName": "persons"}], response.results[3].sources),
     test.assertEqual([], response.results[4].sources)
   ];
 }

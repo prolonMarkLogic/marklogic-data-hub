@@ -24,8 +24,8 @@ import defaultConfig from "/com.marklogic.hub/config.mjs";
 
 export default class DataHub {
 
-  constructor(config = null){
-    if(!config) {
+  constructor(config = null) {
+    if (!config) {
       config = defaultConfig;
     } else {
       config = Object.assign({}, defaultConfig, config);

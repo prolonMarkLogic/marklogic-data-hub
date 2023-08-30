@@ -65,7 +65,7 @@ function transformXml(xmlNode) {
   return {
     data: transformJson(jsonIn, null, {}),
     namespaces: namespaces
-  }
+  };
 }
 
 // An indirectly recursive function.
@@ -103,7 +103,7 @@ function transformObject(jsonOut, objName, value, defaultNS) {
     defaultNS = {
       prefix: determineFinalNSPrefix(null, value[ATTR_NAME_DEFAULT_NS]),
       uri: value[ATTR_NAME_DEFAULT_NS]
-    }
+    };
   }
 
   // Fully qualify the object name.
@@ -137,7 +137,7 @@ function transformArray(jsonOut, objName, value, defaultNS) {
         objName = getQName(objName, false, defaultNS, true);
       }
     } else {
-      arr.push(transformJson(value[i], defaultNS, {}))
+      arr.push(transformJson(value[i], defaultNS, {}));
     }
   }
   addArray(jsonOut, objName, arr);
@@ -170,7 +170,7 @@ function getValueInfo(value) {
         defaultNS = {
           prefix: determineFinalNSPrefix(null, value[key]),
           uri: value[key]
-        }
+        };
       }
     }
   }
@@ -182,7 +182,7 @@ function getValueInfo(value) {
     isAtomic: isAtomic,
     value: value,
     defaultNS: defaultNS
-  }
+  };
 }
 
 // Traverse doc to collect namespaces with prefixes.  Zero or once per request.
@@ -314,6 +314,6 @@ function isObject(value) {
 
 
 export default {
-    transform: transformXml,
-    PROP_NAME_TEXT: PROP_NAME_TEXT
+  transform: transformXml,
+  PROP_NAME_TEXT: PROP_NAME_TEXT
 };

@@ -26,5 +26,5 @@ const step = core.getArtifact("matching", stepName);
 
 let result = calculateMatchingActivityLib.calculateMatchingActivity(step);
 
-result
+result;
 

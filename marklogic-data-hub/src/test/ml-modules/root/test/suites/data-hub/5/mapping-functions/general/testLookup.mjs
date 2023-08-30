@@ -4,7 +4,7 @@ const core = require('/data-hub/5/mapping-functions/core-functions.xqy');
 const test = require("/test/test-helper.xqy");
 
 const object = {
-  "aString" : "string",
+  "aString": "string",
   "aNumber": 3,
   "aBoolean": true,
   "anObject": {"hello": "world"}

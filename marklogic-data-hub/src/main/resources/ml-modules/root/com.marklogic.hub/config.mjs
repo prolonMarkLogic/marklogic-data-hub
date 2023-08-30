@@ -1,4 +1,4 @@
-export default{
+export default {
   // Staging Database Properties
   STAGINGDATABASE: "%%mlStagingDbName%%",
   STAGING_PORT: "%%mlStagingPort%%",

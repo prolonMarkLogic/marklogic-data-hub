@@ -1,7 +1,7 @@
 import entityLib from "/data-hub/5/impl/entity-lib.mjs";
 const test = require("/test/test-helper.xqy");
 
-const uris = ["/content/person1.json","/content/person2.json"];
+const uris = ["/content/person1.json", "/content/person2.json"];
 const entityType = "http://marklogic.com/example/PersonModel-0.0.1/Person";
 
 const results = [];

@@ -53,12 +53,12 @@ function runMappingJsonToXml() {
 }
 
 function testMapping() {
-    let instance = lib.invokeTestMapping("/content/mapTest.json", "OrdersMapping2" , "2");
-    assertions.push(
-          test.assertEqual(expectedDate, fn.string(instance.OrderType.purchaseDate)),
-          test.assertEqual(11,fn.number(instance.OrderType.id)),
-          test.assertEqual(165.05, fn.number(instance.OrderType.orderCost))
-    );
+  let instance = lib.invokeTestMapping("/content/mapTest.json", "OrdersMapping2", "2");
+  assertions.push(
+    test.assertEqual(expectedDate, fn.string(instance.OrderType.purchaseDate)),
+    test.assertEqual(11, fn.number(instance.OrderType.id)),
+    test.assertEqual(165.05, fn.number(instance.OrderType.orderCost))
+  );
 }
 
 runMapping();
